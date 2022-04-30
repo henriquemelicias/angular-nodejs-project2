@@ -1,0 +1,8 @@
+.scroll-up-button {
+  position: fixed;
+}
+
+.scroll-up-button__image {
+  image-rendering: auto;
+  z-index: 10;
+}

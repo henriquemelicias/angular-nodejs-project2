@@ -1,0 +1,6 @@
+<div ngbDropdown>
+  <button class="btn btn-outline-primary" id="dropdownConfig" ngbDropdownToggle>Theme</button>
+  <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+    <button *ngFor="let theme of availableThemes" ngbDropdownItem (click)="changeTheme(theme)">{{ theme.name }}</button>
+  </div>
+</div>

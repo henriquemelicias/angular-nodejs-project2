@@ -1,0 +1,10 @@
+.about-container {
+  margin-top: 4rem;
+  margin-bottom: 8rem;
+}
+
+@media (max-width: 992.98px ) {
+  .about-container {
+    margin: 3rem 1rem;
+  }
+}

@@ -1,0 +1,7 @@
+#bootstrap-overrides .hidden {
+  display: none;
+}
+
+#bootstrap-overrides .error {
+  color: var( --error-color ) !important;
+}

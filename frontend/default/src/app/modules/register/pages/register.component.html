@@ -1,0 +1,96 @@
+<div class="register-form--container">
+  <h2 class="register-form__title">Create a new account</h2>
+
+  <form [formGroup]="registerForm">
+    <div class="register-form__group">
+      <label for="register-form-username">Username</label>
+      <input type="text" class="register-form__group__control form-control" id="register-form-username" formControlName="username"
+             [ngClass]="{'is-invalid': form['username'].errors &&
+                                      (form['username'].touched || form['username'].dirty),
+                         'is-valid': form['username'].valid }"
+      >
+    </div>
+
+    <div class="alert alert-danger" [hidden]="form['username'].valid || form['username'].pristine">
+      <div *ngIf="form['username'].errors?.['required']">Username is required</div>
+      <div *ngIf="form['username'].errors?.['minlength']">Username must be at least 3 characters</div>
+    </div>
+
+    <div class="register-form__group">
+      <label for="register-form-email">Email</label>
+      <input type="text" class="register-form__group__control form-control" id="register-form-email" formControlName="email"
+             placeholder="example@mail.com"
+             [ngClass]="{'is-invalid': form['email'].errors && (form['email'].touched || form['email'].dirty), 'is-valid': form['email'].valid}"
+      >
+    </div>
+
+    <div class="alert alert-danger" [hidden]="form['email'].valid || form['email'].pristine">
+      <div *ngIf="form['email'].errors?.['required']">Email is required</div>
+      <div *ngIf="form['email'].errors && !form['email'].errors?.['required']">Email must be valid</div>
+    </div>
+
+    <label for="register-form-password">Password</label>
+    <div class="register-form__group input-group">
+      <input class="register-form__group__password-control form-control" id="register-form-password" formControlName="password"
+             [ngClass]="{'is-invalid': form['password'].errors && (form['password'].touched || form['password'].dirty), 'is-valid': form['password'].valid}"
+             [type]="isPasswordTextType ? 'text' : 'password'"
+      >
+
+      <div class="input-group-append">
+        <span class="input-group-text" (click)="togglePasswordFieldTextType()">
+          <i class="fa" [ngClass]="{'fa-eye-slash': !isPasswordTextType, 'fa-eye': isPasswordTextType}"></i>
+        </span>
+      </div>
+    </div>
+
+    <div class="alert alert-danger" [hidden]="form['password'].valid || form['password'].pristine">
+      <div *ngIf="form['password'].errors?.['required']">Password is required</div>
+      <div *ngIf="form['password'].errors?.['minlength']">Password must be at least 8 characters</div>
+      <div *ngIf="form['password'].errors?.['pattern']">
+        Password must contain at least: <br>
+        <ul>
+          <li *ngIf="!form['password'].value?.match( '[A-Z]+')">One upper character</li>
+          <li *ngIf="!form['password'].value?.match( '[a-z]+')">One lower character</li>
+          <li *ngIf="!form['password'].value?.match( '\\d+')">One number</li>
+        </ul>
+      </div>
+    </div>
+
+    <label for="register-form-password-confirm">Repeat your password</label>
+    <div class="register-form__group input-group">
+      <input class="register-form__group__password-control form-control" id="register-form-password-confirm" formControlName="passwordConfirm"
+             [ngClass]="{'is-invalid': form['passwordConfirm'].errors
+                                       && (form['passwordConfirm'].touched || form['passwordConfirm'].dirty),
+                         'is-valid': form['passwordConfirm'].valid}"
+             [type]="isPasswordConfirmTextType ? 'text' : 'password'"
+             pattern="{{ form['password'].value || !'' }}"
+      >
+
+      <div class="input-group-append">
+        <span class="input-group-text" (click)="togglePasswordConfirmFieldTextType()">
+          <i class="fa" [ngClass]="{'fa-eye-slash': !isPasswordConfirmTextType, 'fa-eye': isPasswordConfirmTextType}"></i>
+        </span>
+      </div>
+    </div>
+
+    <div class="alert alert-danger" [hidden]="form['passwordConfirm'].valid || form['passwordConfirm'].pristine">
+      <div *ngIf="form['passwordConfirm'].errors?.['required']">Please confirm your password</div>
+      <div *ngIf="(form['passwordConfirm'].errors?.['pattern'] || form['password'].value === '')
+                  && !form['passwordConfirm'].errors?.['required']">Passwords must be identical</div>
+    </div>
+
+    <div class="register-form__submit-button--container">
+      <button type="submit" class="register-form__submit-button default-button"
+              [disabled]="!registerForm.valid"
+              (click)="onSubmit(); form['password'].reset(); form['passwordConfirm'].reset()"
+      >
+        Register
+      </button>
+    </div>
+  </form>
+
+  <div class="app-alert-wrapper">
+    <app-alert id="alert-register" [isOnlyOne]="true"></app-alert>
+  </div>
+
+</div>
