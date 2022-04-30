@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # TUGAGRAM
 
 ## Conectar ao computador da FCUL
@@ -80,4 +79,3 @@ http://appserver.alunos.di.fc.ul.pt:3014/
 Backend:
 
 http://appserver.alunos.di.fc.ul.pt:3064/
-
