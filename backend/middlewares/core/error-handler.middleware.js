@@ -1,4 +1,5 @@
 const { firstDigit } = require( "#utils/generic.utils" );
+const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 
 function errorHandler( err, req, res, next ) {
     // Headers already sent, next middleware takes care of it.
@@ -10,22 +11,21 @@ function errorHandler( err, req, res, next ) {
 
     // Handle exception errors.
     if ( err instanceof TypeError ) {
-        res.status( 400 ).json( message );
+        res.status( HttpStatusCode.BadRequest ).json( message );
     }
 
     /* HTTP status code errors. */
 
     // Don't print stack trace. Send error and message to user.
     else if ( firstDigit( err.statusCode ) === 4 ) {
-        res.status( err.statusCode ).json( message );
-        res.send();
+        res.status( err.statusCode ).json( message ).send();
         return;
     }
     else if ( err.statusCode ) {
         res.status( err.statusCode ).json( message );
     }
     else {
-        res.status( 500 ).json( err );
+        res.status( HttpStatusCode.InternalServerError ).json( err );
     }
 
     next( err );

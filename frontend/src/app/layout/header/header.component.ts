@@ -109,8 +109,8 @@ export class HeaderComponent implements OnInit {
               (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) ) {
       this._headerElement.style.height = "10px";
       this._navElement.style.height = "10px";
-      this._navBrandImageElement.style.width = "65px";
-      this._navBrandImageElement.style.height = "60px";
+      this._navBrandImageElement.style.width = "55px";
+      this._navBrandImageElement.style.height = "50px";
       this._headerElement.style.display = "";
     }
     else {

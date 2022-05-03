@@ -57,7 +57,7 @@ exports.login = ( req, res, next ) => {
         .exec( ( error, user ) => {
 
             if ( error ) {
-                next( httpError( HttpStatusCode.InternalServerError ) );
+                next( httpError( HttpStatusCode.InternalServerError, error ) );
                 return;
             }
 

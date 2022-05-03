@@ -14,6 +14,8 @@ export class FooterComponent {
 
   navItems = [
     { link: '/login', routerLink: 'login', title: 'Login' },
+    { link: '/search', routerLink: 'search', title: 'Search' },
+    { link: '/sitemap', routerLink: 'sitemap', title: 'Sitemap' },
   ];
 
   constructor( ) {}

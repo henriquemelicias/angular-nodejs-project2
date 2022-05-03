@@ -18,7 +18,7 @@
   /* Element specific variables */
   --background-image-color: var(--primary-color);
   --background-blur: 15px;
-  --background-brightness: 25%;
+  --background-brightness: 50%;
   --ligthbox-background-color: rgba(0, 0, 0, .5);
   --header-background-color: #252E3F99;
   --footer-background-color: #252E3F99;

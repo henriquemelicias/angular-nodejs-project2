@@ -1,5 +1,5 @@
 <footer class="footer">
-  <img class="footer-image-overlay" src="assets/static/footer-farm.webp" alt="Overlay image of a farm.">
+  <img class="footer-image-overlay" src="../../../assets/static/footer-overlay.webp" alt="Overlay image of a farm.">
 
   <div class="footer--container">
     <div *ifMedia="MediaQuery.Min_width_768px" class="footer__first-column footer__column">
@@ -24,17 +24,13 @@
     </div>
     <div class="footer__copyright-row">
       <span class="footer__copyright-row__logo">
-        <img src="assets/icons/nav-brand.ico" alt="Brand icon.">
+        <img src="../../../assets/icons/nav-brand-100px.webp" alt="Brand icon.">
       </span>
-      © {{ currentYear }} Big Black Cow, LSD
+      © {{ currentYear }} Gira, LSD
     </div>
     <div class="footer__navbar-row">
       <div class="footer__nav__column">
         <a *ngFor="let item of navItems" [href]="item.link" [routerLink]="item.routerLink">{{ item.title }}</a>
-      </div>
-      <div class="footer__nav__column">
-        <a [href]="'/search'" [routerLink]="'search'">Search</a>
-        <a [href]="'/sitemap'" [routerLink]="'sitemap'">Sitemap</a>
       </div>
     </div>
   </div>
