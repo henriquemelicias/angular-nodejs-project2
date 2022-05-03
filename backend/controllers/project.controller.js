@@ -12,7 +12,7 @@ exports.project_post = function ( req, res, next ) {
 
     const project = new Project({ name : name, acronym : acronym, startDate : startDate , endDate : endDate , tasks : tasks});
 
-        hero.save( ( error , _ ) => {
+        project.save( ( error , _ ) => {
             if ( error ){
                 next( httpError( HttpStatusCode.InternalServerError, error ) );
                 return;
