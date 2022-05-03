@@ -1,3 +1,0 @@
-  info app.js -> Environment in use: NODE_ENV=development,+0ms
-  info app.js -> Frontend origin must be: http://localhost:4200,+14ms
-  info bin/www -> Listening on port 8000,+5ms

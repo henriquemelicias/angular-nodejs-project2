@@ -1,5 +1,6 @@
 var Project = require('../models/project.schema');
 const httpError = require( 'http-errors' );
+const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 
 exports.project_post = function ( req, res, next ) {
     
@@ -17,8 +18,12 @@ exports.project_post = function ( req, res, next ) {
                 return;
             }
 
-            res.send( "POST nao foi feito com sucesso!" );
+            res.status( HttpStatusCode.Created ).send( "POST foi feito com sucesso!" );
         
     } );
     
+}
+
+exports.getProjectRules = () => {
+
 }

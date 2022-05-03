@@ -3,6 +3,7 @@ const fs = require( "fs" );
 const util = require( "util" );
 const path = require( "path" );
 const async = require( "async" );
+const moment = require('moment');
 
 const logHttp = require( 'debug' )( 'http' );
 const logInfo = require( 'debug' )( 'info' );
@@ -10,9 +11,9 @@ const logDebug = require( 'debug' )( 'debug' );
 const logError = require( 'debug' )( 'error' );
 const logWarn = require( 'debug' )( 'warning' );
 
-const DATE_FORMAT = (new Date()).toUTCString().replaceAll( " ", "-" ).replace( "-", "" );
+const DATE = moment().format("ddd,YYYY[-]MM[-]DD@[[]HH[h-]mm[m-]ss[s][]]");
 const DIRECTORY_LOG_PATH = "./logs";
-const FILE_LOG_PATH = DIRECTORY_LOG_PATH + "/" + DATE_FORMAT + "." + appConfig.NODE_ENV + ".log";
+const FILE_LOG_PATH = DIRECTORY_LOG_PATH + "/" + DATE + "." + appConfig.NODE_ENV + ".log";
 
 function removeOldestFiles( directory, numberFilesToKeep, callback ) {
     // Guards
