@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LightboxService } from "@core/services/lightbox/lightbox.service";
 
 @Component({
   selector: 'app-contact',
@@ -8,7 +7,7 @@ import { LightboxService } from "@core/services/lightbox/lightbox.service";
 })
 export class ContactComponent implements OnInit {
 
-  constructor( private lightboxService: LightboxService ) { }
+  constructor() { }
 
   ngOnInit(): void {
   }

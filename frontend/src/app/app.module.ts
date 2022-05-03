@@ -16,12 +16,8 @@ import { ErrorInterceptor } from "@core/interceptors/error/error.interceptor";
 
 import { HeaderComponent } from "@app/layout/header/header.component";
 import { ContentLayoutComponent } from "@app/layout/content-layout/content-layout.component";
-import { LightboxComponent } from "@app/layout/lightbox/lightbox.component";
 import { FooterComponent } from "@app/layout/footer/footer.component";
-import { FooterSubscriptionFormComponent } from './layout/footer-subscription-form/footer-subscription-form.component';
 import { FooterScrollUpButtonComponent } from './layout/footer-scroll-up-button/footer-scroll-up-button.component';
-import { FooterSocialMediaComponent } from './layout/footer-social-media/footer-social-media.component';
-import { FooterThemeDropdownComponent } from './layout/footer-theme-dropdown/footer-theme-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -30,12 +26,8 @@ import { FooterThemeDropdownComponent } from './layout/footer-theme-dropdown/foo
     // Layout
     HeaderComponent,
     ContentLayoutComponent,
-    LightboxComponent,
     FooterComponent,
-    FooterSubscriptionFormComponent,
     FooterScrollUpButtonComponent,
-    FooterSocialMediaComponent,
-    FooterThemeDropdownComponent,
   ],
   imports: [
     // Angular

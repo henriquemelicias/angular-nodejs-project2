@@ -1,0 +1,18 @@
+  info app.js -> Environment in use: NODE_ENV=development,+0ms
+  info app.js -> Frontend origin must be: http://localhost:4200,+14ms
+  info bin/www -> Listening on port 8000,+5ms
+  info User to try login: ggg -> AuthController.login,+58m
+  error AuthController.login -> UnauthorizedError:,Unauthorized,+0ms
+  http { time: '2022-05-03 16:45:27', method: 'POST', url: '/api/auth/login', status: 401, contentLength: '33', responseTime: '82.053 ms', user: 'Mozilla/5.0 (X11; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0' } -> +0ms
+  info User to try register: {"username":"abcd","password":"$2a$08$L3Sl12mdqXQp/C1ywLp.ZO09dxx5y9Snfv3ygLK/PfKQF3QaAkgiO","email":"gfds@g.c","_id":"62714e268f4fcd5883822312"} -> AuthController.register,+15s
+  info User abcd registered with success. -> AuthController.register,+75ms
+  http { time: '2022-05-03 16:45:43', method: 'POST', url: '/api/auth/register', status: 201, contentLength: '-', responseTime: '180.934 ms', user: 'Mozilla/5.0 (X11; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0' } -> +15s
+  info User to try login: ggg -> AuthController.login,+4s
+  error AuthController.login -> UnauthorizedError:,Unauthorized,+19s
+  http { time: '2022-05-03 16:45:47', method: 'POST', url: '/api/auth/login', status: 401, contentLength: '33', responseTime: '55.949 ms', user: 'Mozilla/5.0 (X11; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0' } -> +4s
+  info User to try register: {"username":"asdf","password":"$2a$08$jIP09ZnmsU1RqXD8bsCL6uU.Uq0wOkKJfG7yS5YvbsvKKLzQX3/le","email":"asg@asdf","_id":"62714e428f4fcd5883822316"} -> AuthController.register,+24s
+  info User asdf registered with success. -> AuthController.register,+80ms
+  http { time: '2022-05-03 16:46:10', method: 'POST', url: '/api/auth/register', status: 201, contentLength: '-', responseTime: '166.062 ms', user: 'Mozilla/5.0 (X11; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0' } -> +24s
+  info User to try login: asdf -> AuthController.login,+4s
+  info User asdf logged in with success. -> AuthController.login,+94ms
+  http { time: '2022-05-03 16:46:15', method: 'POST', url: '/api/auth/login', status: 200, contentLength: '177', responseTime: '95.514 ms', user: 'Mozilla/5.0 (X11; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0' } -> +4s
