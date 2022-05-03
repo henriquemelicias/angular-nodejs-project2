@@ -1,0 +1,55 @@
+.login-form--container {
+  display: block;
+  width: 400px;
+  margin: 3rem 1rem 6rem;
+}
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+
+  .login-form--container {
+    display: block;
+    width: auto;
+    margin: 1rem;
+  }
+}
+
+.login-form__title {
+  text-align: center;
+}
+
+.login-form__group {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.login-form__submit-button--container {
+  display: flex;
+  justify-content: center;
+}
+
+.login-form__submit-button {
+  width: 100%;
+  text-align: center;
+}
+
+.input-group-text {
+  height: 100%;
+  cursor: pointer;
+}
+
+.register-anchor {
+  color: var( --font-color-default );
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.register-anchor:hover {
+  color: var( --font-color-highlight );
+}
+
+.app-alert-wrapper {
+  margin-top: 1rem;
+}
+

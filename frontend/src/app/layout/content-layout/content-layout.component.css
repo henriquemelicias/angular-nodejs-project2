@@ -1,0 +1,41 @@
+.app-container {
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+  width: auto;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.background {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 110%;
+  height: 150%;
+  object-fit: cover;
+  object-position: center;
+  z-index: -10;
+  opacity: .6;
+  filter: blur(var(--background-blur))brightness(var(--background-brightness));
+}
+
+.content-container {
+  margin: 0 auto;
+  max-width: 900px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+  .background {
+    display: none;
+  }
+}
+
+
+
+

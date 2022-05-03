@@ -1,0 +1,27 @@
+#bootstrap-overrides html, body {
+  color: var(--font-color-on-background);
+  background-color: var(--background-color);
+  font-family: var(--font-family-default);
+  line-height: var(--font-line-height);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  image-rendering: -webkit-optimize-contrast; /* Fix blurry resized images on chrome. */
+}
+
+body:after {
+  background-image: url("../assets/static/grainy-effect.webp");
+  content: " ";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 500;
+  pointer-events: none;
+  opacity: .5;
+}
+
+.no-overflow {
+  overflow: hidden !important;
+}

@@ -1,0 +1,64 @@
+<footer class="footer">
+  <img class="footer-image-overlay" src="assets/static/footer-farm.webp" alt="Overlay image of a farm.">
+
+  <div class="footer--container">
+    <div *ifMedia="MediaQuery.Min_width_768px" class="footer__first-column footer__column">
+      <div class="footer__column__title">ABOUT US</div>
+      <div class="footer__column__content">
+        OI OI OI!
+        <br><br>
+        {{ briishM8teASCIIArt }}
+        <br><br>
+        WOTS ALL THIS??? YER WANT MI' COWS? <br>
+        YER MILKIN' LOICENSE HAS EXPOIRED!!!! <br>
+        ONE HUNNIT TESCO CLUBCARD POINTS 'AVE BIN DEDUCTED FROM YER ACCOUN'!!!!! <br>
+        YER THREE QUID MEAL DEAL IS GONNA BE A FIVER FROM NOW ON!!!! <br>
+        YER WILL ALSO ONLY BE ABLE TER CHOOSE FROM A CHICKEN OR 'PORK SANDWICH!!!! <br>
+        FAILURE TO RENEW YER LOICENCE IS GONNA RESUL' IN THA LOSS OV MORE CLUBCARD POINTS!!!!!!!! <br>
+      </div>
+    </div>
+    <div *ifMedia="MediaQuery.Min_width_768px" class="footer__second-column footer__column">
+      <div class="footer__column__title">NEW POSTS</div>
+      <div class="footer__column__links">content ></div>
+    </div>
+    <div *ifMedia="MediaQuery.Min_width_768px" class="footer__third-column footer__column">
+      <div class="footer__column__title">TOP POSTS</div>
+      <div class="footer__column__links">content ></div>
+    </div>
+    <div *ifMedia="MediaQuery.Min_width_768px" class="footer__fourth-column footer__column">
+      <div class="footer__column__title">NAVIGATE</div>
+      <div class="footer__column--navigate-container">
+        <div class="footer__column__links">content ></div>
+        <div class="footer__column__links">content ></div>
+      </div>
+    </div>
+    <div class="footer__subscribe-row">
+      <div class="footer__subscribe__headline">SUBSCRIBE TO OUR BLOG</div>
+      <div class="footer__subscribe__content">Receive multiple <i>utter</i>ly annoying spam emails everyday with facts
+        about cows and other <i>bull</i>shit we come up with!
+      </div>
+      <app-footer-subscription-form></app-footer-subscription-form>
+    </div>
+    <div class="footer__social-media-row">
+      <app-footer-social-media></app-footer-social-media>
+    </div>
+    <div class="footer__copyright-row">
+      <span class="footer__copyright-row__logo">
+        <img src="assets/icons/nav-brand.ico" alt="Brand icon.">
+      </span>
+      © {{ currentYear }} Big Black Cow, LSD
+    </div>
+    <div class="footer__navbar-row">
+      <div class="footer__nav__column">
+        <a *ngFor="let item of navItems" [href]="item.link" [routerLink]="item.routerLink">{{ item.title }}</a>
+      </div>
+      <div class="footer__nav__column">
+        <a [href]="'/search'" [routerLink]="'search'">Search</a>
+        <app-footer-theme-dropdown></app-footer-theme-dropdown>
+        <a [href]="'/sitemap'" [routerLink]="'sitemap'">Sitemap</a>
+      </div>
+    </div>
+  </div>
+
+  <app-footer-scroll-up-button></app-footer-scroll-up-button>
+</footer>

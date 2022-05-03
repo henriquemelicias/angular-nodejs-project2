@@ -1,0 +1,52 @@
+<div class="login-form--container">
+  <h2 class="login-form__title">Login to your account</h2>
+
+  <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+    <div class="login-form__group">
+      <label for="login-form-username">Username</label>
+      <input type="text" class="login-form__group__control form-control" id="login-form-username" formControlName="username"
+             [ngClass]="{'is-invalid': form['username'].errors &&
+                                      (form['username'].touched || form['username'].dirty),
+                         'is-valid': form['username'].valid }"
+      >
+    </div>
+
+    <div class="alert alert-danger" [hidden]="form['username'].valid || form['username'].pristine">
+      <div *ngIf="form['username'].errors?.['required']">Username is required</div>
+    </div>
+
+    <label for="login-form-password">Password</label>
+    <div class="login-form__group input-group">
+      <input class="login-form__group__password-control form-control" id="login-form-password" formControlName="password"
+             [ngClass]="{'is-invalid': form['password'].errors && (form['password'].touched || form['password'].dirty), 'is-valid': form['password'].valid}"
+             [type]="isPasswordTextType ? 'text' : 'password'"
+      >
+
+      <div class="input-group-append">
+        <span class="input-group-text" (click)="togglePasswordFieldTextType()">
+          <i class="fa" [ngClass]="{'fa-eye-slash': !isPasswordTextType, 'fa-eye': isPasswordTextType}"></i>
+        </span>
+      </div>
+    </div>
+
+    <div class="alert alert-danger" [hidden]="form['password'].valid || form['password'].pristine">
+      <div *ngIf="form['password'].errors?.['required']">Password is required</div>
+    </div>
+
+    <div class="login-form__submit-button--container">
+      <button type="submit" class="login-form__submit-button default-button"
+              [disabled]="!loginForm.valid"
+      >
+        Login
+      </button>
+    </div>
+  </form>
+
+  <a class="register-anchor" routerLink="../register"><span>Don't have an account? Click here loser.</span></a>
+
+  <div class="app-alert-wrapper">
+    <app-alert id="alert-login" [isOnlyOne]="true"></app-alert>
+  </div>
+
+
+</div>

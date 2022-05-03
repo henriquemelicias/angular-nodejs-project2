@@ -1,0 +1,34 @@
+<header class="header">
+  <div class="nav--container header-container">
+    <a class="nav__brand" href="/">
+      <img src="assets/icons/nav-brand.ico"
+           alt='Icon of the "Vaca que ri" cheese brand. A red cow smiling, with the cheese cylindrical packages as earrings.'>
+    </a>
+    <!-- Normal navbar -->
+    <nav *ngIf="isViewportMinWidth_576px; else elseBlock" class="nav__items">
+      <div *ngFor="let item of navItems; index as i"  >
+        <a *ngIf="item.isVisible" [href]="item.link" [routerLink]="item.routerLink"
+           routerLinkActive="active-link" >{{ item.title }}</a>
+        <a *ngIf="isLoggedIn && i == navItems.length - 1" (click)="openModal()" style="cursor: pointer">Logout</a>
+      </div>
+    </nav>
+    <ng-template #elseBlock>
+      <button class="nav__items__collapsed-menu transparent-button" type="button"
+              (click)="isNavMenuCollapsed = !isNavMenuCollapsed" [class.highlight]="!isNavMenuCollapsed">
+        <img src="assets/icons/navbar-collapsed-menu-button.ico" alt="Navigation menu.">
+      </button>
+      <!-- Collapsed button navbar -->
+      <nav *ngIf="!isNavMenuCollapsed" class="nav__items--collapsed">
+        <div *ngFor="let item of navItems; index as i">
+          <a *ngIf="item.isVisible" (click)="isNavMenuCollapsed = !isNavMenuCollapsed" [href]="item.link"
+             [routerLink]="item.routerLink" routerLinkActive="active-link">{{ item.title }}</a>
+          <a *ngIf="isLoggedIn && i == navItems.length - 1" (click)="openModal()" style="cursor: pointer">Logout</a>
+        </div>
+      </nav>
+    </ng-template>
+  </div>
+</header>
+
+<div id="header-spacer">
+  &nbsp;
+</div>

@@ -1,0 +1,43 @@
+.register-form--container {
+  display: block;
+  width: 400px;
+  margin: 3rem 1rem 6rem;
+}
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+
+  .register-form--container {
+    display: block;
+    width: auto;
+    margin: 1rem;
+  }
+}
+
+.register-form__title {
+  text-align: center;
+}
+
+.register-form__group {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.register-form__submit-button--container {
+  display: flex;
+  justify-content: center;
+}
+
+.register-form__submit-button {
+  width: 100%;
+  text-align: center;
+}
+
+.input-group-text {
+  height: 100%;
+  cursor: pointer;
+}
+
+.app-alert-wrapper {
+  margin-top: 1rem;
+}

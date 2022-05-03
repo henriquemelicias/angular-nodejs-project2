@@ -1,0 +1,24 @@
+var Project = require('../models/project.schema');
+const httpError = require( 'http-errors' );
+
+exports.project_post = function ( req, res, next ) {
+    
+    const name = req.body.name;
+    const acronym = req.body.acronym;
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
+    const tasks = req.body.tasks;
+
+    const project = new Project({ name : name, acronym : acronym, startDate : startDate , endDate : endDate , tasks : tasks});
+
+        hero.save( ( error , _ ) => {
+            if ( error ){
+                next( httpError( HttpStatusCode.InternalServerError, error ) );
+                return;
+            }
+
+            res.send( "POST nao foi feito com sucesso!" );
+        
+    } );
+    
+}
