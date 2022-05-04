@@ -1,0 +1,29 @@
+  info app.js -> Environment in use: NODE_ENV=development,+0ms
+  info app.js -> Frontend origin must be: http://localhost:4200,+14ms
+  info bin/www -> Listening on port 8000,+6ms
+  info LoggerService.removeOldestFiles -> Maximum number of previous log files (10) has been reached. Old log files deleted: 
+       DELETED logs/Wed,2022-05-04@[10h-58m-04s].development.log,+5ms
+  info Database has been purged. -> NonApiController.Function,+2m
+  http { time: '2022-05-04 15:39:45', method: 'GET', url: '/db-purge', status: 304, contentLength: '-', responseTime: '152.306 ms', user: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36' } -> +0ms
+  error NotFoundThrowerMiddleware.notFoundThrower -> NotFoundError:,Content not found.,+0ms
+  http { time: '2022-05-04 15:39:52', method: 'GET', url: '/api', status: 404, contentLength: '35', responseTime: '2.225 ms', user: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36' } -> +7s
+  error NotFoundThrowerMiddleware.notFoundThrower -> NotFoundError:,Content not found.,+4s
+  http { time: '2022-05-04 15:39:56', method: 'GET', url: '/api/auth', status: 404, contentLength: '35', responseTime: '4.146 ms', user: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36' } -> +4s
+  error NotFoundThrowerMiddleware.notFoundThrower -> NotFoundError:,Content not found.,+19s
+  http { time: '2022-05-04 15:40:15', method: 'GET', url: '/api/auth/register', status: 404, contentLength: '35', responseTime: '2.527 ms', user: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36' } -> +19s
+  http { time: '2022-05-04 15:40:26', method: 'OPTIONS', url: '/api/auth/login', status: 204, contentLength: '0', responseTime: '0.384 ms', user: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36' } -> +11s
+  info User to try login: teste -> AuthController.login,+41s
+  error AuthController.login -> UnauthorizedError:,Unauthorized,+11s
+  http { time: '2022-05-04 15:40:26', method: 'POST', url: '/api/auth/login', status: 401, contentLength: '33', responseTime: '60.645 ms', user: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36' } -> +74ms
+  http { time: '2022-05-04 15:40:32', method: 'OPTIONS', url: '/api/auth/login', status: 204, contentLength: '0', responseTime: '0.753 ms', user: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36' } -> +6s
+  info User to try login: teste -> AuthController.login,+6s
+  error AuthController.login -> UnauthorizedError:,Unauthorized,+6s
+  http { time: '2022-05-04 15:40:32', method: 'POST', url: '/api/auth/login', status: 401, contentLength: '33', responseTime: '56.857 ms', user: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36' } -> +78ms
+  http { time: '2022-05-04 15:40:38', method: 'OPTIONS', url: '/api/auth/register', status: 204, contentLength: '0', responseTime: '0.689 ms', user: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36' } -> +6s
+  info User to try register: {"username":"teste","password":"$2a$08$QUNOQtPzRRAvQwvLY4XA2OUJ1rpG4e.XtZs6MxfwThOZGJtud.V7O","_id":"62729066ee7f726933ae87e6"} -> AuthController.register,+6s
+  info User teste registered with success. -> AuthController.register,+297ms
+  http { time: '2022-05-04 15:40:39', method: 'POST', url: '/api/auth/register', status: 201, contentLength: '-', responseTime: '416.502 ms', user: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36' } -> +458ms
+  http { time: '2022-05-04 15:40:40', method: 'OPTIONS', url: '/api/auth/login', status: 204, contentLength: '0', responseTime: '0.486 ms', user: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36' } -> +1s
+  info User to try login: teste -> AuthController.login,+1s
+  info User teste logged in with success. -> AuthController.login,+103ms
+  http { time: '2022-05-04 15:40:40', method: 'POST', url: '/api/auth/login', status: 200, contentLength: '159', responseTime: '103.828 ms', user: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36' } -> +151ms

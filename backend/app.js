@@ -33,7 +33,7 @@ logger.info( logger.callerInfo( 'app.js' ), `Environment in use: NODE_ENV=${ app
 const app = express();
 
 /* Database connection */
-mongoose.connect( appConfig.MONGO_DB_URI, { "useNewUrlParser": true, "useUnifiedTopology": true } );
+mongoose.connect( appConfig.MONGO_DB_URI, { "useNewUrlParser": true, "useUnifiedTopology": true }, null );
 mongoose.connection.on( 'error', logger.error.bind( console, 'MongoDB connection error' ) );
 
 /* App settings */
@@ -47,11 +47,11 @@ const allowedHeaders = [].concat( Object.values( HttpCustomHeaderEnum ), [ "Cont
 // Disable the browser from preventing requests to/from unknown addresses.
 const frontendOrigin = `http://${ appConfig.FRONTEND_HOST }:${ appConfig.FRONTEND_PORT }`;
 logger.info( logger.callerInfo( 'app.js' ), `Frontend origin must be: ${frontendOrigin}` );
-app.use( cors( {
+const corOptions =  {
     origin: frontendOrigin,
     methods: [ 'GET', 'POST', 'PUT', 'PATCH', 'DELETE' ],
-    allowedHeaders: allowedHeaders
-})  );
+    allowedHeaders: allowedHeaders,
+};
 
 // JSON will be used.
 app.use( express.json() );
@@ -78,7 +78,7 @@ app.use( httpLoggerMiddleware );
 
 /* Routes */
 app.use( '', indexRouter );
-app.use( '/api', apiRouter );
+app.use( '/api', cors( corOptions ), apiRouter ); // Cors only on api
 
 /* 404 Not found redirect to error */
 app.use( notFoundThrowerMiddleware );
