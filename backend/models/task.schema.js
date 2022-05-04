@@ -14,7 +14,7 @@ const TaskSchema = new Schema(
  */
  TaskSchema.virtual( 'url' )
  .get( function () {
-        return '/api/' + madeBy.ProjectSchema.virtual["url"] + '/task/' + this.name;
+        return '/api/' + madeBy.UserSchema.virtual["url"] + '/task/' + this.name;
  } );
 
 
