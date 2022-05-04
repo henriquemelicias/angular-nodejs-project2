@@ -1,5 +1,0 @@
-  info app.js -> Environment in use: NODE_ENV=development,+0ms
-  info app.js -> Frontend origin must be: http://localhost:4200,+20ms
-  info bin/www -> Listening on port 8000,+11ms
-  info LoggerService.removeOldestFiles -> Maximum number of previous log files (10) has been reached. Old log files deleted: 
-       DELETED logs/Wed,2022-05-04@[10h-37m-05s].development.log,+5ms

@@ -16,19 +16,6 @@
       <div *ngIf="form['username'].errors?.['minlength']">Username must be at least 3 characters</div>
     </div>
 
-    <div class="register-form__group">
-      <label for="register-form-email">Email</label>
-      <input type="text" class="register-form__group__control form-control" id="register-form-email" formControlName="email"
-             placeholder="example@mail.com"
-             [ngClass]="{'is-invalid': form['email'].errors && (form['email'].touched || form['email'].dirty), 'is-valid': form['email'].valid}"
-      >
-    </div>
-
-    <div class="alert alert-danger" [hidden]="form['email'].valid || form['email'].pristine">
-      <div *ngIf="form['email'].errors?.['required']">Email is required</div>
-      <div *ngIf="form['email'].errors && !form['email'].errors?.['required']">Email must be valid</div>
-    </div>
-
     <label for="register-form-password">Password</label>
     <div class="register-form__group input-group">
       <input class="register-form__group__password-control form-control" id="register-form-password" formControlName="password"

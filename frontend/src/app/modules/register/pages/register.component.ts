@@ -43,12 +43,6 @@ export class RegisterComponent implements OnInit {
             Validators.maxLength( 20 )
           ]
         ],
-        email: [
-          savedFormValue && savedFormValue.email || '', [
-            Validators.required,
-            Validators.email
-          ]
-        ],
         password: [
           '', [
             Validators.required,
@@ -67,7 +61,6 @@ export class RegisterComponent implements OnInit {
     this.registerForm.valueChanges.subscribe( value => {
       localStorage.setItem( LocalStorageKeyEnum.REGISTER_FORM, JSON.stringify( {
                                                                                  username: value.username,
-                                                                                 email: value.email
                                                                                } ) );
     } );
   }
@@ -93,7 +86,6 @@ export class RegisterComponent implements OnInit {
     const registerInput = {} as RegisterInput;
     registerInput.username = this.registerForm.controls['username'].value;
     registerInput.password = this.registerForm.controls['password'].value;
-    registerInput.email = this.registerForm.controls['email'].value;
 
     LoggerService.info( "HTTP register request sent with: " + JSON.stringify( registerInput ), logCallers );
 
