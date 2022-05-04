@@ -5,4 +5,6 @@ var projectControler = require('../controllers/project.controller');
 
 projectRoute.post('/project/:name' , [ verifyRules( projectControler.getProjectRules() ) ], projectControler.project_post);
 
+projectRoute.get('/project/:name', [ verifyRules( projectControler.getProjectRules() )], projectControler.project_get);
+
 module.exports = projectRoute;
