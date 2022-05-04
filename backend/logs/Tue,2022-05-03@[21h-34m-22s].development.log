@@ -1,6 +1,0 @@
-  info app.js -> Environment in use: NODE_ENV=development,+0ms
-  info app.js -> Frontend origin must be: http://localhost:4200,+13ms
-  info bin/www -> Listening on port 8000,+5ms
-  info User to try login: ggg -> AuthController.login,+4m
-  error AuthController.login -> UnauthorizedError:,Unauthorized,+0ms
-  http { time: '2022-05-03 21:37:58', method: 'POST', url: '/api/auth/login', status: 401, contentLength: '33', responseTime: '94.485 ms', user: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36' } -> +0ms
