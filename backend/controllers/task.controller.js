@@ -30,3 +30,29 @@ exports.task_delete = function ( req, res, next ) {
         res.status( HttpStatusCode.Created ).send( "DELETE foi feito com sucesso!" );
     });
 }
+
+exports.task_get = function ( req, res, next ){
+
+    async.parallel( {
+        task: function ( callback ) {
+            Task.find( {name: req.params.name} )
+                .exec( callback );
+        }
+    },
+    function ( err, results ) {
+        if ( err )
+        {
+            return next( httpError( HttpStatusCode.InternalServerError, error ) );
+        }
+
+        if ( results.project == null )
+        {
+           
+            return next( httpError( HttpStatusCode.NotFound, error ) );
+        }
+
+        res.send( results.task );
+    } );
+
+
+}

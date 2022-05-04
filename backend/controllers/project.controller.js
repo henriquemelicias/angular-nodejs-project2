@@ -50,3 +50,29 @@ exports.getProjectRules = () => {
 
 
 }
+
+
+exports.project_get = function ( req, rest, next ){
+
+    async.parallel( {
+        project: function ( callback ) {
+            Project.find( {name: req.params.name} )
+                .exec( callback );
+        }
+    },
+    function ( err, results ) {
+        if ( err )
+        {
+            return next( httpError( HttpStatusCode.InternalServerError, error ) );
+        }
+
+        if ( results.project == null )
+        {
+           
+            return next( httpError( HttpStatusCode.NotFound, error ) );
+        }
+
+        res.send( results.project );
+    } );
+
+}

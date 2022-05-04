@@ -18,4 +18,29 @@ exports.team_post = function ( req, res, next ) {
     });
        
 
+ exports.team_get = function ( req, res, next) {
+
+    async.parallel( {
+        team: function ( callback ) {
+            Team.find( {name: req.params.name} )
+                .exec( callback );
+        }
+    },
+    function ( err, results ) {
+        if ( err )
+        {
+            return next( httpError( HttpStatusCode.InternalServerError, error ) );
+        }
+
+        if ( results.project == null )
+        {
+           
+            return next( httpError( HttpStatusCode.NotFound, error ) );
+        }
+
+        res.send( results.team );
+    } );
+
+ }
+
 }
