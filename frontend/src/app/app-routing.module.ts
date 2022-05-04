@@ -4,6 +4,7 @@ import { ContentLayoutComponent } from './layout/content-layout/content-layout.c
 import { AuthGuard } from '@core/guards/auth.guard';
 import { NotFoundComponent } from "@core/components/not-found/not-found.component";
 import { NotAuthGuard } from "@core/guards/not-auth.guard";
+import { TaskComponent } from '@modules/task/task.component';
 
 const routes: Routes = [
   // Initial page.
@@ -16,6 +17,8 @@ const routes: Routes = [
       // Fallback when no prior routes is matched.
       { path: '404', pathMatch: 'full', component: NotFoundComponent },
       // Lazy loading:
+      {
+        path: 'task', component: TaskComponent},
       {
         path: 'home',
         loadChildren: () =>

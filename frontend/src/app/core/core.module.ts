@@ -13,7 +13,6 @@ import { AuthTokenInterceptor } from "./interceptors/token/auth-token.intercepto
 
 // Core components
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { TaskComponent } from './components/task/task.component';
 
 
 @NgModule( {
@@ -28,7 +27,6 @@ import { TaskComponent } from './components/task/task.component';
   ],
   declarations: [
     NotFoundComponent,
-    TaskComponent
   ],
   exports: [
     NotFoundComponent

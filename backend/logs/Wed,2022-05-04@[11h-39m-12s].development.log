@@ -16,3 +16,5 @@
   http { time: '2022-05-04 11:43:14', method: 'GET', url: '/api/auth', status: 404, contentLength: '35', responseTime: '0.752 ms', user: 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/82.0' } -> +5s
   error NotFoundThrowerMiddleware.notFoundThrower -> NotFoundError:,Content not found.,+5s
   http { time: '2022-05-04 11:43:20', method: 'GET', url: '/api/auth/login', status: 404, contentLength: '35', responseTime: '0.601 ms', user: 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/82.0' } -> +5s
+  error NotFoundThrowerMiddleware.notFoundThrower -> NotFoundError:,Content not found.,+4h
+  http { time: '2022-05-04 15:34:0', method: 'GET', url: '/api/', status: 404, contentLength: '35', responseTime: '2.794 ms', user: 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/82.0' } -> +4h
