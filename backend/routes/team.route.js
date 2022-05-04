@@ -7,5 +7,7 @@ teamRouter.post('/team/:name', team_controller.team_post);
 
 teamRouter.get('team/:name', team_controller.team_get);
 
+teamRouter.put('team/:name', team_controller.team_put);
+
 module.exports = router;
 

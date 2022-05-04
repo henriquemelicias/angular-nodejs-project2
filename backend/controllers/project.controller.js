@@ -75,4 +75,27 @@ exports.project_get = function ( req, rest, next ){
         res.send( results.project );
     } );
 
+
+exports.project_put = function ( req, rest, next ){
+
+    var name = req.body.name;
+    var acronym = req.body.acronym;
+    var startDate = req.body.startDate;
+    var endDate = req.body.endDate;
+    var tasks = req.body.tasks;
+    
+    if ( name != null )
+    {
+
+        Project.findOneAndUpdate( name, {name : name, acronym : acronym, startDate : startDate, endDate : endDate, tasks : tasks } , function ( err ) {
+            if ( err ) { return next( err ); }
+            res.send( "Project updated." );
+        });
+    }
+    else
+    {
+        res.send( "Project wasn't updated" );
+    }
+
+    }
 }
