@@ -33,7 +33,7 @@ logger.info( logger.callerInfo( 'app.js' ), `Environment in use: NODE_ENV=${ app
 const app = express();
 
 /* Database connection */
-mongoose.connect( appConfig.MONGO_DB_URI, appConfig.MONGO_DB_OPTIONS );
+mongoose.connect( appConfig.MONGO_DB_URI, { "useNewUrlParser": true, "useUnifiedTopology": true } );
 mongoose.connection.on( 'error', logger.error.bind( console, 'MongoDB connection error' ) );
 
 /* App settings */
@@ -55,11 +55,11 @@ app.use( cors( {
 
 // JSON will be used.
 app.use( express.json() );
-app.use( bodyParser.json( appConfig.JSON_OPTIONS ) );
+app.use( bodyParser.json( { "limit": "20mb" } ) );
 
 // Deep parsing algorithm that allows nested objects.
 app.use( express.urlencoded( { extended: true } ) );
-app.use( bodyParser.urlencoded( appConfig.URL_ENCODED_OPTIONS ) );
+app.use( bodyParser.urlencoded( { "limit": "20mb", "parameterLimit": 100000, "extended": true } ) );
 
 // Serving static files.
 app.use( express.static( __dirname + '/public' ) );
