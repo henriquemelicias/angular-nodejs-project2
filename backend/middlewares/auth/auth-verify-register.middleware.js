@@ -3,16 +3,15 @@ const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 const httpError = require( "http-errors" );
 const logger = require( "#services/logger.service" );
 
-checkDuplicateUsernameOrEmail = ( req, res, next ) => {
-    logger.setCallerInfo( req, 'VerifyRegisterRequestMiddleware', 'checkDuplicateUsernameOrEmail' );
+checkDuplicateUsername = ( req, res, next ) => {
+    logger.setCallerInfo( req, 'VerifyRegisterRequestMiddleware', 'checkDuplicateUsername' );
 
     const reqUsername = req.body.username;
-    const reqEmail = req.body.email;
 
     // Username.
-    User.findOne( { $or: [ { username: reqUsername }, { email: reqEmail } ] } )
+    User.findOne( { username: reqUsername } )
         .lean()
-        .select( [ 'username', 'email' ] )
+        .select( [ 'username' ] )
         .exec( ( error, user ) => {
 
             if ( error ) {
@@ -20,8 +19,7 @@ checkDuplicateUsernameOrEmail = ( req, res, next ) => {
             }
 
             if ( user ) {
-                const message = reqUsername === user.username ? "Username is already in use." : "Email is already in use.";
-                next( httpError( HttpStatusCode.Conflict, message ) );
+                next( httpError( HttpStatusCode.Conflict, "Username is already in use." ) );
             }
 
             next();
@@ -29,5 +27,5 @@ checkDuplicateUsernameOrEmail = ( req, res, next ) => {
 };
 
 module.exports = {
-    checkDuplicateUsernameOrEmail
+    checkDuplicateUsernameOrEmail: checkDuplicateUsername
 }

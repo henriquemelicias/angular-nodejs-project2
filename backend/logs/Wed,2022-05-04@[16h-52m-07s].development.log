@@ -1,0 +1,18 @@
+  info app.js -> Environment in use: NODE_ENV=development,+0ms
+  info app.js -> Frontend origin must be: http://localhost:4200,+15ms
+  info bin/www -> Listening on port 8000,+4ms
+  info LoggerService.removeOldestFiles -> Maximum number of previous log files (10) has been reached. Old log files deleted: 
+       DELETED logs/Wed,2022-05-04@[16h-32m-13s].development.log
+       DELETED logs/Wed,2022-05-04@[16h-31m-14s].development.log
+       DELETED logs/Wed,2022-05-04@[16h-30m-59s].development.log
+       DELETED logs/Wed,2022-05-04@[16h-30m-36s].development.log
+       DELETED logs/Wed,2022-05-04@[16h-30m-18s].development.log
+       DELETED logs/Wed,2022-05-04@[16h-30m-14s].development.log
+       DELETED logs/Wed,2022-05-04@[16h-29m-58s].development.log
+       DELETED logs/Wed,2022-05-04@[16h-29m-16s].development.log
+       DELETED logs/Wed,2022-05-04@[16h-22m-42s].development.log
+       DELETED logs/Wed,2022-05-04@[16h-22m-17s].development.log,+9ms
+  info app.js -> Successfully connect to MongoDB.,+1s
+  info db-init.script.js -> No roles in db table. Populating...,+356ms
+  info db-init.script.js -> Added 'admin' role to db.,+327ms
+  info db-init.script.js -> Added 'user' role to db.,+6ms

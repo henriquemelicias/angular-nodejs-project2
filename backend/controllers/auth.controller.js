@@ -7,7 +7,7 @@ const httpError = require( 'http-errors' );
 const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 const { body } = require( "express-validator" );
 
-const authParams = { username: 'username', email: 'email', password: 'password' };
+const authParams = { username: 'username', password: 'password' };
 
 exports.register = ( req, res, next ) => {
     const caller = logger.setCallerInfo( req, 'AuthController', 'register' );
@@ -37,8 +37,6 @@ exports.getRegisterRules = () => {
         body( authParams.username, 'Username is required.' ).exists(),
         body( authParams.username, 'Username must be of string type.' ).isString(),
         body( authParams.username, 'Username must have length between 3 and 20.' ).isLength( { min: 3, max: 20 } ),
-        body( authParams.email, 'Email is required.' ).exists(),
-        body( authParams.email, 'Email is not valid, must be of email type.' ).isEmail(),
         body( authParams.password, 'Password is required.' ).exists(),
         body( authParams.password, 'Password must be of string type.' ).isString(),
         body( authParams.password, 'Password must have between 8 and 50 characters, at least one upper and one number.' )
@@ -53,7 +51,7 @@ exports.login = ( req, res, next ) => {
 
     User.findOne( { username: req.body.username } )
         .lean()
-        .select( [ 'username', 'password', 'email' ] )
+        .select( [ 'username', 'password' ] )
         .exec( ( error, user ) => {
 
             if ( error ) {
@@ -84,7 +82,6 @@ exports.login = ( req, res, next ) => {
             res.status( HttpStatusCode.Ok ).send( {
                 _id: user.id,
                 username: user.username,
-                email: user.email,
                 token: token
             } );
         } );

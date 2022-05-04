@@ -13,71 +13,70 @@ import { AlertType } from "@core/models/alert.model";
 import { UserService } from "@data/user/services/user.service";
 
 export interface LoginInput {
-  username: string,
-  password: string
+    username: string,
+    password: string
 }
 
 export interface LoginOutput extends UserSchema {token: string}
 
 export interface RegisterInput {
-  username: string,
-  email: string,
-  password: string
+    username: string,
+    password: string
 }
 
 @Injectable( {
-               providedIn: 'root'
+                 providedIn: 'root'
              } )
 export class AuthService {
 
-  constructor( private http: HttpClient, private authStorage: AuthStorageService, private router: Router ) {
-  }
+    constructor( private http: HttpClient, private authStorage: AuthStorageService, private router: Router ) {
+    }
 
-  login( loginInput: LoginInput ): Observable<LoginOutput> {
-    return this.http.post<LoginOutput>(
-      HttpSettings.API_URL + '/auth/login',
-      loginInput,
-      HttpSettings.HEADER_CONTENT_TYPE_JSON
-    );
-  }
+    login( loginInput: LoginInput ): Observable<LoginOutput> {
+        return this.http.post<LoginOutput>(
+            HttpSettings.API_URL + '/auth/login',
+            loginInput,
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    }
 
-  register( registerInput: RegisterInput ): Observable<void> {
-    return this.http.post<void>(
-      HttpSettings.API_URL + '/auth/register',
-      registerInput,
-      HttpSettings.HEADER_CONTENT_TYPE_JSON
-    );
-  }
+    register( registerInput: RegisterInput ): Observable<void> {
+        return this.http.post<void>(
+            HttpSettings.API_URL + '/auth/register',
+            registerInput,
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    }
 
-  static isLoggedIn(): boolean {
-    return AuthStorageService.getToken() !== null && UserService.sessionUser !== undefined;
-  }
+    static isLoggedIn(): boolean {
+        return AuthStorageService.getToken() !== null && UserService.sessionUser !== undefined;
+    }
 
 
-  logout() {
-    UserService.setSessionUser( undefined );
-    AuthStorageService.clearTokens();
+    logout() {
+        UserService.setSessionUser( undefined );
+        AuthStorageService.clearTokens();
 
-    this.router.navigate( [ '/home' ], ).then(
-      _ => {
-        setTimeout( () => {
-          LoggerService.info(
-            'Redirected to / due to logout.',
-            LoggerService.setCaller( this, this.logout )
-          );
+        this.router.navigate( [ '/home' ], ).then(
+            _ => {
+                setTimeout( () => {
+                    LoggerService.info(
+                        'Redirected to / due to logout.',
+                        LoggerService.setCaller( this, this.logout )
+                    );
 
-          AlertService.alertToApp( AlertType.Success, 'Logout successful', { isAutoClosed: true } );
-        } );
-      },
-      error => {
-        LoggerService.error(
-          'Redirect to / unsuccessful: ' + JSON.stringify( error ),
-          LoggerService.setCaller( this, this.logout )
+                    AlertService.alertToApp( AlertType.Success, 'Logout successful', { isAutoClosed: true } );
+                } );
+            },
+            error => {
+                LoggerService.error(
+                    'Redirect to / unsuccessful: ' + JSON.stringify( error ),
+                    LoggerService.setCaller( this, this.logout )
+                );
+
+                AlertService.alertToApp( AlertType.Error, JSON.stringify( error ) );
+            }
         );
 
-        AlertService.alertToApp( AlertType.Error, JSON.stringify( error ) );
-      }
-    );
-
-  }
+    }
 }
