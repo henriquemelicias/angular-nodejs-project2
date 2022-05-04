@@ -13,6 +13,7 @@ const cookieParser = require( 'cookie-parser' );
 const methodOverride = require( 'method-override' );
 const compression = require( 'compression' );
 const logger = require( "./services/logger.service" );
+const { initDatabase } = require( "./models/db-init.script" );
 
 /* Enums */
 const { HttpCustomHeaderEnum } = require( "./enums/http-custom-header.enum" );
@@ -33,8 +34,16 @@ logger.info( logger.callerInfo( 'app.js' ), `Environment in use: NODE_ENV=${ app
 const app = express();
 
 /* Database connection */
-mongoose.connect( appConfig.MONGO_DB_URI, { "useNewUrlParser": true, "useUnifiedTopology": true }, null );
-mongoose.connection.on( 'error', logger.error.bind( console, 'MongoDB connection error' ) );
+mongoose.Promise = global.Promise;
+mongoose.connect( appConfig.MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true }, null )
+    .then( () => {
+        logger.info( logger.callerInfo( "app.js" ), "Successfully connect to MongoDB." );
+        initDatabase();
+    } )
+    .catch( error => {
+        logger.error( logger.callerInfo( "app.js" ), "MongoDB connection error: " + error );
+        process.exit();
+    } );
 
 /* App settings */
 
@@ -46,8 +55,8 @@ const allowedHeaders = [].concat( Object.values( HttpCustomHeaderEnum ), [ "Cont
 
 // Disable the browser from preventing requests to/from unknown addresses.
 const frontendOrigin = `http://${ appConfig.FRONTEND_HOST }:${ appConfig.FRONTEND_PORT }`;
-logger.info( logger.callerInfo( 'app.js' ), `Frontend origin must be: ${frontendOrigin}` );
-const corOptions =  {
+logger.info( logger.callerInfo( 'app.js' ), `Frontend origin must be: ${ frontendOrigin }` );
+const corOptions = {
     origin: frontendOrigin,
     methods: [ 'GET', 'POST', 'PUT', 'PATCH', 'DELETE' ],
     allowedHeaders: allowedHeaders,
@@ -55,11 +64,11 @@ const corOptions =  {
 
 // JSON will be used.
 app.use( express.json() );
-app.use( bodyParser.json( { "limit": "20mb" } ) );
+app.use( bodyParser.json( { limit: "20mb" } ) );
 
 // Deep parsing algorithm that allows nested objects.
 app.use( express.urlencoded( { extended: true } ) );
-app.use( bodyParser.urlencoded( { "limit": "20mb", "parameterLimit": 100000, "extended": true } ) );
+app.use( bodyParser.urlencoded( { limit: "20mb", parameterLimit: 100000, extended: true } ) );
 
 // Serving static files.
 app.use( express.static( __dirname + '/public' ) );
