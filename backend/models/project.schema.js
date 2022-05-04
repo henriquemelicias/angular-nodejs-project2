@@ -21,7 +21,7 @@ const ProjectSchema = new Schema(
  */
 UserSchema.virtual( 'url' )
     .get( function () {
-        return '/api/project/' + this.username;
+        return '/api/project/' + this.name;
     } );
 
 module.exports = mongoose.model( "Project", ProjectSchema );

@@ -10,7 +10,13 @@ exports.project_post = function ( req, res, next ) {
     const endDate = req.body.endDate;
     const tasks = req.body.tasks;
 
-    const project = new Project({ name : name, acronym : acronym, startDate : startDate , endDate : endDate , tasks : tasks});
+    const project = new Project({ 
+        name : name, 
+        acronym : acronym, 
+        startDate : startDate , 
+        endDate : endDate , 
+        tasks : tasks
+    });
 
         project.save( ( error , _ ) => {
             if ( error ){
@@ -25,5 +31,22 @@ exports.project_post = function ( req, res, next ) {
 }
 
 exports.getProjectRules = () => {
+    return [
+        body( projectParams.name, 'Project name is required.' ).exists(),
+        body( ProjectParams.name, 'Project name must be of string type.' ).isString(),
+        body( ProjectParams.name, 'Project name must have minimum length of 4.' ).isLength( { min: 4 } ),
+        body( ProjectParams.name, 'Project name can only have alphanumeric characters').isAlphanumeric ( {match: "[a-zA-Z0-9_]*" } ),
+        body( ProjectParams.acronym, 'Acronym is required.' ).exists(),
+        body( ProjectParams.acronym, 'Project name must be of string type.' ).isString(),
+        body( ProjectParams.acronym, 'Project name must have minimum length of 4.' ).isLength( {min : 3} ),
+        body( ProjectParams.acronym, 'Project name must have minimum length of 4.' ).isAlphanumeric( {match: "[a-zA-Z0-9_]*" } ),
+        body( ProjectParams.startDate, 'StartDate is required.' ).exists(),
+        body( ProjectParams.startDate, 'StartDate must be of Date type' ).isDate(),
+        body( ProjectParams.startDate, 'StartDate must be after current date').isAfterCurrDate ( {min: Date.now} ),
+        body( ProjectParams.endDate, 'EndDate must be of Date type').isDate(),
+        body( ProjectParams.endDate, 'EndDate must be after StartDate').isAfterStartDate( {min: startDate} ),
+    ]
+
+
 
 }
