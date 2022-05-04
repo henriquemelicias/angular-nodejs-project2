@@ -13,7 +13,6 @@ import { AuthTokenInterceptor } from "./interceptors/token/auth-token.intercepto
 
 // Core components
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { TaskComponent } from './components/task/task.component';
 import { TeamComponent } from './components/team/team.component';
 
 
@@ -29,7 +28,6 @@ import { TeamComponent } from './components/team/team.component';
   ],
   declarations: [
     NotFoundComponent,
-    TaskComponent,
     TeamComponent
   ],
   exports: [
