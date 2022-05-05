@@ -14,7 +14,7 @@ export class TaskService {
 
   //Post
   addTask(task: TaskSchema): Observable<TaskSchema> {
-    return this.http.post<TaskSchema>( this.tasksUrl + "/create", task, HttpSettings.HEADER_CONTENT_TYPE_JSON);
+    return this.http.post<TaskSchema>( this.tasksUrl , task, HttpSettings.HEADER_CONTENT_TYPE_JSON);
   }
 
   //Delete

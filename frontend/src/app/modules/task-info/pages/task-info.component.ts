@@ -9,7 +9,6 @@ import { TaskSchema } from '@data/task/schemas/task.schema';
 })
 export class TaskInfoComponent implements OnInit {
 
-  name:String = '';
   selectedPriority: string = '';
   constructor(private taskService: TaskService) { }
 
