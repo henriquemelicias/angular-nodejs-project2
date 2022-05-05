@@ -1,5 +1,5 @@
 <div class="register-form--container">
-  <h2 class="register-form__title">Create a new account</h2>
+  <h2 class="register-form__title">Create a new user</h2>
 
   <form [formGroup]="registerForm">
     <div class="register-form__group">
@@ -44,7 +44,7 @@
       </div>
     </div>
 
-    <label for="register-form-password-confirm">Repeat your password</label>
+    <label for="register-form-password-confirm">Repeat password</label>
     <div class="register-form__group input-group">
       <input class="register-form__group__password-control form-control" id="register-form-password-confirm" formControlName="passwordConfirm"
              [ngClass]="{'is-invalid': form['passwordConfirm'].errors
@@ -62,7 +62,7 @@
     </div>
 
     <div class="alert alert-danger" [hidden]="form['passwordConfirm'].valid || form['passwordConfirm'].pristine">
-      <div *ngIf="form['passwordConfirm'].errors?.['required']">Please confirm your password</div>
+      <div *ngIf="form['passwordConfirm'].errors?.['required']">Please confirm password</div>
       <div *ngIf="(form['passwordConfirm'].errors?.['pattern'] || form['password'].value === '')
                   && !form['passwordConfirm'].errors?.['required']">Passwords must be identical</div>
     </div>

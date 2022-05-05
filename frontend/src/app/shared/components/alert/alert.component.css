@@ -1,3 +1,9 @@
+.alert--wrapper {
+  display: flex !important;
+  max-width: 95vw;
+  max-height: 20vh;
+}
+
 .alert--container {
   display: flex;
   align-items: center;

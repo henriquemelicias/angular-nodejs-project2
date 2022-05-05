@@ -16,7 +16,7 @@ exports.register = ( req, res, next ) => {
     const user = new User( {
         username: req.body.username,
         password: bcrypt.hashSync( req.body.password, 8 ),
-        roles: [AuthRoles.USER]
+        roles: [ AuthRoles.USER ]
     } );
 
     logger.info( "User to try register: " + JSON.stringify( user ), caller );
@@ -53,7 +53,7 @@ exports.login = ( req, res, next ) => {
 
     User.findOne( { username: req.body.username } )
         .lean()
-        .select( [ 'username', 'password' ] )
+        .select( [ 'username', 'password', 'roles' ] )
         .exec( ( error, user ) => {
 
             if ( error ) {
