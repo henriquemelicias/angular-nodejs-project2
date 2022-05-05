@@ -15,7 +15,7 @@ apiRouter.use( '/auth', authRoute );
 indexRouter.get( '/db-purge', nonApiController.purgeDatabase );
 indexRouter.get( '/db-populate', nonApiController.populateDatabase );
 indexRouter.get( '/db-show', nonApiController.showDatabase );
-
+indexRouter.get( '/db-show-json', nonApiController.showDatabaseJson );
 
 module.exports = {
     indexRouter,
