@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 const TaskSchema = new Schema(
     {
         name: {type: String, required: true, minlength: 4, unique: true},
-        priority: {enum: ['baixa','media', 'alta', 'urgente']},
+        priority: [ { type: String, required: true } ],
         percentage: {type: Number, required: true, min: 0, max: 100},
         madeBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
         //checkList: {type: mongoose.Schema.CheckListSchema, ref: 'Checklist'}

@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpSettings } from '@app/core/constants/http-settings.const';
-import { LoggerService } from '@app/core/services/logger/logger.service';
 import { Task } from '@modules/task/task';
-import { catchError, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +14,7 @@ export class TaskService {
 
   //Post
   addTask(task: Task): Observable<Task> {
-    return this.http.post<Task>(this.tasksUrl, task, HttpSettings.HEADER_CONTENT_TYPE_JSON);
+    return this.http.post<Task>(this.tasksUrl + "/create", task, HttpSettings.HEADER_CONTENT_TYPE_JSON);
   }
 
   //Delete

@@ -21,11 +21,11 @@ export class TaskComponent implements OnInit {
 
   addTask(name: string): void {
     const t:Task = {name: name, priority: this.selectedPriority, percentage: 0};
-    this.taskService.addTask(t);
+    this.taskService.addTask(t).subscribe();
   }
 
   deleteTask(name: string): void {
-    this.taskService.deleteTask(name);
+    this.taskService.deleteTask(name).subscribe();
   }
 
 }
