@@ -13,10 +13,11 @@ import { AuthTokenInterceptor } from "./interceptors/token/auth-token.intercepto
 
 // Core components
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 
 @NgModule( {
-  imports: [ HttpClientModule, RouterModule ],
+               imports: [ HttpClientModule, RouterModule, FontAwesomeModule ],
   providers: [
     AuthGuard,
     {
