@@ -10,16 +10,16 @@ import { catchError, Observable } from 'rxjs';
 })
 export class TaskService {
 
-  private tasksUrl = HttpSettings.API_URL + "/task/";
+  private tasksUrl = HttpSettings.API_URL + "/task";
   constructor(private http: HttpClient) { }
 
   //Post
   addTask(task: Task): Observable<Task> {
-    return this.http.post<Task>(this.tasksUrl + task.name, task, HttpSettings.HEADER_CONTENT_TYPE_JSON);
+    return this.http.post<Task>(this.tasksUrl, task, HttpSettings.HEADER_CONTENT_TYPE_JSON);
   }
 
   //Delete
   deleteTask(name: string): Observable<Task> {
-    return this.http.delete<Task>(this.tasksUrl + name, HttpSettings.HEADER_CONTENT_TYPE_JSON);
+    return this.http.delete<Task>(this.tasksUrl + "/" + name, HttpSettings.HEADER_CONTENT_TYPE_JSON);
   }
 }
