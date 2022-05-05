@@ -47,8 +47,7 @@ exports.showDatabaseJson = async ( req, res ) => {
         ]
     ).then( _ => {
         res.setHeader( 'Content-Type', 'application/json' );
-        let response = JSON.stringify( objectToJson, null, 4 );
-        res.json( response );
+        res.json( objectToJson );
     } );
 }
 
