@@ -17,10 +17,7 @@ import { ErrorInterceptor } from "@core/interceptors/error/error.interceptor";
 import { HeaderComponent } from "@app/layout/header/header.component";
 import { ContentLayoutComponent } from "@app/layout/content-layout/content-layout.component";
 import { FooterComponent } from "@app/layout/footer/footer.component";
-import { FooterScrollUpButtonComponent } from './layout/footer-scroll-up-button/footer-scroll-up-button.component';
-import { ProjectTeamComponent } from './modules/project-team/project-team.component';
-import { ProjectTaskComponent } from './modules/project-task/project-task.component';
-import { TaskComponent } from './modules/task/task.component';
+import { FooterScrollUpButtonComponent } from '@layout/footer-scroll-up-button/footer-scroll-up-button.component';
 
 @NgModule({
   declarations: [
@@ -31,9 +28,6 @@ import { TaskComponent } from './modules/task/task.component';
     ContentLayoutComponent,
     FooterComponent,
     FooterScrollUpButtonComponent,
-    ProjectTeamComponent,
-    ProjectTaskComponent,
-    TaskComponent,
   ],
   imports: [
     // Angular

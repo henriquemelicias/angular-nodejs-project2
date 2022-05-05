@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ContentLayoutComponent } from './layout/content-layout/content-layout.component';
+import { ContentLayoutComponent } from '@layout/content-layout/content-layout.component';
 import { AuthGuard } from '@core/guards/auth.guard';
 import { NotFoundComponent } from "@core/components/not-found/not-found.component";
 import { NotAuthGuard } from "@core/guards/not-auth.guard";
-import { TaskComponent } from '@modules/task/task.component';
-import { ProjectTeamComponent } from './modules/project-team/project-team.component';
-import { ProjectComponent } from './modules/project/project.component';
+import { TaskInfoComponent } from '@modules/task-info/pages/task-info.component';
+import { TeamInfoComponent } from '@modules/team-info/pages/team-info.component';
+import { ProjectInfoComponent } from '@modules/project-info/pages/project-info.component';
 
 const routes: Routes = [
   // Initial page.
@@ -20,14 +20,6 @@ const routes: Routes = [
       { path: '404', pathMatch: 'full', component: NotFoundComponent },
       // Lazy loading:
       {
-        path: 'task', component: TaskComponent, canActivate: [AuthGuard]},
-      {
-        path: 'team', component: ProjectTeamComponent
-      },
-      {
-        path: 'project', component: ProjectComponent
-      },
-      {
         path: 'home',
         loadChildren: () =>
           import('@modules/home/home.module').then( m => m.HomeModule )
@@ -36,11 +28,6 @@ const routes: Routes = [
         path: 'about',
         loadChildren: () =>
           import('@modules/about/about.module').then( m => m.AboutModule )
-      },
-      {
-        path: 'contact',
-        loadChildren: () =>
-          import('@modules/contact/contact.module').then( m => m.ContactModule )
       },
       {
         path: 'login',
@@ -61,6 +48,24 @@ const routes: Routes = [
           import('@modules/profile/profile.module').then( m => m.ProfileModule )
       },
       {
+        path: 'team/:id',
+        canLoad: [AuthGuard],
+        loadChildren: () =>
+            import('@modules/team-info/team-info.module').then( m => m.TeamInfoModule )
+      },
+      {
+        path: 'project/:id',
+        canLoad: [AuthGuard],
+        loadChildren: () =>
+            import( '@modules/project-info/project-info.module').then( m => m.ProjectInfoModule )
+      },
+      {
+        path: 'task/:id',
+        canLoad: [AuthGuard],
+        loadChildren: () =>
+            import('@modules/task-info/task-info.module').then( m => m.TaskInfoModule )
+      },
+      { // todo remover e pensar numa cena pa substituir po home
         path: 'blog/:id',
         loadChildren: () =>
           import('@modules/blog-entry/blog-entry.module').then( m => m.BlogEntryModule )
