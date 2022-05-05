@@ -11,11 +11,15 @@ verifyIfAdmin = ( req, res, next ) => {
 
     if ( !roles ) {
         next( httpError( HttpStatusCode.BadRequest, "No user roles provided." ) );
+        return;
     }
 
-    if ( roles.split( "," ).includes( AuthRoles.ADMIN ) ) next();
-
-    next( httpError( HttpStatusCode.Unauthorized, "Unauthorized." ) );
+    if ( roles.split( "," ).includes( AuthRoles.ADMIN.valueOf() ) ) {
+        next();
+    }
+    else {
+        next( httpError( HttpStatusCode.Unauthorized, "Unauthorized." ) );
+    }
 }
 
 module.exports = {

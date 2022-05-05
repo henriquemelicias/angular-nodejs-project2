@@ -1,3 +1,8 @@
-<div class="container">
-  <div *ngIf="currentUser" > <h3>User & Token: </h3>{{ currentUser | json}}</div>
+<div class="profile--container">
+    <div *ngIf="currentUser">
+      <h3>User & Token: </h3>
+      Username: {{ currentUser.username }} <br>
+      Token: {{ currentUser.token | slice:0:tokenNumberOfChars }}... <br>
+      Roles: {{ currentUser.roles }}
+    </div>
 </div>

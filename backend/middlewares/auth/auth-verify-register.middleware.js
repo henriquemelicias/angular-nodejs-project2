@@ -16,10 +16,12 @@ checkDuplicateUsername = ( req, res, next ) => {
 
             if ( error ) {
                 next( httpError( HttpStatusCode.InternalServerError, error ) );
+                return;
             }
 
             if ( user ) {
                 next( httpError( HttpStatusCode.Conflict, "Username is already in use." ) );
+                return;
             }
 
             next();

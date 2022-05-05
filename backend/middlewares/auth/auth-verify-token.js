@@ -12,11 +12,13 @@ verifyToken = ( req, res, next ) => {
 
     if ( !token ) {
         next( httpError( HttpStatusCode.Forbidden, "No token provided." ) );
+        return;
     }
 
     jwt.verify( token, config.secret, {}, ( error, decoded ) => {
         if ( error ) {
             next( httpError( HttpStatusCode.Unauthorized, "Unauthorized." ) );
+            return;
         }
 
         req.userId = decoded.id;
