@@ -5,12 +5,20 @@
   padding-left: 1rem;
   padding-right: 1rem;
   height: 100%;
-  width: 60vw;
+  width: 70vw;
 }
 
 .not-found__text--container {
   text-align: center;
 }
 
-.not-found__image--wrapper {
+.not-found__image--wrapper img {
+  max-width: 70vw;
+  margin-left: 2rem;
+}
+
+@media  (max-width: 992.98px) {
+  .not-found--container {
+    flex-direction: column;
+  }
 }

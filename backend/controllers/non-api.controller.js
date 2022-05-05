@@ -46,6 +46,7 @@ exports.showDatabaseJson = async ( req, res ) => {
     Promise.allSettled(
         [
             await getAllEntriesOfTable( User, "user", objectToJson ),
+            await getAllEntriesOfTable( Task, "task", objectToJson ),
         ]
     ).then( _ => {
         res.setHeader( 'Content-Type', 'application/json' );
