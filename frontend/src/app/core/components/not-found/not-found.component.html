@@ -3,8 +3,11 @@
     <h1>404 Error</h1>
     <h2>Page Not Found</h2>
     <br>
-    <h3> {{ phrase }}</h3>
-    <h5> {{ language }}</h5>
+    <div class='not-found__text__body'>
+      <fa-icon class="not-found__text__body__fa-icon" [icon]="faArrowRotateRight" (click)="chooseRandomPhrase()"></fa-icon>
+      <h3> {{ phrase }}</h3>
+      <h5> {{ language }}</h5>
+    </div>
   </div>
 
   <div class="not-found__image--wrapper">

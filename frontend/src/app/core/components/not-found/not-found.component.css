@@ -12,11 +12,31 @@
   text-align: center;
   max-width: 28vw;
   z-index: 10;
+  width: 80%;
+  height: 400px;
 }
 
 .not-found__image--wrapper img {
+  user-select: none;
   max-width: 68vw;
   margin-left: 2rem;
+}
+
+
+.not-found__text__body {
+  user-select: none;
+  text-align: center;
+}
+
+.not-found__text__body__fa-icon {
+  color: var( --font-color-highlight );
+  font-size: 1.5rem;
+  margin-left: 1rem;
+  cursor: pointer;
+}
+
+.not-found__text__body__fa-icon:hover {
+  color: var( --secondary-color-variant-dark );
 }
 
 @media  (max-width: 992.98px) {
@@ -26,5 +46,6 @@
 
   .not-found__text--container {
     max-width: 90vw;
+    width: 90%;
   }
 }

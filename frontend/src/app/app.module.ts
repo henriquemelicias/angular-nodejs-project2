@@ -9,6 +9,7 @@ import { SharedModule } from '@shared/shared.module';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthTokenInterceptor } from "@core/interceptors/token/auth-token.interceptor";
@@ -40,6 +41,7 @@ import { FooterScrollUpButtonComponent } from '@layout/footer-scroll-up-button/f
     // 3rd party
     NgbModule,
     MdbModalModule,
+    FontAwesomeModule,
 
     // Routing and forms
     AppRoutingModule,

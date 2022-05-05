@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import jsonContents from "./data/404-phrases.json";
 
+import { faArrowRotateRight } from "@fortawesome/free-solid-svg-icons";
+
+
 @Component( {
                 selector: 'app-not-found',
                 templateUrl: './not-found.component.html',
@@ -10,6 +13,7 @@ export class NotFoundComponent implements OnInit {
 
     language!: string;
     phrase!: string;
+    faArrowRotateRight = faArrowRotateRight;
 
     constructor() { }
 
