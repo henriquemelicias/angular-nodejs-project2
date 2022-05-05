@@ -11,7 +11,9 @@
     <br>
     <button type="button" (click)="addTask(taskName.value)" >Create task</button>
     <br>
-    <button type="button" (click)="deleteTask(taskName.value)" >Delete task</button>
+    <label for="name">Task ID:</label><br>
+    <input type="text" id="name" #taskID><br>
+    <button type="button" (click)="deleteTask(taskID.value)">Delete task</button>
   </form>
 
   

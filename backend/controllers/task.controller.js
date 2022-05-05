@@ -31,7 +31,7 @@ exports.task_post = function ( req, res, next ) {
 }
 
 exports.task_delete = function ( req, res, next ) {
-    Task.findOneAndDelete({name: req.params.name}, function (err) {
+    Task.findOneAndDelete({_id: req.params.id}, function (err) {
         if (err) {
             next( httpError( HttpStatusCode.InternalServerError, error ) );
             return;
