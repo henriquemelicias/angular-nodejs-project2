@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --configuration development --port 4200 --host 0.0.0.0 --disable-host-check",
-    "start-prod": "ng serve --configuration production --port 4200 --host 0.0.0.0 --disable-host-check",
-    "start-server": "angular-http-server --p 4200 --path ./dist/default",
+    "start": "ng serve --configuration development --port 3030 --host 0.0.0.0 --disable-host-check",
+    "start-prod": "ng serve --configuration production --port 3030 --host 0.0.0.0 --disable-host-check",
+    "start-server": "angular-http-server --p 3030 --path ./dist/default",
     "build": "ng build --configuration production --aot --output-hashing=none",
     "postbuild": "gulp compress",
     "watch": "ng build --watch --configuration development",

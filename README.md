@@ -63,8 +63,8 @@ Para cada processo, dar o seguinte comando
 
 Frontend:
 
-http://appserver.alunos.di.fc.ul.pt:3014/
+http://appserver.alunos.di.fc.ul.pt:3030/
 
 Backend:
 
-http://appserver.alunos.di.fc.ul.pt:3064/
+http://appserver.alunos.di.fc.ul.pt:3080/
