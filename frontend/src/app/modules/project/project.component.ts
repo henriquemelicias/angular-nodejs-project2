@@ -13,11 +13,12 @@ import { Project } from '@modules/project/project';
 export class ProjectComponent implements OnInit {
 
   constructor( private ProjectService: ProjectService ) {}
+  date: String | undefined;
 
 
   ngOnInit(): void {
     
-    let date = new Date().toISOString().slice(0, 10);
+    this.date = new Date().toISOString().slice(0, 10);
 
   }
 

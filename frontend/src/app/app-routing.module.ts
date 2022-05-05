@@ -5,6 +5,8 @@ import { AuthGuard } from '@core/guards/auth.guard';
 import { NotFoundComponent } from "@core/components/not-found/not-found.component";
 import { NotAuthGuard } from "@core/guards/not-auth.guard";
 import { TaskComponent } from '@modules/task/task.component';
+import { ProjectTeamComponent } from './modules/project-team/project-team.component';
+import { ProjectComponent } from './modules/project/project.component';
 
 const routes: Routes = [
   // Initial page.
@@ -19,6 +21,12 @@ const routes: Routes = [
       // Lazy loading:
       {
         path: 'task', component: TaskComponent},
+      {
+        path: 'team', component: ProjectTeamComponent
+      },
+      {
+        path: 'project', component: ProjectComponent
+      },
       {
         path: 'home',
         loadChildren: () =>

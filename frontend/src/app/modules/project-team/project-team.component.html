@@ -1,1 +1,14 @@
-<p>project-team works!</p>
+<p>Create new team</p>
+<form>
+    <label for="name">Team name</label><br>
+    <input type="text" id="name" #teamName><br>
+
+    <label for="team-project">Team's project</label><br>
+    <select name="team-project" id="team-project" #teamProject>
+        <option *ngFor="let project of projects" [value]="project.name">
+        {{project.name}}
+        </option>
+    </select><br>
+    <br>
+    <input type="submit" value="submit" (click)="add(teamName.value, teamProject.value)">
+</form>

@@ -13,7 +13,6 @@ import { AuthTokenInterceptor } from "./interceptors/token/auth-token.intercepto
 
 // Core components
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { TeamComponent } from './components/team/team.component';
 
 
 @NgModule( {
@@ -27,8 +26,7 @@ import { TeamComponent } from './components/team/team.component';
     }
   ],
   declarations: [
-    NotFoundComponent,
-    TeamComponent
+    NotFoundComponent
   ],
   exports: [
     NotFoundComponent

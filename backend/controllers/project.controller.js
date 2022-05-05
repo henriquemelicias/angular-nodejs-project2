@@ -99,3 +99,10 @@ exports.project_put = function ( req, rest, next ){
 
     }
 }
+
+exports.project_list = function ( req, rest, next ) {
+    Project.find({})
+            .then(function (projects) {
+                res.send(projects);
+            })
+}
