@@ -2,11 +2,12 @@
 
 <form>
     <label for="name">Project name:</label><br>
-    <input type="text" id="name"><br>
+    <input type="text" id="name" #projectName><br>
     <label for="acronym">Project acronym:</label><br>
-    <input type="text" id="acronym"><br>
+    <input type="text" id="acronym" #projectAcronym><br>
     <label for="startDate">Project start date</label><br>
-    <input type="date" id="startDate" min="{{this.date}}"><br>
+    <input type="date" id="startDate" min="{{this.date}}" #projectStart><br>
     <label for="endDate">Project end date</label><br>
-    <input type="date" id="endDate" min="{{this.date}}"><br>
+    <input type="date" id="endDate" min="{{this.date}}" #projectEnd ><br>
+    <button type="button" (click)="addProject( projectName.value, projectAcronym.value , projectStart.value, projectEnd.value )">Create Project</button>
 </form>
