@@ -6,6 +6,7 @@ const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 
 // Database tables
 const User = require( "#models/user.schema" );
+const Task = require( "#models/task.schema" );
 
 exports.purgeDatabase = ( req, res ) => {
     const caller = logger.setCallerInfo( req, 'NonApiController', 'purgeDatabase' );
@@ -30,6 +31,7 @@ exports.showDatabase = async ( req, res ) => {
     Promise.allSettled(
         [
             await getAllEntriesOfTable( User, "user", objectToJson ),
+            await getAllEntriesOfTable( Task, "task", objectToJson ),
         ]
     ).then( _ => {
         res.setHeader( 'Content-Type', 'text/html' );

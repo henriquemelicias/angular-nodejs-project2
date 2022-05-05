@@ -1,9 +1,11 @@
 const mongoose = require( 'mongoose' );
 
+var Schema = mongoose.Schema;
+
 const TaskSchema = new Schema(
     {
-        name: {type: String, required: true, minlength: 4, match: "[a-zA-Z0-9]", unique: true},
-        priority: {required: true, enum: ['baixa','media', 'alta', 'urgente']},
+        name: {type: String, required: true, minlength: 4, unique: true},
+        priority: {enum: ['baixa','media', 'alta', 'urgente']},
         percentage: {type: Number, required: true, min: 0, max: 100},
         madeBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
         //checkList: {type: mongoose.Schema.CheckListSchema, ref: 'Checklist'}
