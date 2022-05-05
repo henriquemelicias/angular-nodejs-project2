@@ -73,6 +73,7 @@ export class HeaderComponent implements OnInit {
       { link: '/about', routerLink: 'about', title: 'About', isVisible: true },
       { link: '/login', routerLink: 'login', title: 'Login', isVisible: !this.isLoggedIn },
       { link: '/profile', routerLink: 'profile', title: 'Profile', isVisible: this.isLoggedIn },
+      { link: '/task', routerLink: 'task', title: 'Tasks', isVisible: this.isLoggedIn },
     ];
   }
 
