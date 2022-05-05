@@ -9,4 +9,6 @@ projectRoute.get('/project/:name', projectController.project_get);
 
 projectRoute.put('/project/:name' , [ verifyRules ( projectController.getProjectRules() ) ], projectController.project_put)
 
+projectRoute.get('/projects', projectController.project_list);
+
 module.exports = projectRoute;

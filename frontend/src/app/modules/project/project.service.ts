@@ -18,4 +18,8 @@ export class ProjectService {
     return this.http.post<Project>(this.projectUrl + project.name, project, HttpSettings.HEADER_CONTENT_TYPE_JSON);
   }
 
+  getProjects(): Observable<Project[]> {
+    return this.http.get<Project[]>(HttpSettings.API_URL + "/projects");
+  }
+
 }
