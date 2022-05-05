@@ -48,11 +48,11 @@ function removeOldestFiles( directory, numberFilesToKeep, callback ) {
                 if ( err ) return callback( err );
 
                 // Filter out the directories
-                files = files.filter( file => file.isFile );
+                files = files.filter( file => file.isFile && file.name !== "logs/.keepdir" );
 
                 // Sort by the time of creation.
                 files = files.sort( ( file1, file2 ) => {
-                    return file1.birthtime < file2.birthtime ? 1 : -1
+                    return file1.time < file2.time ? 1 : -1
                 } );
 
                 // Leave files to be removed on the list.
