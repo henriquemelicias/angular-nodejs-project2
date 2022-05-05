@@ -6,7 +6,7 @@ const UserSchema = new Schema(
     {
         username: { type: String, required: true, minlength: 3, unique: true },
         password: { type: String, required: true, minLength: 8 }, // is a token
-        roles: [ { type: mongoose.Schema.Types.ObjectId, ref: "Role" } ]
+        roles: [ { type: String, required: true } ]
     } );
 
 UserSchema.index( { username: 1 } );

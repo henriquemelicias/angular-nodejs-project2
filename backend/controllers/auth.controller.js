@@ -6,6 +6,7 @@ const User = require( '#models/user.schema' );
 const httpError = require( 'http-errors' );
 const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 const { body } = require( "express-validator" );
+const { AuthRoles } = require( "#enums/db-auth-roles.enum" );
 
 const authParams = { username: 'username', password: 'password' };
 
@@ -14,8 +15,8 @@ exports.register = ( req, res, next ) => {
 
     const user = new User( {
         username: req.body.username,
-        email: req.body.email,
-        password: bcrypt.hashSync( req.body.password, 8 )
+        password: bcrypt.hashSync( req.body.password, 8 ),
+        roles: [AuthRoles.USER]
     } );
 
     logger.info( "User to try register: " + JSON.stringify( user ), caller );
@@ -37,6 +38,7 @@ exports.getRegisterRules = () => {
         body( authParams.username, 'Username is required.' ).exists(),
         body( authParams.username, 'Username must be of string type.' ).isString(),
         body( authParams.username, 'Username must have length between 3 and 20.' ).isLength( { min: 3, max: 20 } ),
+        body( authParams.username, 'Username must only contain alphanumeric characters.' ).isAlphanumeric(),
         body( authParams.password, 'Password is required.' ).exists(),
         body( authParams.password, 'Password must be of string type.' ).isString(),
         body( authParams.password, 'Password must have between 8 and 50 characters, at least one upper and one number.' )
@@ -82,6 +84,7 @@ exports.login = ( req, res, next ) => {
             res.status( HttpStatusCode.Ok ).send( {
                 _id: user.id,
                 username: user.username,
+                roles: user.roles,
                 token: token
             } );
         } );

@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
 
     userPromise.then( user => {
       if ( user && this.token ) {
-        this.currentUser = { username: user.username, email: user.email, token: this.token } as LoginOutput;
+        this.currentUser = { username: user.username, token: this.token, roles: user.roles } as LoginOutput;
       }
     } );
   };

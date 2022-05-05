@@ -1,9 +1,14 @@
+const { getAllEntriesOfTable } = require( "#utils/db.utils" );
+
 const logger = require( "#services/logger.service" );
 const mongoose = require( "mongoose" );
 const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 
+// Database tables
+const User = require( "#models/user.schema" );
+
 exports.purgeDatabase = ( req, res ) => {
-    const caller = logger.setCallerInfo( req, 'NonApiController', this.purgeDatabase );
+    const caller = logger.setCallerInfo( req, 'NonApiController', 'purgeDatabase' );
 
     mongoose.connection.db.dropDatabase().then(
         _ => {
@@ -18,8 +23,23 @@ exports.purgeDatabase = ( req, res ) => {
         } );
 };
 
+exports.showDatabase = async ( req, res ) => {
+
+    const objectToJson = {};
+
+    Promise.allSettled(
+        [
+            await getAllEntriesOfTable( User, "user", objectToJson ),
+        ]
+    ).then( _ => {
+        res.setHeader('Content-Type', 'text/html');
+        let response = JSON.stringify( objectToJson, null, 4 );
+        res.send( "<pre>" + response + "</pre>");
+    } );
+}
+
 exports.populateDatabase = ( req, res ) => {
-    const caller = logger.setCallerInfo( req, 'NonApiController', this.populateDatabase );
+    const caller = logger.setCallerInfo( req, 'NonApiController', 'populateDatabase' );
 
     // Database populate goes here.
 

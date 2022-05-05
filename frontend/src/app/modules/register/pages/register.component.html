@@ -14,6 +14,7 @@
     <div class="alert alert-danger" [hidden]="form['username'].valid || form['username'].pristine">
       <div *ngIf="form['username'].errors?.['required']">Username is required</div>
       <div *ngIf="form['username'].errors?.['minlength']">Username must be at least 3 characters</div>
+      <div *ngIf="form['username'].errors?.['pattern']">Only alphanumeric characters are allowed</div>
     </div>
 
     <label for="register-form-password">Password</label>

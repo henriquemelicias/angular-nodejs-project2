@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, firstValueFrom, lastValueFrom, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { HttpSettings } from "@core/constants/http-settings.const";
 

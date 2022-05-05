@@ -13,7 +13,7 @@ const cookieParser = require( 'cookie-parser' );
 const methodOverride = require( 'method-override' );
 const compression = require( 'compression' );
 const logger = require( "./services/logger.service" );
-const { initDatabase } = require( "./models/db-init.script" );
+const { initDatabase } = require( "#utils/db-init.script" );
 
 /* Enums */
 const { HttpCustomHeaderEnum } = require( "./enums/http-custom-header.enum" );
@@ -35,15 +35,15 @@ const app = express();
 
 /* Database connection */
 mongoose.Promise = global.Promise;
-mongoose.connect( appConfig.MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true }, null )
-    .then( () => {
-        logger.info( logger.callerInfo( "app.js" ), "Successfully connect to MongoDB." );
-        initDatabase();
-    } )
-    .catch( error => {
+mongoose.connect( appConfig.MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true }, ( error ) => {
+    if ( error ) {
         logger.error( logger.callerInfo( "app.js" ), "MongoDB connection error: " + error );
         process.exit();
-    } );
+    }
+
+    logger.info( logger.callerInfo( "app.js" ), "Successfully connected to MongoDB." );
+    initDatabase();
+} );
 
 /* App settings */
 
