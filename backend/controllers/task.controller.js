@@ -1,4 +1,5 @@
 var Task = require('../models/task.schema');
+var User = require('../models/user.schema');
 const httpError = require( 'http-errors' );
 const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 const { TaskPriority } = require( "#enums/db-task-priority.enum" );
@@ -9,16 +10,22 @@ exports.task_post = function ( req, res, next ) {
     const percentage = req.body.percentage;
     const madeBy = req.body.madeBy;
     var task;
+    var taskPriority;
 
-    if(priority === TaskPriority.BAIXA.valueOf()){
-       task = new Task({name: name, priority: [TaskPriority.BAIXA], percentage: percentage, madeBy: madeBy});
-    } else if(priority === TaskPriority.MEDIA.valueOf()) {
-        task = new Task({name: name, priority: [TaskPriority.MEDIA], percentage: percentage, madeBy: madeBy});
-    } else if(priority === TaskPriority.ALTA.valueOf()) {
-        task = new Task({name: name, priority: [TaskPriority.ALTA], percentage: percentage, madeBy: madeBy});
-    } else if(priority === TaskPriority.URGENTE.valueOf()) {
-        task = new Task({name: name, priority: [TaskPriority.URGENTE], percentage: percentage, madeBy: madeBy});
-    }
+    User.find({name: madeBy}).then(function (user) {
+        if(priority === TaskPriority.BAIXA.valueOf()){
+            taskPriority = taskPriority.BAIXA.valueOf();
+        } else if(priority === TaskPriority.MEDIA.valueOf()) {
+            taskPriority = taskPriority.MEDIA.valueOf();
+        } else if(priority === TaskPriority.ALTA.valueOf()) {
+            taskPriority = taskPriority.ALTA.valueOf();
+        } else if(priority === TaskPriority.URGENTE.valueOf()) {
+            taskPriority = taskPriority.URGENTE.valueOf(); 
+        }
+
+        task = new Task({name: name, priority: taskPriority, percentage: percentage, madeBy: user});
+    });
+    
     
     task.save( ( error, _ ) => {
         if (error) {
