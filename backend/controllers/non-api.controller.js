@@ -32,9 +32,23 @@ exports.showDatabase = async ( req, res ) => {
             await getAllEntriesOfTable( User, "user", objectToJson ),
         ]
     ).then( _ => {
-        res.setHeader('Content-Type', 'text/html');
+        res.setHeader( 'Content-Type', 'text/html' );
         let response = JSON.stringify( objectToJson, null, 4 );
-        res.send( "<pre>" + response + "</pre>");
+        res.send( "<pre>" + response + "</pre>" );
+    } );
+}
+
+exports.showDatabaseJson = async ( req, res ) => {
+    const objectToJson = {};
+
+    Promise.allSettled(
+        [
+            await getAllEntriesOfTable( User, "user", objectToJson ),
+        ]
+    ).then( _ => {
+        res.setHeader( 'Content-Type', 'application/json' );
+        let response = JSON.stringify( objectToJson, null, 4 );
+        res.json( response );
     } );
 }
 
