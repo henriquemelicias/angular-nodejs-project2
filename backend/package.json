@@ -9,10 +9,6 @@
     "nodemon-dev-start": "nodemon --exec 'npm run dev-start'",
     "prod-start": "export NODE_ENV=production&& npm run www",
     "debug-prod-start": "DEBUG=http,info,debug,error,warn npm run prod-start",
-    "start": "node ./bin/www",
-    "devstart": "nodemon ./bin/www",
-    "serverstart": "SET DEBUG=express-locallibrary-tutorial:* & npm run devstart",
-    "win-serverstart": "SET DEBUG=http,info,debug,error,warn & npm run devstart"
   },
   "keywords": [],
   "author": "",
