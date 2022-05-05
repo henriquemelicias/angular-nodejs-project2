@@ -9,14 +9,23 @@ import { Task } from '@modules/task/task';
 })
 export class TaskComponent implements OnInit {
 
+  selectedPriority: string = '';
   constructor(private taskService: TaskService) { }
 
   ngOnInit(): void {
   }
 
-  addTask(name: string, priority: string): void {
-    const t:Task = {name: name, priority: priority, percentage: 0};
+  selectChangeHandler (event: any) {
+    this.selectedPriority= event.target.value;
+  }
+
+  addTask(name: string): void {
+    const t:Task = {name: name, priority: this.selectedPriority, percentage: 0};
     this.taskService.addTask(t);
+  }
+
+  deleteTask(name: string): void {
+    this.taskService.deleteTask(name);
   }
 
 }

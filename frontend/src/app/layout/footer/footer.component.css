@@ -9,6 +9,9 @@
   margin: 3rem 2rem 2rem 2rem;
 }
 
+.footer__column__links{
+  cursor: pointer;
+}
 
 .footer-image-overlay {
   position: absolute;
