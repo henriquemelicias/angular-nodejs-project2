@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from '@data/task/services/task.service'
 import { TaskSchema } from '@data/task/schemas/task.schema';
+import { UserService } from '@app/data/user/services/user.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-task-info',
@@ -9,9 +11,18 @@ import { TaskSchema } from '@data/task/schemas/task.schema';
 })
 export class TaskInfoComponent implements OnInit {
 
-  name:String = '';
   selectedPriority: string = '';
-  constructor(private taskService: TaskService) { }
+  username: string = "";
+
+  constructor(private taskService: TaskService) { 
+    const userPromise = firstValueFrom( UserService.getSessionUser$() );
+
+    userPromise.then( user => {
+      if ( user ) {
+        this.username = user.username;
+      }
+    } );
+  }
 
   ngOnInit(): void {
   }
@@ -21,7 +32,7 @@ export class TaskInfoComponent implements OnInit {
   }
 
   addTask(name: string): void {
-    const t:TaskSchema = {name: name, priority: this.selectedPriority, percentage: 0};
+    const t:TaskSchema = {name: name, priority: this.selectedPriority, percentage: 0, madeBy: this.username};
     this.taskService.addTask(t).subscribe();
   }
 

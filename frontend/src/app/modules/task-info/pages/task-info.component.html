@@ -1,7 +1,7 @@
 <p>Create new task</p>
 <form>
     <label for="name">TaskSchema name:</label><br>
-    <input type="text" id="name" name="name" #taskName required minlength="4"><br>
+    <input type="text" id="name" name="name" #taskName><br>
     
     <select name="dropdownOption" id="dropdownOption" (change)="selectChangeHandler($event)">
       <option value="baixa">baixa</option>
