@@ -4,9 +4,6 @@ import { ContentLayoutComponent } from '@layout/content-layout/content-layout.co
 import { AuthGuard } from '@core/guards/auth.guard';
 import { NotFoundComponent } from "@core/components/not-found/not-found.component";
 import { NotAuthGuard } from "@core/guards/not-auth.guard";
-import { TaskInfoComponent } from '@modules/task-info/pages/task-info.component';
-import { TeamInfoComponent } from '@modules/team-info/pages/team-info.component';
-import { ProjectInfoComponent } from '@modules/project-info/pages/project-info.component';
 
 const routes: Routes = [
   // Initial page.
