@@ -10,7 +10,7 @@ import { HttpStatusCode } from "@angular/common/http";
 import { AuthStorageService } from "@core/services/auth-storage/auth-storage.service";
 import { AlertType } from "@core/models/alert.model";
 import { Router } from "@angular/router";
-import { GenericMessage } from "@core/enums/generic-message.enum";
+import { GenericMessageEnum } from "@core/enums/generic-message.enum";
 import { UserService } from "@data/user/services/user.service";
 
 @Component( {
@@ -95,10 +95,10 @@ export class LoginComponent implements OnInit {
             } )
             .ifErrorHandlers( null, () => {
               AlertService.alertToApp(
-                AlertType.Error,
-                GenericMessage.UNEXPECTED_UNHANDLED_ERROR + error.message,
-                null,
-                logCallers
+                  AlertType.Error,
+                  GenericMessageEnum.UNEXPECTED_UNHANDLED_ERROR + error.message,
+                  null,
+                  logCallers
               );
             } );
         }

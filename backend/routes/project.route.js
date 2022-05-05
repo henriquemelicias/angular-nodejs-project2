@@ -1,14 +1,12 @@
 const express = require( 'express' )
 const projectRoute = express.Router();
 const { verifyRules } = require( "#middlewares/core/verify-rules.middleware" );
-var projectController = require('../controllers/project.controller');
+const projectController = require( '../controllers/project.controller' );
 
-projectRoute.post('/project/:name' , [ verifyRules( projectController.getProjectRules() ) ], projectController.project_post);
+projectRoute.get( '', projectController.getProjects );
+projectRoute.post( '', [ verifyRules( projectController.getProjectRules() ) ], projectController.addProject );
 
-projectRoute.get('/project/:name', projectController.project_get);
-
-projectRoute.put('/project/:name' , [ verifyRules ( projectController.getProjectRules() ) ], projectController.project_put)
-
-projectRoute.get('/projects', projectController.project_list);
+projectRoute.get( '/:acronym', projectController.getProjectByAcronymUrl );
+projectRoute.put( '/:acronym', [ verifyRules( projectController.getProjectRules() ) ], projectController.modifyProject )
 
 module.exports = projectRoute;

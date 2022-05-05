@@ -12,7 +12,7 @@ import { AlertService } from "@core/services/alert/alert.service";
 import { AlertType } from "@core/models/alert.model";
 import { AuthStorageService } from "@core/services/auth-storage/auth-storage.service";
 import { Router } from "@angular/router";
-import { GenericMessage } from "@core/enums/generic-message.enum";
+import { GenericMessageEnum } from "@core/enums/generic-message.enum";
 
 @Component( {
               selector: 'app-pages',
@@ -94,29 +94,18 @@ export class RegisterComponent implements OnInit {
       {
         next: _ => {
           this.registerForm.reset();
-
-          // Go to login.
-          this.router.navigate( [ '/login' ] ).then(
-            _ => {
-              setTimeout( () => {
-                LoggerService.info(
-                  'Redirected to /login due to successful registration.',
-                  LoggerService.setCaller( this, this.onSubmit )
+            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+                this.router.navigate(['/register']).then(
+                    _ => {
+                        setTimeout( () => {
+                            AlertService.alertToApp( AlertType.Success, `User ${ registerInput.username } registered successfully`, { isAutoClosed: true }, logCallers );
+                        } );
+                    },
+                    error => {
+                        AlertService.alertToApp( AlertType.Error, JSON.stringify( error ), null, logCallers );
+                    }
                 );
-
-                AlertService.alertToApp(
-                  AlertType.Success,
-                  'Registration successful',
-                  { isAutoClosed: true },
-                  logCallers
-                );
-              } );
-            },
-            error => {
-              LoggerService.error( 'Redirect to /login unsuccessful: ' + JSON.stringify( error ), logCallers );
-              AlertService.alertToApp( AlertType.Error, JSON.stringify( error ) );
-            }
-          );
+            });
         },
         error: ( error: SanitizedErrorInterface ) => {
           if ( error.hasBeenHandled ) return;
@@ -136,10 +125,10 @@ export class RegisterComponent implements OnInit {
             } )
             .ifErrorHandlers( null, () => {
               AlertService.alertToApp(
-                AlertType.Error,
-                GenericMessage.UNEXPECTED_UNHANDLED_ERROR + error.message,
-                null,
-                logCallers
+                  AlertType.Error,
+                  GenericMessageEnum.UNEXPECTED_UNHANDLED_ERROR + error.message,
+                  null,
+                  logCallers
               );
             } ).toObservable();
         }

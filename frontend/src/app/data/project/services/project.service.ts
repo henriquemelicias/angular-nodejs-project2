@@ -4,22 +4,27 @@ import { HttpSettings } from '@core/constants/http-settings.const';
 import { ProjectSchema } from '../schemas/project.schema';
 import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+export interface CreateProjectOutput {
+    name: string;
+    acronym: string;
+    startDate: Date;
+    endDate?: Date;
+}
 
+@Injectable( {
+                 providedIn: 'root'
+             } )
 export class ProjectService {
 
-  private projectUrl = HttpSettings.API_URL + "/project-info/";
-  constructor(private http: HttpClient) { }
+    private projectUrl = HttpSettings.API_URL + "/project";
 
-  //Post
-  addProject(project: ProjectSchema): Observable<ProjectSchema> {
-    return this.http.post<ProjectSchema>( this.projectUrl + project.name, project, HttpSettings.HEADER_CONTENT_TYPE_JSON);
-  }
+    constructor( private http: HttpClient ) { }
 
-  getProjects(): Observable<ProjectSchema[]> {
-    return this.http.get<ProjectSchema[]>( HttpSettings.API_URL + "/projects");
-  }
+    addProject( project: CreateProjectOutput ): Observable<ProjectSchema> {
+        return this.http.post<ProjectSchema>( this.projectUrl, project, HttpSettings.HEADER_CONTENT_TYPE_JSON );
+    }
 
+    getProjects(): Observable<ProjectSchema[]> {
+        return this.http.get<ProjectSchema[]>( this.projectUrl, HttpSettings.HEADER_CONTENT_TYPE_JSON );
+    }
 }

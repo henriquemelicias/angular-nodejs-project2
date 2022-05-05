@@ -4,6 +4,7 @@ import { ContentLayoutComponent } from '@layout/content-layout/content-layout.co
 import { AuthGuard } from '@core/guards/auth.guard';
 import { NotFoundComponent } from "@core/components/not-found/not-found.component";
 import { NotAuthGuard } from "@core/guards/not-auth.guard";
+import { AuthAdminGuard } from "@core/guards/auth-admin.guard";
 
 const routes: Routes = [
   // Initial page.
@@ -34,7 +35,7 @@ const routes: Routes = [
       },
       {
         path: 'register',
-        canLoad: [NotAuthGuard],
+        canLoad: [AuthGuard, AuthAdminGuard],
         loadChildren: () =>
           import('@modules/register/register.module').then( m => m.RegisterModule )
       },

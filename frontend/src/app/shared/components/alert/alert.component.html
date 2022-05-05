@@ -1,6 +1,6 @@
 <div class="alert--wrapper">
   <div *ngFor="let alert of alerts" class="alert--container {{cssClass(alert)}}">
-    <span [innerHTML]="alert.message"></span>
+    <span >{{ alert.message | slice:0:500 }}</span>
     <a *ngIf="alert.isCloseable" class="alert__close" (click)="removeAlert(alert)">&times;</a>
   </div>
 </div>

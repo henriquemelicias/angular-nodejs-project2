@@ -1,6 +1,6 @@
 const HttpCustomHeaderEnum = {
-  CsrfToken:'X-Csrf-Token',
-  AuthorizationRole:'X-Auth-Role'
+  CsrfToken:'x-csrf-token',
+  UserRoles:'x-user-roles'
 }
 
 module.exports = {
