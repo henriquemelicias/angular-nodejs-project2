@@ -1,6 +1,0 @@
-  info app.js -> Environment in use: NODE_ENV=development,+0ms
-  info app.js -> Frontend origin must be: http://localhost:4200,+14ms
-  info bin/www -> Listening on port 8000,+5ms
-  info LoggerService.removeOldestFiles -> Maximum number of previous log files (10) has been reached. Old log files deleted: 
-       DELETED logs/Wed,2022-05-04@[23h-10m-17s].development.log,+4ms
-  info app.js -> Successfully connected to MongoDB.,+1s

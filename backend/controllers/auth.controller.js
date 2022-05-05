@@ -41,9 +41,9 @@ exports.getRegisterRules = () => {
         body( authParams.username, 'Username must only contain alphanumeric characters.' ).isAlphanumeric(),
         body( authParams.password, 'Password is required.' ).exists(),
         body( authParams.password, 'Password must be of string type.' ).isString(),
-        body( authParams.password, 'Password must have between 8 and 50 characters, at least one upper and one number.' )
+        body( authParams.password, 'Password must have between 8 and 50 characters, at least one upper, one lower and one number.' )
             .isLength( { min: 8, max: 50 } )
-            .isStrongPassword( { minUppercase: 1, minNumbers: 1 } )
+            .isStrongPassword( { minUppercase: 1, minLowercase: 1, minNumbers: 1 } )
     ];
 }
 

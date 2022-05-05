@@ -18,6 +18,8 @@ import { HeaderComponent } from "@app/layout/header/header.component";
 import { ContentLayoutComponent } from "@app/layout/content-layout/content-layout.component";
 import { FooterComponent } from "@app/layout/footer/footer.component";
 import { FooterScrollUpButtonComponent } from './layout/footer-scroll-up-button/footer-scroll-up-button.component';
+import { ProjectTeamComponent } from './modules/project-team/project-team.component';
+import { ProjectTaskComponent } from './modules/project-task/project-task.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { FooterScrollUpButtonComponent } from './layout/footer-scroll-up-button/
     ContentLayoutComponent,
     FooterComponent,
     FooterScrollUpButtonComponent,
+    ProjectTeamComponent,
+    ProjectTaskComponent,
   ],
   imports: [
     // Angular

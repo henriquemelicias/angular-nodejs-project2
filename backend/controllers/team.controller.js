@@ -5,8 +5,9 @@ const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 exports.team_post = function ( req, res, next ) {
     const name = req.body.name;
     const members = req.body.members;
+    const projects = []; //starting teams have no projects ?
 
-    const team = new Team({name: name, members: members});
+    const team = new Team({name: name, members: members, projects : projects});
 
     team.save( ( error, _ ) => {
         if (error) {
@@ -42,5 +43,27 @@ exports.team_post = function ( req, res, next ) {
     } );
 
  }
+
+ exports.team_put = function ( req, rest, next ){
+
+    var name = req.body.name;
+    var members = req.body.members;
+    var projects = req.body.projects;
+    
+    
+    if ( name != null )
+    {
+
+        Team.findOneAndUpdate( name, {name : name, members : members, projects : projects} , function ( err ) {
+            if ( err ) { return next( err ); }
+            res.send( "Team updated." );
+        });
+    }
+    else
+    {
+        res.send( "Team wasn't updated" );
+    }
+
+    }
 
 }

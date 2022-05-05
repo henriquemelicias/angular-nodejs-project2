@@ -14,14 +14,15 @@ const ProjectSchema = new Schema(
                                                 ] 
         },
         tasks : [{type: mongoose.Schema.Types.ObjectId , ref: 'Task'}]
-    } );
+    });
 
 /**
  * Get project url.
  */
-UserSchema.virtual( 'url' )
+ ProjectSchema.virtual( 'url' )
     .get( function () {
         return '/api/project/' + this.name;
-    } );
+    });
 
-module.exports = mongoose.model( "Project", ProjectSchema );
+// Export Model
+module.exports = mongoose.model("Project", ProjectSchema );
