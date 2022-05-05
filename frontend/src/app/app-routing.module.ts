@@ -20,7 +20,7 @@ const routes: Routes = [
       { path: '404', pathMatch: 'full', component: NotFoundComponent },
       // Lazy loading:
       {
-        path: 'task', component: TaskComponent},
+        path: 'task', component: TaskComponent, canActivate: [AuthGuard]},
       {
         path: 'team', component: ProjectTeamComponent
       },

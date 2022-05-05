@@ -1,7 +1,8 @@
 <p>Create new task</p>
 <form>
     <label for="name">Task name:</label><br>
-    <input type="text" id="name" #taskName><br>
+    <input type="text" id="name" name="name" #taskName required minlength="4"><br>
+    
     <select name="dropdownOption" id="dropdownOption" (change)="selectChangeHandler($event)">
       <option value="baixa">baixa</option>
       <option value="media">média</option>
@@ -14,6 +15,6 @@
     <label for="name">Task ID:</label><br>
     <input type="text" id="name" #taskID><br>
     <button type="button" (click)="deleteTask(taskID.value)">Delete task</button>
-  </form>
+</form>
 
   

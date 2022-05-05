@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 const TaskSchema = new Schema(
     {
-        name: {type: String, required: true, minlength: 4, unique: true},
+        name: {type: String, required: true, minlength: 4, unique: true },
         priority: [ { type: String, required: true } ],
         percentage: {type: Number, required: true, min: 0, max: 100},
         madeBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},

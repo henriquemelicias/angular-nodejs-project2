@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const TeamSchema = new Schema(
     {
-        name: {type: String, required: true, minlength: 4, unique: true, match: "[a-zA-Z0-9]{4 , "},
+        name: {type: String, required: true, minlength: 4, unique: true, match: "[a-zA-Z0-9]*"},
         members: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
         project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project'}
     } );

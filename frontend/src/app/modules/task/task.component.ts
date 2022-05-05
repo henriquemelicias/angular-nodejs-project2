@@ -9,6 +9,7 @@ import { Task } from '@modules/task/task';
 })
 export class TaskComponent implements OnInit {
 
+  name:String = '';
   selectedPriority: string = '';
   constructor(private taskService: TaskService) { }
 
