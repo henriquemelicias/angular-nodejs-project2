@@ -22,9 +22,15 @@ export class ProjectComponent implements OnInit {
 
   }
 
-  addProject(name : string , acronym : string , startDate : Date , endDate : Date){
-    const p:Project = { name: name, acronym:acronym , startDate:startDate , endDate:endDate, tasks:[] };
+  addProject(name : string , acronym : string , startDate : string , endDate : string){
+
+    let sDate = new Date(parseInt(startDate.split("-")[0]),parseInt(startDate.split("-")[1]),parseInt(startDate.split("-")[2]))
+    let eDate = new Date(parseInt(endDate.split("-")[0]),parseInt(endDate.split("-")[1]),parseInt(endDate.split("-")[2]))
+
+    const p:Project = { name: name, acronym:acronym , startDate:sDate , endDate:eDate, tasks:[] };
+
     this.ProjectService.addProject(p);
+
   }
 
 }
