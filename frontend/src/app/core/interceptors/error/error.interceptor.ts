@@ -50,13 +50,13 @@ export class ErrorInterceptor implements HttpInterceptor {
                                    errorHandler.name + ' ' + errorHandler.error.status + ' ' +
                                    errorHandler.error.statusText;
 
-            this._serverErrors( errorHandler);
+            this._serverErrors( errorHandler );
 
           } )
           .otherErrorHandler( () => {
 
             errorHandler.name = "UnknownError";
-            errorHandler.message = JSON.stringify( errorHandler.error );
+            errorHandler.message = error.message;
           } )
           .ifErrorHandlers(
             () => LoggerService.error(
