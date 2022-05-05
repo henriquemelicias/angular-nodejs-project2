@@ -72,7 +72,7 @@ export class HeaderComponent implements OnInit {
     }
 
     updateNavItems() {
-        this.navItems = [
+        const navItems = [
             { link: '/home', routerLink: 'home', title: 'Home', isVisible: true },
             { link: '/about', routerLink: 'about', title: 'About', isVisible: true },
             { link: '/login', routerLink: 'login', title: 'Login', isVisible: !this.isLoggedIn },
@@ -80,6 +80,8 @@ export class HeaderComponent implements OnInit {
             { link: '/dashboard', routerLink: 'dashboard', title: 'Dashboard', isVisible: this.isAdmin },
             { link: '/profile', routerLink: 'profile', title: 'Profile', isVisible: this.isLoggedIn },
         ];
+
+        this.navItems = navItems.filter( n => n.isVisible );
     }
 
     @HostListener( 'window:resize', [ '$event' ] )

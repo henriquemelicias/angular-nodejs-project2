@@ -9,7 +9,7 @@
       <div *ngFor="let item of navItems; index as i"  >
         <a *ngIf="item.isVisible" [href]="item.link" [routerLink]="item.routerLink"
            routerLinkActive="active-link" >{{ item.title }}</a>
-        <a *ngIf="isLoggedIn && i == navItems.length - 1" (click)="openModal()" style="cursor: pointer">Logout</a>
+        <a tabindex="0" *ngIf="isLoggedIn && i == navItems.length - 1" (keydown.enter)="openModal()" (click)="openModal()" style="cursor: pointer">Logout</a>
       </div>
     </nav>
     <ng-template #elseBlock>
@@ -22,7 +22,7 @@
         <div *ngFor="let item of navItems; index as i">
           <a *ngIf="item.isVisible" (click)="isNavMenuCollapsed = !isNavMenuCollapsed" [href]="item.link"
              [routerLink]="item.routerLink" routerLinkActive="active-link">{{ item.title }}</a>
-          <a *ngIf="isLoggedIn && i == navItems.length - 1" (click)="openModal()" style="cursor: pointer">Logout</a>
+          <a tabindex="0" *ngIf="isLoggedIn && i == navItems.length - 1"  (keydown.enter)="openModal()" (click)="openModal()" style="margin-top: 1rem;cursor: pointer">Logout</a>
         </div>
       </nav>
     </ng-template>

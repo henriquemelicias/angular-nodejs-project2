@@ -4,7 +4,7 @@
   font-family: var(--font-family-default);
   line-height: var(--font-line-height);
   margin: 0;
-  padding: 0;
+  padding: 0 !important;
   overflow-x: hidden;
   image-rendering: -webkit-optimize-contrast; /* Fix blurry resized images on chrome. */
 }
