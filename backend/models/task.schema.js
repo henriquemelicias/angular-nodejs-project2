@@ -8,6 +8,7 @@ const TaskSchema = new Schema(
         priority: [ { type: String, required: true } ],
         percentage: { type: Number, required: true, min: 0, max: 100 },
         madeByUser: { type: String, required: true }, // username
+        users: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
         //checkList: {type: mongoose.Schema.CheckListSchema, ref: 'Checklist'}
     } );
 

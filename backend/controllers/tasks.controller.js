@@ -8,7 +8,7 @@ exports.createTask = function ( req, res, next ) {
     const name = req.body.name;
     const priority = req.body.priority.toUpperCase();
     const percentage = req.body.percentage;
-    const madeBy = req.body.madeBy;
+    const madeByUser = req.body.madeByUser;
     var task;
     var taskPriority;
  
@@ -22,7 +22,13 @@ exports.createTask = function ( req, res, next ) {
         taskPriority = TaskPriority.URGENTE.valueOf(); 
     }
 
-    task = new Task({name: name, priority: taskPriority, percentage: percentage, madeByUser: madeBy});
+    task = new Task({
+        name: name,
+        priority: taskPriority,
+        percentage: percentage,
+        madeByUser: madeByUser,
+        users: []
+    });
     
     
     task.save( ( error, _ ) => {
@@ -48,20 +54,38 @@ exports.task_delete = function ( req, res, next ) {
 
 exports.task_get = function ( req, res, next ){
 
-    async.parallel( {
-        task: function ( callback ) {
-            Task.find( {_id: req.params.id} )
-                .exec( callback );
-        }
-    },
-    function ( err, results ) {
+    Task.findOne( {_id: req.params.id} )
+    .lean()
+    .select(["_id","name","priority","percentage", "madeByUser"])
+    .exec( function ( err, task ) {
         if ( err )
         {
             return next( httpError( HttpStatusCode.InternalServerError, error ) );
         }
+        res.status( HttpStatusCode.Created).send( task );
+    })     
+}
 
-        res.status( HttpStatusCode.Created).send( results.task );
-    } );
+exports.task_list = function (req, res, next){ 
+    Task.find({}).select(["_id", "name", "priority", "percentage" , "madeByUser"]).exec( function ( err, task ) {
+        if ( err )
+        {
+            return next( httpError( HttpStatusCode.InternalServerError, error ) );
+        }
+        res.status( HttpStatusCode.Created).send( task );
+    })
+}
 
+exports.task_update = function (req, res, next ) {
+
+    Task.findByIdAndUpdate({_id: req.params.id},
+        { users: req.req.params.users },
+        function (err) {
+            if (err) {
+                next( httpError( HttpStatusCode.InternalServerError, error ) );
+                return;
+            }
+            res.status( HttpStatusCode.Created ).send( task );
+    })
 
 }
