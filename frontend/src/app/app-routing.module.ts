@@ -75,6 +75,12 @@ const routes: Routes = [
                 loadChildren: () =>
                     import('@modules/tasks/tasks.module').then( m => m.TasksModule )
             },
+            {
+                path: 'tasks/:id',
+                canLoad: [ AuthGuard ],
+                loadChildren: () =>
+                    import('@modules/task-info/task-info.module').then(m => m.TaskInfoModule)
+            },
             { // todo remover e pensar numa cena pa substituir po home
                 path: 'blog/:id',
                 loadChildren: () =>

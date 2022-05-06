@@ -2,6 +2,7 @@ var Task = require('../models/task.schema');
 const httpError = require( 'http-errors' );
 const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 const { TaskPriority } = require( "#enums/db-task-priority.enum" );
+var async = require('async');
 
 exports.createTask = function ( req, res, next ) {
     const name = req.body.name;
@@ -49,7 +50,7 @@ exports.task_get = function ( req, res, next ){
 
     async.parallel( {
         task: function ( callback ) {
-            Task.find( {name: req.params.name} )
+            Task.find( {_id: req.params.id} )
                 .exec( callback );
         }
     },
@@ -59,13 +60,7 @@ exports.task_get = function ( req, res, next ){
             return next( httpError( HttpStatusCode.InternalServerError, error ) );
         }
 
-        if ( results.project == null )
-        {
-           
-            return next( httpError( HttpStatusCode.NotFound, error ) );
-        }
-
-        res.send( results.task );
+        res.status( HttpStatusCode.Created).send( results.task );
     } );
 
 
