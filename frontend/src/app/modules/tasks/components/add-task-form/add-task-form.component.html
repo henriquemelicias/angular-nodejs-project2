@@ -33,6 +33,7 @@
       >
           Create Task
       </button>
+      <p *ngIf="showCreate">Task created</p>
     </div> 
 
   <div class="app-alert-wrapper">
@@ -42,6 +43,7 @@
   <label for="id">TaskSchema ID</label><br>
     <input class="task-form__group__control form-control" type="text" id="id" #taskID><br>
     <button class="task-form__submit-button default-button" type="button" (click)="deleteTask(taskID.value)">Delete task</button>
+    <p *ngIf="showDelete">Query to delete task sent</p>
 </form>
 
 

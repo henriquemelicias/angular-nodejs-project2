@@ -13,6 +13,8 @@ import { firstValueFrom } from 'rxjs';
 export class AddTaskFormComponent implements OnInit {
 
   public taskForm: FormGroup;
+  public showCreate = false;
+  public showDelete = false;
 
   selectedPriority: string = 'baixa';
   username: string = "";
@@ -51,6 +53,10 @@ export class AddTaskFormComponent implements OnInit {
 
       const taskName = this.form['name'].value;
       this.addTask( taskName );
+      this.showCreate = true;
+      setTimeout(() => {
+        this.showCreate = false;
+      }, 3000)
   }
 
   selectChangeHandler (event: any) {
@@ -64,6 +70,10 @@ export class AddTaskFormComponent implements OnInit {
 
   deleteTask(id: string): void {
     this.taskService.deleteTask(id).subscribe();
+    this.showDelete = true;
+      setTimeout(() => {
+        this.showDelete = false;
+      }, 3000)
   }
 
 }
