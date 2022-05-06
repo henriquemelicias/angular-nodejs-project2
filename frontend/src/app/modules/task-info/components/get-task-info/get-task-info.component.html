@@ -7,6 +7,17 @@
     <div><span>madeBy: </span>{{task.madeByUser}}</div>
     <div><span>priority: </span>{{task.priority}}</div>
     <div><span>percentage: </span>{{task.percentage}} %</div>
+
+    <div *ngIf="users">
+        <ul *ngFor="let u of users">
+            <a>{{u.username}}</a>
+        </ul>
+    </div>
+
+    <div *ngIf="!users">
+        <h2>no users</h2>
+    </div>
+
 </div>
 
 <div *ngIf="!task"> 
