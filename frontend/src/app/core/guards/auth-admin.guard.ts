@@ -52,7 +52,7 @@ export class AuthAdminGuard implements CanActivate, CanActivateChild, CanDeactiv
                             logCallers
                         );
 
-                        AlertService.alertToApp( AlertType.Warning, 'Admin role is required', { isAutoClosed: true } );
+                        AlertService.alertToApp( AlertType.Warning, 'Admin auth is required', { isAutoClosed: true } );
                     } );
                 },
                 error => {

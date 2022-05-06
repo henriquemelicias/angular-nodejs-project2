@@ -35,7 +35,7 @@ const routes: Routes = [
       },
       {
         path: 'register',
-        canLoad: [AuthGuard, AuthAdminGuard],
+        canLoad: [AuthAdminGuard],
         loadChildren: () =>
           import('@modules/register/register.module').then( m => m.RegisterModule )
       },
@@ -67,6 +67,12 @@ const routes: Routes = [
         path: 'blog/:id',
         loadChildren: () =>
           import('@modules/blog-entry/blog-entry.module').then( m => m.BlogEntryModule )
+      },
+      {
+        path: 'project',
+        canLoad: [AuthGuard],
+        loadChildren: () =>
+          import('@modules/project-info/project-info.module').then( m => m.ProjectInfoModule)
       }
     ]
   },
