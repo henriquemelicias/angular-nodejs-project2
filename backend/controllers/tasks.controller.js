@@ -22,7 +22,13 @@ exports.createTask = function ( req, res, next ) {
         taskPriority = TaskPriority.URGENTE.valueOf(); 
     }
 
-    task = new Task({name: name, priority: taskPriority, percentage: percentage, madeByUser: madeBy});
+    task = new Task({
+        name: name,
+        priority: taskPriority,
+        percentage: percentage,
+        madeByUser: madeBy,
+        users: []
+    });
     
     
     task.save( ( error, _ ) => {
