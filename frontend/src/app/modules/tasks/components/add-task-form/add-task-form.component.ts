@@ -5,11 +5,11 @@ import { UserService } from '@app/data/user/services/user.service';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-task-info',
-  templateUrl: './task-info.component.html',
-  styleUrls: [ './task-info.component.css']
+    selector: 'app-add-task-form',
+    templateUrl: './add-task-form.component.html',
+    styleUrls: [ './add-task-form.component.css' ]
 })
-export class TaskInfoComponent implements OnInit {
+export class AddTaskFormComponent implements OnInit {
 
   selectedPriority: string = '';
   username: string = "";

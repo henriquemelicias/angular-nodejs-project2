@@ -11,7 +11,7 @@ import { UserService } from "@data/user/services/user.service";
 
 export class ProjectsComponent implements OnInit {
 
-    isCurrentUserAdmin = UserService.isSessionUserAdmin();
+    isCurrentUserAdmin = UserService.isSessionUser();
 
     constructor() {}
 

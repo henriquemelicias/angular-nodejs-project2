@@ -39,6 +39,12 @@ export class UserService {
         return this.sessionUser.roles.includes( AuthRolesEnum.ADMIN );
     }
 
+    public static isSessionUser(): boolean {
+        if ( this.sessionUser ) return true;
+
+        return false;
+    }
+
     public getUsers(): Observable<UserSchema[]> {
         return this.http.get<UserSchema[]>( UserService._API_URI, HttpSettings.HEADER_CONTENT_TYPE_JSON );
     }

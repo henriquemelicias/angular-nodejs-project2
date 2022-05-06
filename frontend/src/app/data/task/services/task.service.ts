@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class TaskService {
 
-  private tasksUrl = HttpSettings.API_URL + "/task";
+  private tasksUrl = HttpSettings.API_URL + "/tasks";
   constructor(private http: HttpClient) { }
 
   //Post
