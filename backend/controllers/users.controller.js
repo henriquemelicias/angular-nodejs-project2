@@ -25,6 +25,7 @@ exports.user_get = function (req, res, next) {
         res.status( HttpStatusCode.Created).send( user );
     }) 
 }
+
 exports.getNUsersByPageRules = () => {
     return [
         query( "numUsers", 'numUsers must be of Int type with a value of at least 1.' ).exists().toInt().custom( i => i > 0 ),

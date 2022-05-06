@@ -36,6 +36,7 @@ export class GetTaskInfoComponent implements OnInit {
         this.getUserById(this.task.users[index]._id);
       }
     }
+    console.log(this.task_users);
     
   }
 
