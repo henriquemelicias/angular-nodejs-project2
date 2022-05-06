@@ -65,3 +65,17 @@ exports.task_get = function ( req, res, next ){
         res.status( HttpStatusCode.Created).send( task );
     })     
 }
+
+exports.task_update = function (req, res, next ) {
+
+    Task.findByIdAndUpdate({_id: req.params.id},
+        { users: req.req.params.users },
+        function (err) {
+            if (err) {
+                next( httpError( HttpStatusCode.InternalServerError, error ) );
+                return;
+            }
+            res.status( HttpStatusCode.Created ).send( task );
+    })
+
+}

@@ -26,5 +26,9 @@ export class TaskService {
   getTask(id: string): Observable<TaskSchema> {
     return this.http.get<TaskSchema>(this.tasksUrl + "/" + id, HttpSettings.HEADER_CONTENT_TYPE_JSON);
   }
+
+  updateTask(task: TaskSchema): Observable<void> {
+    return this.http.put<void>(this.tasksUrl + "/" + task._id, task, HttpSettings.HEADER_CONTENT_TYPE_JSON);
+  }
   
 }
