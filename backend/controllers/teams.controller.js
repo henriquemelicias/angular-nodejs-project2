@@ -2,7 +2,18 @@ const Team = require( '../models/team.schema' );
 const httpError = require( 'http-errors' );
 const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 const logger = require( "#services/logger.service" );
-const { body } = require( "express-validator" );
+const { body, param, query } = require( "express-validator" );
+const { URL } = require( 'url' );
+const querystring = require( 'querystring' );
+
+exports.getTeamRules = () => {
+    return [
+        body( "name", 'Team name is required.' ).exists(),
+        body( "name", 'Team name must be of string type.' ).isString(),
+        body( "name", 'Team name must have minimum length of 4.' ).isLength( { min: 4 } ),
+        body( "name", 'Team name can only have alphanumeric characters.' ).isAlphanumeric(),
+    ];
+}
 
 exports.addTeam = ( req, res, next ) => {
     const caller = logger.setCallerInfo( req, "TeamsController", "addTeam" );
@@ -22,6 +33,18 @@ exports.addTeam = ( req, res, next ) => {
         logger.info( `Team ${ req.body.name } added with success.`, caller );
         res.status( HttpStatusCode.Created ).send();
     } );
+}
+
+exports.getNTeamsByPageRules = () => {
+    return [
+        query( "numTeams", 'numTeams must be of Int type with a value of at least 1.' ).exists().toInt().custom( i => i > 0 ),
+        query( "numPage", 'numPages must be of Int type with a value of at least 1.' ).exists().toInt().custom( i => i > 0 ),
+    ];
+}
+
+exports.getNTeamsByPage = ( req, res, next ) => {
+    const baseURL = 'http://' + req.headers.host + '/';
+    const searchParams = new URL( req.url, baseURL ).searchParams;
 }
 
 
@@ -68,13 +91,4 @@ exports.modifyTeam = ( req, res, next ) => {
         res.send( "Team wasn't updated" );
     }
 
-}
-
-exports.getTeamRules = () => {
-    return [
-        body( "name", 'Team name is required.' ).exists(),
-        body( "name", 'Team name must be of string type.' ).isString(),
-        body( "name", 'Team name must have minimum length of 4.' ).isLength( { min: 4 } ),
-        body( "name", 'Team name can only have alphanumeric characters.' ).isAlphanumeric(),
-    ]
 }
