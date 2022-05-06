@@ -13,8 +13,8 @@ export class TaskService {
   constructor(private http: HttpClient) { }
 
   //Post
-  addTask(task: TaskSchema): Observable<TaskSchema> {
-    return this.http.post<TaskSchema>( this.tasksUrl , task, HttpSettings.HEADER_CONTENT_TYPE_JSON);
+  addTask(task: TaskSchema): Observable<void> {
+    return this.http.post<void>( this.tasksUrl , task, HttpSettings.HEADER_CONTENT_TYPE_JSON);
   }
 
   //Delete

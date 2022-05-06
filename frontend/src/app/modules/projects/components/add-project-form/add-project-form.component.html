@@ -37,6 +37,7 @@
     <div class="project-form__group input-group">
         <input class="project-form__group__start-date-control form-control" id="project-form-start-date"
                formControlName="startDate"
+               (keydown.enter)="form['startDate'].enabled"
                type="date"
                min="{{todayDate | date:'yyyy-MM-dd'}}"
                [ngClass]="{'is-invalid': form['startDate'].errors && (form['startDate'].touched || form['startDate'].dirty), 'is-valid': form['startDate'].valid}"

@@ -33,7 +33,7 @@ exports.getTeamByName = ( req, res, next ) => {
                     .exec( callback );
             }
         },
-        function ( err, results ) {
+        function ( error, results ) {
             if ( err ) {
                 return next( httpError( HttpStatusCode.InternalServerError, error ) );
             }
