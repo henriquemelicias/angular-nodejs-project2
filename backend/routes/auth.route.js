@@ -3,16 +3,16 @@ const { verifyRules } = require( "#middlewares/core/verify-rules.middleware" );
 const { verifyIfAdmin } = require( "#middlewares/core/verify-admin.middleware" );
 const { checkDuplicateUsername } = require( "#middlewares/auth/auth.middleware" );
 const authController = require( "#controllers/auth.controller" );
-const authRoute = express.Router();
+const authRouter = express.Router();
 
 // POST Register user.
-authRoute.post(
+authRouter.post(
     '/register',
     [ verifyIfAdmin, verifyRules( authController.getRegisterRules() ), checkDuplicateUsername ],
     authController.register
 );
 
 // POST Login user.
-authRoute.post( '/login', [ verifyRules( authController.getLoginRules() ) ], authController.login );
+authRouter.post( '/login', [ verifyRules( authController.getLoginRules() ) ], authController.login );
 
-module.exports = authRoute;
+module.exports = authRouter;

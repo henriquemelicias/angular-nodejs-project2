@@ -20,8 +20,8 @@ export class ProjectService {
 
     constructor( private http: HttpClient ) { }
 
-    addProject( project: AddProjectInput ): Observable<ProjectSchema> {
-        return this.http.post<ProjectSchema>( this.projectUrl, project, HttpSettings.HEADER_CONTENT_TYPE_JSON );
+    addProject( project: AddProjectInput ): Observable<void> {
+        return this.http.post<void>( this.projectUrl, project, HttpSettings.HEADER_CONTENT_TYPE_JSON );
     }
 
     getProjects(): Observable<ProjectSchema[]> {

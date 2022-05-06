@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpSettings } from '@core/constants/http-settings.const';
-import { TeamSchema } from '../schemas/team.schema';
-import { Observable, observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable( {
+                 providedIn: 'root'
+             } )
 export class ProjectTeamService {
 
-  private url = HttpSettings.API_URL + "/team/"
+    private url = HttpSettings.API_URL + "/teams"
 
-  constructor(
-    private http: HttpClient
-  ) { }
+    constructor(
+        private http: HttpClient
+    ) { }
 
-  addTeam(team: TeamSchema): Observable<TeamSchema>{
-    return this.http.post<TeamSchema>( this.url + team.name, team, HttpSettings.HEADER_CONTENT_TYPE_JSON);
-  }
+    addTeam( teamName: String ): Observable<void> {
+
+        return this.http.post<void>( this.url, { name: teamName }, HttpSettings.HEADER_CONTENT_TYPE_JSON );
+    }
 }

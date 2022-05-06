@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const TeamSchema = new Schema(
     {
-        name: {type: String, required: true, minlength: 4, unique: true, match: "[a-zA-Z0-9]*"},
+        name: {type: String, required: true, minlength: 4, unique: true },
         members: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
         project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project'}
     } );
@@ -17,4 +17,4 @@ TeamSchema.virtual( 'url' )
         return '/api/team/' + this.name;
     } );
 
-module.exports = mongoose.model( "Project", ProjectSchema );
+module.exports = mongoose.model( "Team", TeamSchema );

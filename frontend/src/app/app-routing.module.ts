@@ -46,10 +46,22 @@ const routes: Routes = [
                     import('@modules/profile/profile.module').then( m => m.ProfileModule )
             },
             {
-                path: 'team/:id',
+                path: 'teams',
+                canLoad: [ AuthGuard ],
+                loadChildren: () =>
+                    import('@modules/teams/teams.module').then( m => m.TeamsModule )
+            },
+            {
+                path: 'teams/:name',
                 canLoad: [ AuthGuard ],
                 loadChildren: () =>
                     import('@modules/team-info/team-info.module').then( m => m.TeamInfoModule )
+            },
+            {
+                path: 'projects',
+                canLoad: [ AuthGuard ],
+                loadChildren: () =>
+                    import('@modules/projects/projects.module').then( m => m.ProjectsModule )
             },
             {
                 path: 'projects/:id',
@@ -68,12 +80,6 @@ const routes: Routes = [
                 loadChildren: () =>
                     import('@modules/blog-entry/blog-entry.module').then( m => m.BlogEntryModule )
             },
-            {
-                path: 'projects',
-                canLoad: [ AuthGuard ],
-                loadChildren: () =>
-                    import('@modules/projects/projects.module').then( m => m.ProjectsModule )
-            }
         ]
     },
     { path: '**', redirectTo: '404', pathMatch: 'full' }

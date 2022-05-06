@@ -15,6 +15,7 @@ const projectParams = {
 exports.addProject = function ( req, res, next ) {
     const caller = logger.setCallerInfo( req, "ProjectController", "addProject" );
 
+    // Verify if dates are valid.
     const todayDate = new Date();
     const todayDateMinusOneDay = new DateTime.addDays( todayDate, -1 );
 

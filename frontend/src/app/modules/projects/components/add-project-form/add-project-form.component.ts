@@ -85,8 +85,6 @@ export class AddProjectFormComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    console.log( this.form["startDate"].value );
-
     const startDateTokens = this.form['startDate'].value.split( "-" );
     const endDateTokens = this.form['endDate'].value.split( "-" );
 

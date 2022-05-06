@@ -4,8 +4,9 @@ const apiRouter = express.Router();
 
 // Sub routes (API).
 const authRoute = require( "#routes/auth.route" );
-const taskRoute = require( "#routes/task.route" );
-const projectRoute = require( "#routes/project.route" )
+const tasksRoute = require( "#routes/tasks.route" );
+const projectsRoute = require( "#routes/projects.route" );
+const teamsRoute = require( "#routes/teams.route");
 
 // Controllers.
 const nonApiController = require( "#controllers/non-api.controller" );
@@ -14,10 +15,13 @@ const nonApiController = require( "#controllers/non-api.controller" );
 apiRouter.use( '/auth', authRoute );
 
 //Task
-apiRouter.use( '/tasks', taskRoute );
+apiRouter.use( '/tasks', tasksRoute );
 
 // Project
-apiRouter.use( '/projects', projectRoute )
+apiRouter.use( '/projects', projectsRoute )
+
+// Teams
+apiRouter.use( '/teams', teamsRoute )
 
 // Index routes (NON API FUNCTIONS).
 indexRouter.get( '/db-purge', nonApiController.purgeDatabase );
