@@ -22,9 +22,9 @@ export class TeamsComponent implements OnInit, OnDestroy {
 
     private _ngUnsubscribe$: Subject<void> = new Subject<void>();
 
-    public PAGE_SIZE = TeamService._TEAMS_PER_PAGE;
+    public PAGE_SIZE = TeamService.TEAMS_PER_PAGE;
 
-    public teamsObserver$ = TeamService.getTeams$();
+    public teamsObserver$ = TeamService.getTeamsByPage$();
     public isSessionUserAdmin = UserService.isSessionUserAdmin();
     public teamsPages?: TeamSchema[][];
     public currentPage = 1;
@@ -36,7 +36,7 @@ export class TeamsComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         TeamService
-            .getTeams$()
+            .getTeamsByPage$()
             .pipe( takeUntil( this._ngUnsubscribe$ ) )
             .subscribe(
                 {
@@ -85,7 +85,7 @@ export class TeamsComponent implements OnInit, OnDestroy {
 
     public reload() {
         this.getNumberOfTeams();
-        this.teamService.loadTeams$( this.currentPage );
+        this.teamService.loadTeamsByPage( this.currentPage );
     }
 
     selectPage( page: string ) {

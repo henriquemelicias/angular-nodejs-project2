@@ -15,38 +15,57 @@ import { LoggerService } from "@core/services/logger/logger.service";
              } )
 export class TeamService {
 
-    public static _TEAMS_PER_PAGE = 10;
-    private _API_URI = HttpSettings.API_URL + "/teams"
+    public static TEAMS_PER_PAGE = 10;
+    private static _API_URI = HttpSettings.API_URL + "/teams"
 
-    private static _teams$ = new BehaviorSubject<TeamSchema[][] | undefined>( undefined );
-    private static _currentTeam?: TeamSchema[][];
+    private static _teamsByPage$ = new BehaviorSubject<TeamSchema[][] | undefined>( undefined );
+    private static _currentTeamsByPage?: TeamSchema[][];
 
     constructor(
         private http: HttpClient
     ) { }
 
-    public static getTeams$(): Observable<TeamSchema[][] | undefined> {
-        return this._teams$.asObservable();
+    public addTeam( teamName: String ): Observable<void> {
+
+        return this.http.post<void>( TeamService._API_URI, { name: teamName }, HttpSettings.HEADER_CONTENT_TYPE_JSON );
     }
 
-    public loadTeams$( numPage: Number ) {
-        TeamService._currentTeam = TeamService._teams$.getValue();
+    public static getTeamsByPage$(): Observable<TeamSchema[][] | undefined> {
+        return this._teamsByPage$.asObservable();
+    }
 
-        TeamService._currentTeam = TeamService._currentTeam ? TeamService._currentTeam : [];
+    public getTeamsByPage( numTeams: Number, numPage: Number ): Observable<TeamSchema[]> {
+        return this.http.get<TeamSchema[]>(
+            TeamService._API_URI + '/by-pages?numTeams=' + numTeams + '&numPage=' + numPage,
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    }
 
-        while ( numPage > TeamService._currentTeam.length ) {
-            TeamService._currentTeam.push( [] );
+    public getNumberOfTeams(): Observable<{ numberOfTeams: number }> {
+        return this.http.get<{ numberOfTeams: number }>(
+            TeamService._API_URI + '/num-entries',
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    }
+
+    public loadTeamsByPage( numPage: Number ) {
+        TeamService._currentTeamsByPage = TeamService._teamsByPage$.getValue();
+
+        TeamService._currentTeamsByPage = TeamService._currentTeamsByPage ? TeamService._currentTeamsByPage : [];
+
+        while ( numPage > TeamService._currentTeamsByPage.length ) {
+            TeamService._currentTeamsByPage.push( [] );
         }
 
         const index = Number( numPage ) - 1;
 
-        this.getTeams( TeamService._TEAMS_PER_PAGE, numPage ).subscribe(
+        this.getTeamsByPage( TeamService.TEAMS_PER_PAGE, numPage ).subscribe(
             {
                 next: teams => {
-                    if ( !TeamService._currentTeam ) return;
+                    if ( !TeamService._currentTeamsByPage ) return;
 
-                    TeamService._currentTeam[index] = teams;
-                    TeamService._teams$.next( TeamService._currentTeam );
+                    TeamService._currentTeamsByPage[index] = teams;
+                    TeamService._teamsByPage$.next( TeamService._currentTeamsByPage );
                 },
                 error: ( error: SanitizedErrorInterface ) => {
                     if ( error.hasBeenHandled ) return;
@@ -64,21 +83,4 @@ export class TeamService {
                 }
             } );
     }
-
-    addTeam( teamName: String ): Observable<void> {
-
-        return this.http.post<void>( this._API_URI, { name: teamName }, HttpSettings.HEADER_CONTENT_TYPE_JSON );
-    }
-
-    getTeams( numTeams: Number, numPage: Number ): Observable<TeamSchema[]> {
-        return this.http.get<TeamSchema[]>(
-            this._API_URI + '/?numTeams=' + numTeams + '&numPage=' + numPage,
-            HttpSettings.HEADER_CONTENT_TYPE_JSON
-        );
-    }
-
-    getNumberOfTeams(): Observable<{ numberOfTeams: number }> {
-        return this.http.get<{ numberOfTeams: number }>( this._API_URI + '/num-entries', HttpSettings.HEADER_CONTENT_TYPE_JSON )
-    }
-
 }

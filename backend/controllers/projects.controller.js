@@ -1,9 +1,11 @@
 const Project = require( '../models/project.schema' );
 const httpError = require( 'http-errors' );
 const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
-const { body } = require( "express-validator" );
+const { body, query } = require( "express-validator" );
 const logger = require( "#services/logger.service" );
 const DateTime = require( "date-and-time" );
+const { URL } = require( "url" );
+const Team = require( "#models/team.schema" );
 
 const projectParams = {
     name: "name",
@@ -125,3 +127,48 @@ exports.getProjects = function ( req, rest, next ) {
             res.send( projects );
         } );
 }
+
+exports.getNProjectsByPageRules = () => {
+    return [
+        query( "numProjects", 'numProjects must be of Int type with a value of at least 1.' ).exists().toInt().custom( i => i > 0 ),
+        query( "numPage", 'numPages must be of Int type with a value of at least 1.' ).exists().toInt().custom( i => i > 0 ),
+    ];
+}
+
+exports.getNProjectsByPage = ( req, res, next ) => {
+    const baseURL = 'http://' + req.headers.host + '/';
+    const searchParams = new URL( req.url, baseURL ).searchParams;
+
+    const numPage = parseInt( searchParams.get( 'numPage' ) ) - 1;
+    const numProjects = parseInt( searchParams.get( 'numProjects' ) );
+
+    Project.find( {} )
+        .lean()
+        .select( [ "_id", "name", "acronym", "startDate", "endDate", "tasks" ] )
+        .sort( { $natural: 1 } ) // sort by oldest first
+        .skip( numPage * numProjects )
+        .limit( numProjects )
+        .exec( ( error, projects ) => {
+
+            if ( error ) {
+                next( httpError( HttpStatusCode.InternalServerError ), error );
+                return;
+            }
+
+            res.send( projects );
+        } );
+}
+
+exports.getNumberOfProjects = ( req, res, next ) => {
+    Project.count( {} )
+        .lean()
+        .exec( ( error, numberOfProjects ) => {
+
+            if ( error ) {
+                next( httpError( HttpStatusCode.InternalServerError ), error );
+                return;
+            }
+
+            res.send( { numberOfProjects: numberOfProjects } );
+        } );
+};
