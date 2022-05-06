@@ -20,6 +20,6 @@ export class TeamsComponent implements OnInit {
     }
 
     openOffCanvas(content: any) {
-        this.offcanvasService.open(content, {ariaLabelledBy: 'offcanvas-basic-title'});
+        this.offcanvasService.open(content, { position: 'end' });
     }
 }

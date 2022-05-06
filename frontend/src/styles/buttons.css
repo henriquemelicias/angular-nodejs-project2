@@ -6,8 +6,12 @@
   overflow: hidden;
 }
 
+.offcanvas {
+  background-color: var( --surface-color ) !important;
+ }
+
 .default-button {
-  background-color: var( --secondary-color );
+  background-color: var( --secondary-color-variant-dark );
   color: var( --font-color-on-secondary );
   border-radius: 7px;
   border: none;
@@ -16,8 +20,13 @@
   cursor: pointer;
 }
 
+.default-button:hover {
+  background-color: var( --secondary-color );
+}
+
 .default-button:disabled {
   opacity: .4;
   cursor: default;
+  pointer-events: none;
 }
 

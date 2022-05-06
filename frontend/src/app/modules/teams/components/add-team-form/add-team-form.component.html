@@ -1,32 +1,32 @@
-<h3>Create new team</h3>
-
-<form [formGroup]="teamForm">
-    <div class="team-form__group">
-        <label for="team-form-name">Name</label>
-        <input type="text" class="team-form__group__control form-control" id="team-form-name"
-               formControlName="name"
-               [ngClass]="{'is-invalid': form['name'].errors &&
+<div class="add-add-team-form--container">
+    <form [formGroup]="teamForm">
+        <div class="add-team-form__group">
+            <label for="add-team-form-name">Name</label>
+            <input type="text" class="add-team-form__group__control form-control" id="add-team-form-name"
+                   formControlName="name"
+                   [ngClass]="{'is-invalid': form['name'].errors &&
                                       (form['name'].touched || form['name'].dirty),
                          'is-valid': form['name'].valid }"
-        >
-    </div>
+            >
+        </div>
 
-    <div class="alert alert-danger" [hidden]="form['name'].valid || form['name'].pristine">
-        <div *ngIf="form['name'].errors?.['required']">Name is required</div>
-        <div *ngIf="form['name'].errors?.['minlength']">Name must be at least 4 characters</div>
-        <div *ngIf="form['name'].errors?.['pattern']">Only alphanumeric characters are allowed</div>
-    </div>
+        <div class="alert alert-danger" [hidden]="form['name'].valid || form['name'].pristine">
+            <div *ngIf="form['name'].errors?.['required']">Name is required</div>
+            <div *ngIf="form['name'].errors?.['minlength']">Name must be at least 4 characters</div>
+            <div *ngIf="form['name'].errors?.['pattern']">Only alphanumeric characters are allowed</div>
+        </div>
 
-    <div class="team-form__submit-button--container">
-        <button type="submit" class="team-form__submit-button default-button"
-                [disabled]="!teamForm.valid"
-                (click)="onSubmit()"
-        >
-            Create
-        </button>
-    </div>
+        <div class="add-team-form__submit-button--container">
+            <button type="submit" class="add-team-form__submit-button default-button"
+                    [disabled]="!teamForm.valid"
+                    (click)="onSubmit()"
+            >
+                Create
+            </button>
+        </div>
 
-    <div class="app-alert-wrapper">
-        <app-alert id="alert-team-form" [isOnlyOne]="true"></app-alert>
-    </div>
-</form>
+        <div class="app-alert-wrapper">
+            <app-alert id="alert-add-team-form" [isOnlyOne]="true"></app-alert>
+        </div>
+    </form>
+</div>
