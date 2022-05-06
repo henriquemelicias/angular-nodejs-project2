@@ -48,7 +48,7 @@ export class TeamService {
         );
     }
 
-    public loadTeamsByPage$( numPage: Number ) {
+    public loadTeamsByPage( numPage: Number ) {
         TeamService._currentTeamsByPage = TeamService._teamsByPage$.getValue();
 
         TeamService._currentTeamsByPage = TeamService._currentTeamsByPage ? TeamService._currentTeamsByPage : [];

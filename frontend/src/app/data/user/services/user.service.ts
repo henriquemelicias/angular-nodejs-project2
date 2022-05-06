@@ -75,7 +75,7 @@ export class UserService {
         )
     }
 
-    public loadUsersByPage$( numPage: Number ) {
+    public loadUsersByPage( numPage: Number ) {
         UserService._currentUsersByPage = UserService._usersByPage$.getValue();
         UserService._currentUsersByPage = UserService._currentUsersByPage ? UserService._currentUsersByPage : [];
 
@@ -103,7 +103,7 @@ export class UserService {
                                 AlertType.Error,
                                 GenericMessageEnum.UNEXPECTED_UNHANDLED_ERROR + error.message,
                                 null,
-                                LoggerService.setCaller( "TeamService", "loadTeam$" )
+                                LoggerService.setCaller( "TeamService", "loadUsersByPage" )
                             );
                         } ).toObservable();
                 }
