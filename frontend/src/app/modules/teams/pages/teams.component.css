@@ -2,9 +2,10 @@
     display: flex;
     flex-direction: column;
     width: 50vw;
+    margin-bottom: 6rem;
 }
 
-.teams__head--container {
+.page__head--container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -27,13 +28,80 @@
     color: var( --secondary-color );
 }
 
+.page__pagination {
+    display: flex;
+    margin-top: 2rem;
+    border-radius: 10px;
+    margin-left: auto;
+    max-width: 80vw;
+}
+
+ngb-pagination ::ng-deep a {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var( --font-color-on-surface ) !important;
+}
+
+ngb-pagination ::ng-deep .page-item.active .page-link {
+    color: var( --font-color-on-secondary ) !important;
+    background-color: var( --secondary-color ) !important;
+    box-shadow: none;
+    border: solid var( --surface-color ) 1px;
+}
+
+ngb-pagination ::ng-deep .page-item.enabled .page-link {
+    color: var( --font-color-on-secondary ) !important;
+    background-color: var( --font-color-highlight ) !important;
+    box-shadow: none;
+    border: solid var( --surface-color ) 1px;
+    width: 50px;
+    text-align: center;
+}
+
+ngb-pagination ::ng-deep .page-item.disabled .page-link {
+    color: var( --font-color-on-surface ) !important;
+    background-color: var( --surface-color ) !important;
+    box-shadow: none;
+    border: solid var( --surface-color ) 1px;
+    opacity: 0.5;
+}
 
 
-.accordion--wrapper {
+
+
+
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+
+    .page__head--container {
+        margin: 1rem;
+    }
+
+    .page__head {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .page__title {
+        margin-block-end: -1.5rem;
+    }
+
+    .page__subtitle {
+    }
+}
+
+.accordion__item {
 
 }
 
-.accordion__panel {
+.accordion__item span {
+    color: var( --font-color-highlight );
+    margin-right: 0.5rem;
+    font-weight: bold;
 }
 
 /* Medium devices (tablets, less than 992px) */

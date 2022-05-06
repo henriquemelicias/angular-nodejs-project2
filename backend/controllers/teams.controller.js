@@ -2,9 +2,8 @@ const Team = require( '../models/team.schema' );
 const httpError = require( 'http-errors' );
 const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 const logger = require( "#services/logger.service" );
-const { body, param, query } = require( "express-validator" );
+const { body, query } = require( "express-validator" );
 const { URL } = require( 'url' );
-const querystring = require( 'querystring' );
 
 exports.getTeamRules = () => {
     return [
@@ -45,6 +44,25 @@ exports.getNTeamsByPageRules = () => {
 exports.getNTeamsByPage = ( req, res, next ) => {
     const baseURL = 'http://' + req.headers.host + '/';
     const searchParams = new URL( req.url, baseURL ).searchParams;
+
+    const numPage = parseInt( searchParams.get( 'numPage' ) ) - 1;
+    const numTeams = parseInt( searchParams.get( 'numTeams' ) );
+
+    Team.find( {} )
+        .lean()
+        .select( [ "_id", "name", "members", "projects" ] )
+        .sort( { $natural: 1 } ) // sort by oldest first
+        .skip( numPage * numTeams )
+        .limit( numTeams )
+        .exec( ( error, teams ) => {
+
+            if ( error ) {
+                next( httpError( HttpStatusCode.InternalServerError ), error );
+                return;
+            }
+
+            res.send( teams );
+        } );
 }
 
 

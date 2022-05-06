@@ -5,5 +5,5 @@ export interface TeamSchema {
   _id: string;
   name: string;
   members: UserSchema[];
-  project?: ProjectSchema[];
+  projects: ProjectSchema[];
 }

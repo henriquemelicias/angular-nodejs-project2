@@ -1,6 +1,7 @@
 <div class="teams--container">
-    <div class="teams__head--container">
-        <span class="page__head"><h1 class="page__title">Teams</h1><h2 class="page__subtitle">!Everyone is here</h2></span>
+    <div class="page__head--container">
+        <span class="page__head"><h1 class="page__title">Teams</h1><h2
+                class="page__subtitle">Everyone is here</h2></span>
         <div *ngIf="isSessionUserAdmin">
             <ng-template #content let-offcanvas>
                 <div class="offcanvas-header">
@@ -20,57 +21,19 @@
         </div>
     </div>
 
-    <ngb-accordion class="accordion--wrapper" [closeOthers]="true" activeIds="static-1">
-        <ngb-panel class="accordion__panel" id="static-1" title="Simple">
-            <ng-template class="accordion__panel__template" ngbPanelContent>
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-                moon officia
-                aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf
-                moon tempor,
-                sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim
-                keffiyeh helvetica,
-                craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                Leggings
-                occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them
-                accusamus
-                labore sustainable VHS.
-            </ng-template>
-        </ngb-panel>
-        <ngb-panel class="accordion__panel" id="static-2">
-            <ng-template class="accordion__panel__template" ngbPanelTitle>
-                <span>&#9733; <b>Fancy</b> title &#9733;</span>
-            </ng-template>
-            <ng-template ngbPanelContent>
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-                moon officia
-                aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf
-                moon tempor,
-                sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim
-                keffiyeh helvetica,
-                craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                Leggings
-                occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them
-                accusamus
-                labore sustainable VHS.
-            </ng-template>
-        </ngb-panel>
-        <ngb-panel class="accordion__panel" id="static-3">
-            <ng-template class="accordion__panel__template" ngbPanelTitle>
-                <span>&#9733; <b>Fancy</b> title &#9733;</span>
-            </ng-template>
-            <ng-template ngbPanelContent>
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-                moon officia
-                aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf
-                moon tempor,
-                sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim
-                keffiyeh helvetica,
-                craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                Leggings
-                occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them
-                accusamus
-                labore sustainable VHS.
-            </ng-template>
-        </ngb-panel>
-    </ngb-accordion>
+    <div *ngIf="(teamsObserver$ | async) as teamPages">
+        <ngb-accordion *ngIf="teamsPages && teamsPages.length >= currentPage" class="accordion--wrapper"
+                       [closeOthers]="true" activeIds="teams-accordion-static-0">
+            <ngb-panel *ngFor="let team of teamPages[currentPage - 1]; let i = index" class="accordion__panel"
+                       id="teams-accordion-static-{{ i }}" title="{{ i }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{team.name }}">
+                <ng-template class="accordion__panel__template" ngbPanelContent>
+                    <div class="accordion__item"><span>id:</span> {{ team._id  }}</div>
+                    <div class="accordion__item"><span>members:</span> {{ team.members.length == 0 ? "N/A" : team.members }}</div>
+                    <div class="accordion__item"><span>projects:</span> {{ team.projects.length == 0  ? "N/A" : team.projects }}</div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+    </div>
+
+    <ngb-pagination class="page__pagination" [collectionSize]="1000" [(page)]="currentPage" [pageSize]="10" [rotate]="true" [ellipses]="true" [boundaryLinks]="true"></ngb-pagination>
 </div>
