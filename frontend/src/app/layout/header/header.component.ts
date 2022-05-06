@@ -81,6 +81,7 @@ export class HeaderComponent implements OnInit {
             { link: '/register', routerLink: 'register', title: 'register', isVisible: this.isAdmin },
             { link: '/dashboard', routerLink: 'dashboard', title: 'Dashboard', isVisible: this.isAdmin },
             { link: '/profile', routerLink: 'profile', title: 'Profile', isVisible: this.isLoggedIn },
+            { link: '/tasks', routerLink: 'tasks', title: 'Tasks', isVisible: this.isLoggedIn },
         ];
 
         this.navItems = navItems.filter( n => n.isVisible );

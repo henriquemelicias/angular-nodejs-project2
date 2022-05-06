@@ -70,10 +70,10 @@ const routes: Routes = [
                     import( '@modules/project-info/project-info.module').then( m => m.ProjectInfoModule )
             },
             {
-                path: 'task/:id',
+                path: 'tasks',
                 canLoad: [ AuthGuard ],
                 loadChildren: () =>
-                    import('@modules/task-info/task-info.module').then( m => m.TaskInfoModule )
+                    import('@modules/tasks/tasks.module').then( m => m.TasksModule )
             },
             { // todo remover e pensar numa cena pa substituir po home
                 path: 'blog/:id',
