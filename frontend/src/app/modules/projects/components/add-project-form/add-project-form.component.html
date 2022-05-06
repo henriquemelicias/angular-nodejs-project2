@@ -54,14 +54,10 @@
         <input class="project-form__group__start-date-control form-control" id="project-form-end-date"
                formControlName="endDate"
                type="date"
-               min="{{form['startDate'].value | date:'yyyy-MM-dd'}}"
+               min="{{form['startDate'].value}}"
                [ngClass]="{'is-invalid': (projectForm.getError('notValidEndDate') || form['endDate'].errors) && (form['endDate'].touched || form['endDate'].dirty), 'is-valid': form['endDate'].valid}"
         >
 
-    </div>
-
-    <div class="alert alert-danger" [hidden]="!projectForm.getError('notValidEndDate') || form['endDate'].pristine || !form['endDate']">
-        <div *ngIf="projectForm.getError('notValidEndDate')">End date must be after start date</div>
     </div>
 
     <div class="project-form__submit-button--container">
@@ -73,7 +69,8 @@
         </button>
     </div>
 
-    <div class="app-alert-wrapper">
-        <app-alert id="alert-project-form" [isOnlyOne]="true"></app-alert>
-    </div>
 </form>
+
+<div class="app-alert-wrapper">
+    <app-alert id="alert-project-form" [isOnlyOne]="true"></app-alert>
+</div>
