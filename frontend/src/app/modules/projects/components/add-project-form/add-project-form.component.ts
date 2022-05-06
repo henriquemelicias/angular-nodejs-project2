@@ -133,7 +133,7 @@ export class AddProjectFormComponent implements OnInit {
                   if ( errorHandler.error.status === HttpStatusCode.Conflict ) {
                     AlertService.warn(
                         error.message,
-                        { id: 'alert-team-form' },
+                        { id: 'alert-project-form' },
                         logCallers
                     );
                     errorHandler.hasBeenHandled = true;

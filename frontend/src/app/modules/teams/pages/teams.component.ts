@@ -19,7 +19,7 @@ export class TeamsComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    openOffCanvas(content: any) {
+    public openOffCanvas(content: any) {
         this.offcanvasService.open(content, { position: 'end' });
     }
 }

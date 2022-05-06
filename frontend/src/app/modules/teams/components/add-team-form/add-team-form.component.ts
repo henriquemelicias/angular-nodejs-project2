@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectTeamService } from '@data/team/services/project-team.service';
+import { TeamService } from '@data/team/services/team.service';
 import { AlertService } from "@core/services/alert/alert.service";
 import { SanitizedErrorInterface } from "@core/models/sanitized-error.interface";
 import { AppErrorHandler } from "@core/utils/class-error-handler.util";
@@ -20,7 +20,7 @@ export class AddTeamFormComponent implements OnInit {
     public teamForm: FormGroup;
 
     constructor( private formBuilder: FormBuilder,
-                 private teamService: ProjectTeamService ) {
+                 private teamService: TeamService ) {
 
 
         this.teamForm = formBuilder.group(

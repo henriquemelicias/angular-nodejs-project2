@@ -10,7 +10,7 @@ export class TasksComponent implements OnInit {
 
   constructor() { }
 
-  isCurrentUser = UserService.isSessionUser();
+  isCurrentUser = UserService.hasSessionUser();
 
   ngOnInit(): void {
   }
