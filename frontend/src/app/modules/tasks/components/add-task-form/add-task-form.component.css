@@ -1,3 +1,5 @@
-input[type="radio"]{
-    margin: 0 10px 0 10px;
-  }
+.select{
+  font-family: Arial;
+  width: 24.5em;
+  height: 2.25em;
+}

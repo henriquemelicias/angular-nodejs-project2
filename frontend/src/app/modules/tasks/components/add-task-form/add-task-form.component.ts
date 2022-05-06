@@ -14,7 +14,7 @@ export class AddTaskFormComponent implements OnInit {
 
   public taskForm: FormGroup;
 
-  selectedPriority: string = '';
+  selectedPriority: string = 'baixa';
   username: string = "";
 
   constructor(private taskService: TaskService, private formBuilder: FormBuilder,) {
