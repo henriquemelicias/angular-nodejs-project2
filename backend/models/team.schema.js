@@ -6,7 +6,7 @@ const TeamSchema = new Schema(
     {
         name: {type: String, required: true, minlength: 4, unique: true },
         members: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-        project: {type: mongoose.Schema.Types.ObjectId, ref: 'Project'}
+        projects: [{type: mongoose.Schema.Types.ObjectId, ref: 'Project'}]
     } );
 
 /**
