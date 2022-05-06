@@ -3,7 +3,7 @@ import { UserService } from "@data/user/services/user.service";
 import { NgbOffcanvas } from "@ng-bootstrap/ng-bootstrap";
 import { TeamSchema } from "@data/team/schemas/team.schema";
 
-import { Subject, takeUntil } from "rxjs";
+import { Observable, Subject, Subscription, takeUntil } from "rxjs";
 import { TeamService } from "@data/team/services/team.service";
 import { SanitizedErrorInterface } from "@core/models/sanitized-error.interface";
 import { AppErrorHandler } from "@core/utils/class-error-handler.util";
@@ -22,8 +22,9 @@ export class TeamsComponent implements OnInit, OnDestroy {
 
     private _ngUnsubscribe$: Subject<void> = new Subject<void>();
 
+    public teamsObserver$ = TeamService.getTeams$();
     public isSessionUserAdmin = UserService.isSessionUserAdmin();
-    public teams?: TeamSchema[][];
+    public teamsPages?: TeamSchema[][];
     public currentPage = 1;
 
     constructor( private offcanvasService: NgbOffcanvas, private teamService: TeamService ) { }
@@ -34,7 +35,7 @@ export class TeamsComponent implements OnInit, OnDestroy {
             .pipe( takeUntil( this._ngUnsubscribe$ ) )
             .subscribe(
                 {
-                    next: teams => this.teams = teams,
+                    next: teams => { this.teamsPages = teams; },
                     error: ( error: SanitizedErrorInterface ) => {
                         if ( error.hasBeenHandled ) return;
 
