@@ -8,10 +8,19 @@
     <div><span>priority: </span>{{task.priority}}</div>
     <div><span>percentage: </span>{{task.percentage}} %</div>
 
+    <div *ngIf="task_users != []">
+        <h2>Users associated</h2>
+        <ul>
+            <li *ngFor="let u of task_users">
+                <a> {{u.username}} </a>
+            </li>
+        </ul>
+    </div>
+
     <div *ngIf="users">
         <ul>
-            <li (click)="clickedUser(u)" *ngFor="let u of users">
-                <a>User: {{u.username}}</a>
+            <li *ngFor="let u of users">
+                <a>User: {{u.username}}</a><button type="submit" class="task-form__submit-button default-button" (click)="disassociate(u._id)">x</button>
             </li>
         </ul>
         

@@ -8,6 +8,8 @@ tasksRouter.delete('/:id', tasksController.task_delete);
 
 tasksRouter.get('/:id', tasksController.task_get);
 
-tasksRouter.get('', tasksController.task_list)
+tasksRouter.get('', tasksController.task_list);
+
+tasksRouter.put('/:id', tasksController.task_update);
 
 module.exports = tasksRouter;

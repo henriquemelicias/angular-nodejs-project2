@@ -53,10 +53,9 @@ exports.task_delete = function ( req, res, next ) {
 }
 
 exports.task_get = function ( req, res, next ){
-
     Task.findOne( {_id: req.params.id} )
     .lean()
-    .select(["_id","name","priority","percentage", "madeByUser"])
+    .select(["_id","name","priority","percentage", "madeByUser", "users"])
     .exec( function ( err, task ) {
         if ( err )
         {
@@ -77,10 +76,9 @@ exports.task_list = function (req, res, next){
 }
 
 exports.task_update = function (req, res, next ) {
-
-    Task.findByIdAndUpdate({_id: req.params.id},
-        {$set: {users: req.req.params.users} },
-        function (err) {
+    Task.findOneAndUpdate({_id: req.body._id},
+        { $addToSet:  {users: req.body.users}},
+        function (err, task) {
             if (err) {
                 next( httpError( HttpStatusCode.InternalServerError, error ) );
                 return;

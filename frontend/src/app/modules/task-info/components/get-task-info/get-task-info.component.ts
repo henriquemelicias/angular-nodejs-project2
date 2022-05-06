@@ -13,6 +13,7 @@ import { UserService } from '@app/data/user/services/user.service';
 export class GetTaskInfoComponent implements OnInit {
 
   task: TaskSchema | undefined;
+  task_users: UserSchema[] = [];
   users: UserSchema[] | undefined;
   selected: UserSchema | undefined;
   constructor(
@@ -22,12 +23,27 @@ export class GetTaskInfoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getTask();
-    this.getUsers();
+    this.update();
   }
 
   getTask(): void {
     this.taskService.getTask(this.route.snapshot.params['id']).subscribe(task => this.task = task);
+    this.task_users = [];
+    if (this.task?.users) {
+    console.log(this.task?.users);
+    
+      for (let index = 0; index < this.task.users.length; index++) {
+        this.getUserById(this.task.users[index]._id);
+      }
+    }
+    
+  }
+
+  getUserById(id: string): void {
+    if (id) {
+      this.userService.getUsersById(id).subscribe(user => this.task_users.push(user));
+    }
+    
   }
 
   getUsers(): void {  
@@ -42,17 +58,41 @@ export class GetTaskInfoComponent implements OnInit {
 
   clickedUser(user: UserSchema): void {
     this.selected = user;
-    
   }
 
   addUser(): void {
-  if (this.selected) {
-    this.task?.users?.push(this.selected);
-    if (this.task) {
+    if (this.selected) {
+      this.task?.users?.push(this.selected);
+      if (this.task) {
+        console.log(this.task);
+      
+        this.taskService.updateTask(this.task).subscribe();
+      }
+    }
+    
+  }
+
+  disassociate(id: string): void {
+    if(this.task?.users) {
+      let i = undefined;
+      for (let index = 0; index < this.task.users.length; index++) {
+        if (String(this.task.users[index]) === id) {
+          i = index;
+        }        
+      }
+
+      if (i) {
+        this.task.users.splice(i, 1);
+        
+      }
       this.taskService.updateTask(this.task).subscribe();
+      this.update(); 
     }
   }
-    
+
+  update(): void {
+    this.getTask();
+    this.getUsers();
   }
 
 }
