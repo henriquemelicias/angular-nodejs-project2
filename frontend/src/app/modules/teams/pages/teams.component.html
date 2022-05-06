@@ -1,15 +1,18 @@
 <div class="teams--container">
     <div class="teams__head--container">
-        <h1>Teams</h1>
+        <span class="page__head"><h1 class="page__title">Teams</h1><h2 class="page__subtitle">!Everyone is here</h2></span>
         <div *ngIf="isSessionUserAdmin">
             <ng-template #content let-offcanvas>
                 <div class="offcanvas-header">
                     <h3 class="offcanvas-title" id="offcanvas-basic-title">Create a new team</h3>
-                    <button type="button" class="btn-close" aria-label="Close"
-                            (click)="offcanvas.dismiss('Cross click')"></button>
+                    <button type="button" class="btn-close btn-close-white" aria-label="Close"
+                            (click)="offcanvas.dismiss()"></button>
                 </div>
                 <div class="offcanvas-body">
                     <app-add-team-form></app-add-team-form>
+                    <div class="app-alert-wrapper">
+                        <app-alert id="alert-team-form" [isOnlyOne]="true"></app-alert>
+                    </div>
                 </div>
             </ng-template>
 
@@ -17,7 +20,7 @@
         </div>
     </div>
 
-    <ngb-accordion class="accordion-wrapper" [closeOthers]="true" activeIds="static-1">
+    <ngb-accordion class="accordion--wrapper" [closeOthers]="true" activeIds="static-1">
         <ngb-panel class="accordion__panel" id="static-1" title="Simple">
             <ng-template class="accordion__panel__template" ngbPanelContent>
                 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf

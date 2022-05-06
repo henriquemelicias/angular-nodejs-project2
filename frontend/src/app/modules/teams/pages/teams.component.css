@@ -10,9 +10,26 @@
     align-items: center;
 }
 
+.page__head {
+    width: 35%;
+    display: table;
+    table-layout: fixed;
+    user-select: none;
+}
+
+.page__title {
+    direction: ltr;
+    margin-block-end: -2rem;
+}
+
+.page__subtitle {
+    direction: rtl;
+    color: var( --secondary-color );
+}
 
 
-.accordion-wrapper {
+
+.accordion--wrapper {
 
 }
 

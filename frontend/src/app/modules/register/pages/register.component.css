@@ -32,9 +32,22 @@
 @media (max-width: 991.98px) {
 
   .register-form--container {
-    display: block;
-    width: auto;
     margin: 1rem;
+  }
+
+  .register__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .register__title {
+    margin-block-end: -1.5rem;
+  }
+
+  .register__subtitle {
   }
 }
 
