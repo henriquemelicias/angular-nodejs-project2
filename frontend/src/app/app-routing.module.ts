@@ -35,7 +35,7 @@ const routes: Routes = [
       },
       {
         path: 'register',
-        canLoad: [AuthGuard, AuthAdminGuard],
+        canLoad: [AuthAdminGuard],
         loadChildren: () =>
           import('@modules/register/register.module').then( m => m.RegisterModule )
       },
