@@ -15,7 +15,7 @@ import { LoggerService } from "@core/services/logger/logger.service";
              } )
 export class TeamService {
 
-    private static _TEAMS_PER_PAGE = 50;
+    public static _TEAMS_PER_PAGE = 10;
     private _API_URI = HttpSettings.API_URL + "/teams"
 
     private static _teams$ = new BehaviorSubject<TeamSchema[][] | undefined>( undefined );
@@ -43,7 +43,7 @@ export class TeamService {
         this.getTeams( TeamService._TEAMS_PER_PAGE, numPage ).subscribe(
             {
                 next: teams => {
-                    if ( !TeamService._currentTeam )  return;
+                    if ( !TeamService._currentTeam ) return;
 
                     TeamService._currentTeam[index] = teams;
                     TeamService._teams$.next( TeamService._currentTeam );
@@ -71,11 +71,14 @@ export class TeamService {
     }
 
     getTeams( numTeams: Number, numPage: Number ): Observable<TeamSchema[]> {
-        const query = [ { numTeams: numTeams }, { numPage: numPage } ];
         return this.http.get<TeamSchema[]>(
             this._API_URI + '/?numTeams=' + numTeams + '&numPage=' + numPage,
             HttpSettings.HEADER_CONTENT_TYPE_JSON
         );
+    }
+
+    getNumberOfTeams(): Observable<{ numberOfTeams: number }> {
+        return this.http.get<{ numberOfTeams: number }>( this._API_URI + '/num-entries', HttpSettings.HEADER_CONTENT_TYPE_JSON )
     }
 
 }

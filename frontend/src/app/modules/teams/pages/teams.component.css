@@ -1,8 +1,11 @@
-.teams--container{
+.page--container {
     display: flex;
     flex-direction: column;
+    justify-items: end;
+    justify-content: space-between;
+    align-content: space-between;
     width: 50vw;
-    margin-bottom: 6rem;
+    min-height: 100vh;
 }
 
 .page__head--container {
@@ -25,54 +28,59 @@
 
 .page__subtitle {
     direction: rtl;
-    color: var( --secondary-color );
+    color: var(--secondary-color);
 }
 
 .page__pagination {
+    margin-top: 1.5rem;
     display: flex;
-    margin-top: 2rem;
-    border-radius: 10px;
+    border-radius: 15px;
     margin-left: auto;
     max-width: 80vw;
 }
 
 ngb-pagination ::ng-deep a {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var( --font-color-on-surface ) !important;
+    color: var(--font-color-on-surface) !important;
+    background-color: var(--surface-color) !important;
+    box-shadow: none;
+    border: solid var(--background-color) 1px;
 }
 
-ngb-pagination ::ng-deep .page-item.active .page-link {
-    color: var( --font-color-on-secondary ) !important;
-    background-color: var( --secondary-color ) !important;
+ngb-pagination ::ng-deep a:hover {
+    color: var(--font-color-on-secondary) !important;
+    background-color: var(--secondary-color) !important;
     box-shadow: none;
-    border: solid var( --surface-color ) 1px;
+    border: solid var(--background-color) 1px;
 }
 
-ngb-pagination ::ng-deep .page-item.enabled .page-link {
-    color: var( --font-color-on-secondary ) !important;
-    background-color: var( --font-color-highlight ) !important;
+ngb-pagination ::ng-deep a:focus {
+    color: var(--font-color-on-secondary) !important;
+    background-color: var(--secondary-color) !important;
     box-shadow: none;
-    border: solid var( --surface-color ) 1px;
-    width: 50px;
-    text-align: center;
+    border: solid var(--background-color) 1px;
 }
 
 ngb-pagination ::ng-deep .page-item.disabled .page-link {
-    color: var( --font-color-on-surface ) !important;
-    background-color: var( --surface-color ) !important;
+    color: var(--font-color-on-surface) !important;
+    background-color: var(--surface-color) !important;
     box-shadow: none;
-    border: solid var( --surface-color ) 1px;
-    opacity: 0.5;
+    border: solid var(--surface-color) 1px;
+    opacity: 0.4;
 }
 
-
-
-
+.page__pagination--wrapper{
+    display: flex;
+    margin-bottom: 6rem;
+}
 
 
 /* Medium devices (tablets, less than 992px) */
 @media (max-width: 991.98px) {
+
+    .page__pagination {
+        justify-content: center;
+        margin-left: unset;
+    }
 
     .page__head--container {
         margin: 1rem;
@@ -99,7 +107,7 @@ ngb-pagination ::ng-deep .page-item.disabled .page-link {
 }
 
 .accordion__item span {
-    color: var( --font-color-highlight );
+    color: var(--font-color-highlight);
     margin-right: 0.5rem;
     font-weight: bold;
 }
@@ -107,7 +115,7 @@ ngb-pagination ::ng-deep .page-item.disabled .page-link {
 /* Medium devices (tablets, less than 992px) */
 @media (max-width: 991.98px) {
 
-    .teams--container{
+    .page--container {
         width: 90vw;
     }
 }

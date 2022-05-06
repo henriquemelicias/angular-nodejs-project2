@@ -3,7 +3,7 @@ import { UserService } from "@data/user/services/user.service";
 import { NgbOffcanvas } from "@ng-bootstrap/ng-bootstrap";
 import { TeamSchema } from "@data/team/schemas/team.schema";
 
-import { Observable, Subject, Subscription, takeUntil } from "rxjs";
+import { Subject, takeUntil } from "rxjs";
 import { TeamService } from "@data/team/services/team.service";
 import { SanitizedErrorInterface } from "@core/models/sanitized-error.interface";
 import { AppErrorHandler } from "@core/utils/class-error-handler.util";
@@ -22,12 +22,17 @@ export class TeamsComponent implements OnInit, OnDestroy {
 
     private _ngUnsubscribe$: Subject<void> = new Subject<void>();
 
+    public PAGE_SIZE = TeamService._TEAMS_PER_PAGE;
+
     public teamsObserver$ = TeamService.getTeams$();
     public isSessionUserAdmin = UserService.isSessionUserAdmin();
     public teamsPages?: TeamSchema[][];
     public currentPage = 1;
+    public numberOfEntries = 0;
 
-    constructor( private offcanvasService: NgbOffcanvas, private teamService: TeamService ) { }
+    constructor( private offcanvasService: NgbOffcanvas, private teamService: TeamService ) {
+        this.selectPage( "1" );
+    }
 
     ngOnInit(): void {
         TeamService
@@ -52,8 +57,45 @@ export class TeamsComponent implements OnInit, OnDestroy {
                     }
                 }
             );
+    }
 
+    getNumberOfTeams(): void {
+        this.teamService.getNumberOfTeams()
+            .pipe( takeUntil( this._ngUnsubscribe$ ) )
+            .subscribe(
+                {
+                    next: data => this.numberOfEntries = data.numberOfTeams,
+                    error: ( error: SanitizedErrorInterface ) => {
+                        if ( error.hasBeenHandled ) return;
+
+                        const errorHandler = new AppErrorHandler( error );
+                        errorHandler
+                            .ifErrorHandlers( null, () => {
+                                AlertService.alertToApp(
+                                    AlertType.Error,
+                                    GenericMessageEnum.UNEXPECTED_UNHANDLED_ERROR + error.message,
+                                    null,
+                                    LoggerService.setCaller( "TeamsComponent", "getNumberOfTeams" )
+                                );
+                            } ).toObservable();
+                    }
+                }
+            )
+    }
+
+    public reload() {
+        this.getNumberOfTeams();
         this.teamService.loadTeams$( this.currentPage );
+    }
+
+    selectPage( page: string ) {
+        this.currentPage = parseInt( page, 10 ) || 1;
+        this.reload();
+
+    }
+
+    formatInput( input: HTMLInputElement ) {
+        input.value = input.value.replace( /[^0-9]/g, '' );
     }
 
     ngOnDestroy() {

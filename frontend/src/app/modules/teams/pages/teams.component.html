@@ -1,39 +1,77 @@
-<div class="teams--container">
-    <div class="page__head--container">
+<div class="page--container">
+    <div class="page__content">
+        <div class="page__head--container">
         <span class="page__head"><h1 class="page__title">Teams</h1><h2
                 class="page__subtitle">Everyone is here</h2></span>
-        <div *ngIf="isSessionUserAdmin">
-            <ng-template #content let-offcanvas>
-                <div class="offcanvas-header">
-                    <h3 class="offcanvas-title" id="offcanvas-basic-title">Create a new team</h3>
-                    <button type="button" class="btn-close btn-close-white" aria-label="Close"
-                            (click)="offcanvas.dismiss()"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <app-add-team-form></app-add-team-form>
-                    <div class="app-alert-wrapper">
-                        <app-alert id="alert-team-form" [isOnlyOne]="true"></app-alert>
+            <div *ngIf="isSessionUserAdmin">
+                <ng-template #content let-offcanvas>
+                    <div class="offcanvas-header">
+                        <h3 class="offcanvas-title" id="offcanvas-basic-title">Create a new team</h3>
+                        <button type="button" class="btn-close btn-close-white" aria-label="Close"
+                                (click)="offcanvas.dismiss()"></button>
                     </div>
-                </div>
-            </ng-template>
+                    <div class="offcanvas-body" (focusout)="reload()">
+                        <app-add-team-form></app-add-team-form>
+                        <div class="app-alert-wrapper">
+                            <app-alert id="alert-team-form" [isOnlyOne]="true"></app-alert>
+                        </div>
+                    </div>
+                </ng-template>
 
-            <button class="btn-lg default-button" (click)="openOffCanvas(content)">Add new team</button>
+                <button class="btn-lg default-button" (click)="openOffCanvas(content)">Add new team</button>
+            </div>
+        </div>
+
+        <div *ngIf="(teamsObserver$ | async) as teamPages">
+            <ngb-accordion *ngIf="teamsPages && teamsPages.length >= currentPage"
+                           class="accordion--wrapper"
+                           [closeOthers]="true" activeIds="teams-accordion-static-0">
+                <ngb-panel *ngFor="let team of teamPages[currentPage - 1]; let i = index" class="accordion__panel"
+                           id="teams-accordion-static-{{ i }}"
+                           title="{{ (i + 1) + (currentPage - 1) * PAGE_SIZE }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{team.name }}">
+                    <ng-template class="accordion__panel__template" ngbPanelContent>
+                        <div class="accordion__item"><span>id:</span> {{ team._id  }}</div>
+                        <div class="accordion__item">
+                            <span>members:</span> {{ team.members.length == 0 ? "N/A" : team.members }}</div>
+                        <div class="accordion__item">
+                            <span>projects:</span> {{ team.projects.length == 0 ? "N/A" : team.projects }}</div>
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
         </div>
     </div>
 
-    <div *ngIf="(teamsObserver$ | async) as teamPages">
-        <ngb-accordion *ngIf="teamsPages && teamsPages.length >= currentPage" class="accordion--wrapper"
-                       [closeOthers]="true" activeIds="teams-accordion-static-0">
-            <ngb-panel *ngFor="let team of teamPages[currentPage - 1]; let i = index" class="accordion__panel"
-                       id="teams-accordion-static-{{ i }}" title="{{ i }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{team.name }}">
-                <ng-template class="accordion__panel__template" ngbPanelContent>
-                    <div class="accordion__item"><span>id:</span> {{ team._id  }}</div>
-                    <div class="accordion__item"><span>members:</span> {{ team.members.length == 0 ? "N/A" : team.members }}</div>
-                    <div class="accordion__item"><span>projects:</span> {{ team.projects.length == 0  ? "N/A" : team.projects }}</div>
-                </ng-template>
-            </ngb-panel>
-        </ngb-accordion>
+    <div class="page__pagination--wrapper">
+        <ngb-pagination class="page__pagination" [collectionSize]="numberOfEntries" [pageSize]="10"
+                        [(page)]="currentPage"
+                        (pageChange)="reload()"
+                        [boundaryLinks]="true">
+            <ng-template ngbPaginationPages let-page let-pages="pages">
+                <li class="ngb-custom-pages-item" *ngIf="pages.length > 0">
+                    <div class="mb-3 d-flex flex-nowrap px-2">
+                        <label
+                                id="paginationInputLabel"
+                                for="paginationInput"
+                                class="col-form-label me-2 ms-1"
+                        >Page</label>
+                        <input #i
+                               type="text"
+                               inputmode="numeric"
+                               pattern="[0-9]*"
+                               class="form-control custom-pages-input"
+                               id="paginationInput"
+                               [value]="page"
+                               (keyup.enter)="selectPage(i.value)"
+                               (blur)="selectPage(i.value)"
+                               (input)="formatInput($any($event).target)"
+                               aria-labelledby="paginationInputLabel paginationDescription"
+                               style="width: 2.5rem; height: 2.5rem; font-weight: bold; text-align: center"
+                        />
+                        <span id="paginationDescription" class="col-form-label text-nowrap px-2">
+                  of {{pages.length}}</span>
+                    </div>
+                </li>
+            </ng-template>
+        </ngb-pagination>
     </div>
-
-    <ngb-pagination class="page__pagination" [collectionSize]="1000" [(page)]="currentPage" [pageSize]="10" [rotate]="true" [ellipses]="true" [boundaryLinks]="true"></ngb-pagination>
 </div>

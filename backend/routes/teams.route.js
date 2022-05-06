@@ -15,6 +15,8 @@ teamsRouter.post( '/',
     [ verifyToken, verifyIfAdmin, oneOf( teamsController.getTeamRules() ), verifyRules, checkDuplicateName ],
     teamsController.addTeam );
 
+teamsRouter.get( '/num-entries', [ verifyToken ], teamsController.getNumberOfTeams );
+
 teamsRouter.get( '/:name', teamsController.getTeamByName );
 
 teamsRouter.put( '/:name', teamsController.modifyTeam );
