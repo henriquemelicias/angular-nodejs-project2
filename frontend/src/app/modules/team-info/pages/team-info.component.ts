@@ -7,7 +7,7 @@ import { ProjectService } from '../../../data/project/services/project.service';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 
 @Component({
-  selector: 'app-project-info-team',
+  selector: 'app-projects-info-team',
   templateUrl: './team-info.component.html',
   styleUrls: [ './team-info.component.css']
 })

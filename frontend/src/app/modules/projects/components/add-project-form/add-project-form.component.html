@@ -1,0 +1,78 @@
+<p>Create new project</p>
+
+<form [formGroup]="projectForm">
+    <div class="project-form__group">
+        <label for="project-form-name">Name</label>
+        <input type="text" class="project-form__group__control form-control" id="project-form-name"
+               formControlName="name"
+               [ngClass]="{'is-invalid': form['name'].errors &&
+                                      (form['name'].touched || form['name'].dirty),
+                         'is-valid': form['name'].valid }"
+        >
+    </div>
+
+    <div class="alert alert-danger" [hidden]="form['name'].valid || form['name'].pristine">
+        <div *ngIf="form['name'].errors?.['required']">Name is required</div>
+        <div *ngIf="form['name'].errors?.['minlength']">Name must be at least 4 characters</div>
+        <div *ngIf="form['name'].errors?.['pattern']">Only alphanumeric characters are allowed</div>
+    </div>
+
+    <label for="project-form-acronym">Acronym</label>
+    <div class="project-form__group input-group">
+        <input class="project-form__group__acronym-control form-control" id="project-form-acronym"
+               formControlName="acronym"
+               [ngClass]="{'is-invalid': form['acronym'].errors && (form['acronym'].touched || form['acronym'].dirty), 'is-valid': form['acronym'].valid}"
+        >
+
+    </div>
+
+    <div class="alert alert-danger" [hidden]="form['acronym'].valid || form['acronym'].pristine">
+        <div *ngIf="form['acronym'].errors?.['required']">Acronym is required</div>
+        <div *ngIf="form['acronym'].errors?.['minlength']">Acronym must be 3 characters</div>
+        <div *ngIf="form['acronym'].errors?.['maxlength']">Acronym must be 3 characters</div>
+        <div *ngIf="form['acronym'].errors?.['pattern']">>Only alphanumeric characters are allowed</div>
+    </div>
+
+    <label for="project-form-start-date">Start Date</label>
+    <div class="project-form__group input-group">
+        <input class="project-form__group__start-date-control form-control" id="project-form-start-date"
+               formControlName="startDate"
+               type="date"
+               min="{{todayDate | date:'yyyy-MM-dd'}}"
+               [ngClass]="{'is-invalid': form['startDate'].errors && (form['startDate'].touched || form['startDate'].dirty), 'is-valid': form['startDate'].valid}"
+        >
+
+    </div>
+
+    <div class="alert alert-danger" [hidden]="form['startDate'].valid || form['startDate'].pristine">
+        <div *ngIf="form['startDate'].errors?.['required']">Date is required</div>
+    </div>
+
+    <label for="project-form-end-date">End Date</label>
+    <div class="project-form__group input-group">
+        <input class="project-form__group__start-date-control form-control" id="project-form-end-date"
+               formControlName="endDate"
+               type="date"
+               min="{{form['startDate'].value | date:'yyyy-MM-dd'}}"
+               [ngClass]="{'is-invalid': (projectForm.getError('notValidEndDate') || form['endDate'].errors) && (form['endDate'].touched || form['endDate'].dirty), 'is-valid': form['endDate'].valid}"
+        >
+
+    </div>
+
+    <div class="alert alert-danger" [hidden]="!projectForm.getError('notValidEndDate') || form['endDate'].pristine || !form['endDate']">
+        <div *ngIf="projectForm.getError('notValidEndDate')">End date must be after start date</div>
+    </div>
+
+    <div class="project-form__submit-button--container">
+        <button type="submit" class="project-form__submit-button default-button"
+                [disabled]="!projectForm.valid"
+                (click)="onSubmit()"
+        >
+            Create
+        </button>
+    </div>
+
+    <div class="app-alert-wrapper">
+        <app-alert id="alert-project-form" [isOnlyOne]="true"></app-alert>
+    </div>
+</form>

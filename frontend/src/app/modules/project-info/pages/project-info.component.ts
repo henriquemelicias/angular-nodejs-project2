@@ -4,7 +4,7 @@ import { ProjectSchema } from '@data/project/schemas/project.schema';
 
 
 @Component( {
-                selector: 'app-project-info',
+                selector: 'app-projects-info',
                 templateUrl: './project-info.component.html',
                 styleUrls: [ './project-info.component.css' ]
             } )

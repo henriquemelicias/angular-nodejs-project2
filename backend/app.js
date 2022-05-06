@@ -24,8 +24,7 @@ const { indexRouter, apiRouter } = require( "#routes/index.route" );
 /* Middleware */
 const httpLoggerMiddleware = require( "./middlewares/core/http-logger.middleware" );
 const notFoundThrowerMiddleware = require( "./middlewares/core/not-found-thrower.middleware" );
-const errorLoggerMiddleware = require( "./middlewares/core/error-logger.middleware" );
-const errorHandlerMiddleware = require( "./middlewares/core/error-handler.middleware" );
+const { errorHandlerMiddleware, errorLoggerMiddleware} = require( "#middlewares/core/errors.middleware" );
 
 // Print the environment currently in use.
 logger.info( logger.callerInfo( 'app.js' ), `Environment in use: NODE_ENV=${ appConfig.NODE_ENV }` );

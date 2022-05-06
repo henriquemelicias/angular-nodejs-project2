@@ -4,7 +4,7 @@ const httpError = require( 'http-errors' );
 const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 const { TaskPriority } = require( "#enums/db-task-priority.enum" );
 
-exports.task_post = function ( req, res, next ) {
+exports.createTask = function ( req, res, next ) {
     const name = req.body.name;
     const priority = req.body.priority.toUpperCase();
     const percentage = req.body.percentage;

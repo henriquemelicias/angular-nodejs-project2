@@ -14,10 +14,10 @@ const nonApiController = require( "#controllers/non-api.controller" );
 apiRouter.use( '/auth', authRoute );
 
 //Task
-apiRouter.use( '/task', taskRoute );
+apiRouter.use( '/tasks', taskRoute );
 
 // Project
-apiRouter.use( '/project', projectRoute )
+apiRouter.use( '/projects', projectRoute )
 
 // Index routes (NON API FUNCTIONS).
 indexRouter.get( '/db-purge', nonApiController.purgeDatabase );

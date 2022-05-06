@@ -4,12 +4,14 @@ const Schema = mongoose.Schema;
 
 const ProjectSchema = new Schema(
     {
-        name: { type: String, required: true, minlength: 4, unique: true },
+        name: { type: String, required: true, minlength: 4 },
         acronym: { type: String, required: true, minlength: 3, unique: true },
         startDate: { type: Date, required: true },
         endDate: { type: Date, required: false },
         tasks: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Task' } ]
     } );
+
+ProjectSchema.index( { acronym: 1 } );
 
 /**
  * Get project url.

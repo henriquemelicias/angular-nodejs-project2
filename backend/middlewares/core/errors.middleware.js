@@ -1,5 +1,13 @@
-const { firstDigit } = require( "#utils/generic.utils" );
+const logger = require( "#services/logger.service" );
 const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
+const { firstDigit } = require( "#utils/generic.utils" );
+
+function errorLogger( err, req, res, next ) {
+    const callerClass = req.loggerCallerClass || 'ErrorLoggerMiddleware';
+    const callerFunction = req.loggerCallerFunction || errorLogger
+    logger.error( logger.callerInfo( callerClass, callerFunction ), err.name + ":", err.message );
+    next( err );
+}
 
 function errorHandler( err, req, res, next ) {
     // Headers already sent, next middleware takes care of it.
@@ -14,7 +22,7 @@ function errorHandler( err, req, res, next ) {
         res.status( HttpStatusCode.BadRequest ).json( message );
     }
 
-    /* HTTP status code errors. */
+        /* HTTP status code errors. */
 
     // Don't print stack trace. Send error and message to user.
     else if ( firstDigit( err.statusCode ) === 4 ) {
@@ -31,4 +39,7 @@ function errorHandler( err, req, res, next ) {
     next( err );
 }
 
-module.exports = errorHandler;
+module.exports = {
+    errorLoggerMiddleware: errorLogger,
+    errorHandlerMiddleware: errorHandler
+};

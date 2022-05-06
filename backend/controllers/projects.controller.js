@@ -3,23 +3,42 @@ const httpError = require( 'http-errors' );
 const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 const { body } = require( "express-validator" );
 const logger = require( "#services/logger.service" );
+const DateTime = require( "date-and-time" );
 
-projectParams = {
+const projectParams = {
     name: "name",
     acronym: "acronym",
-    startDate: "startDate"
+    startDate: "startDate",
+    endDate: "endDate"
 }
 
 exports.addProject = function ( req, res, next ) {
-    const caller = logger.setCallerInfo( "ProjectController", "addProject" );
+    const caller = logger.setCallerInfo( req, "ProjectController", "addProject" );
+
+    const todayDate = new Date();
+    const todayDateMinusOneDay = new DateTime.addDays( todayDate, -1 );
+
+    if ( req.body.startDate <= todayDateMinusOneDay ) {
+        next( httpError( HttpStatusCode.BadRequest, "Start date before current date." ) );
+        return;
+    }
+
+    if ( req.body.endDate ) {
+        if ( req.body.endDate <= req.body.startDate ) {
+            next( httpError( HttpStatusCode.BadRequest, "End date equal/before start date." ) );
+            return;
+        }
+    }
 
     const project = new Project( {
         name: req.body.name,
         acronym: req.body.acronym,
         startDate: req.body.startDate,
-        endDate: req.body.endDate,
+        endDate: req.body.endDate || null,
         tasks: []
-    } )
+    } );
+
+    logger.info( "New add project attempt: " + JSON.stringify( project ), caller );
 
     project.save( ( error, _ ) => {
         if ( error ) {
@@ -27,29 +46,30 @@ exports.addProject = function ( req, res, next ) {
             return;
         }
 
-        res.status( HttpStatusCode.Created ).send( "POST foi feito com sucesso!" );
-
+        logger.info( `Project ${ req.body.acronym } added with success.`, caller );
+        res.status( HttpStatusCode.Created ).send();
     } );
 
 }
 
 exports.getProjectRules = () => {
+
     return [
         body( projectParams.name, 'Project name is required.' ).exists(),
         body( projectParams.name, 'Project name must be of string type.' ).isString(),
         body( projectParams.name, 'Project name must have minimum length of 4.' ).isLength( { min: 4 } ),
-        body( projectParams.name, 'Project name can only have alphanumeric characters' ).isAlphanumeric(),
+        body( projectParams.name, 'Project name can only have alphanumeric characters.' ).isAlphanumeric(),
         body( projectParams.acronym, 'Acronym is required.' ).exists(),
-        body( projectParams.acronym, 'Project name must be of string type.' ).isString(),
-        body( projectParams.acronym, 'Project name must have minimum length of 4.' ).isLength( { min: 3 } ),
-        body( projectParams.acronym, 'Project name must have minimum length of 4.' ).isAlphanumeric(),
+        body( projectParams.acronym, 'Acronym must be of string type.' ).isString(),
+        body( projectParams.acronym, 'Acronym name be of length 3.' ).isLength( { min: 3, max: 3 } ),
+        body( projectParams.acronym, 'Acronym name can only have alphanumeric characters.' ).isAlphanumeric(),
         body( projectParams.startDate, 'StartDate is required.' ).exists(),
         body( projectParams.startDate, 'StartDate must be of Date type' ).isDate(),
-        body( projectParams.startDate, 'StartDate must be after current date' ).isAfter( new Date().toDateString() )
+        body( projectParams.endDate, "EndDate must be of Date type." )
+            .optional( { checkFalsy: true, nullable: false } ).isDate(),
+
     ]
 }
-
-
 exports.getProjectByAcronymUrl = function ( req, rest, next ) {
 
     async.parallel( {
