@@ -65,9 +65,9 @@ exports.getProjectRules = () => {
         body( projectParams.acronym, 'Acronym name be of length 3.' ).isLength( { min: 3, max: 3 } ),
         body( projectParams.acronym, 'Acronym name can only have alphanumeric characters.' ).isAlphanumeric(),
         body( projectParams.startDate, 'StartDate is required.' ).exists(),
-        body( projectParams.startDate, 'StartDate must be of Date type' ).isDate(),
+        body( projectParams.startDate, 'StartDate must be of Date type' ).toDate(),
         body( projectParams.endDate, "EndDate must be of Date type." )
-            .optional( { checkFalsy: true, nullable: false } ).isDate(),
+            .optional( { checkFalsy: true, nullable: false } ).toDate(),
 
     ]
 }

@@ -3,6 +3,10 @@
   margin-bottom: 8rem;
 }
 
+h1 span {
+  color: var(--secondary-color);
+}
+
 @media (max-width: 992.98px ) {
   .about-container {
     margin: 3rem 1rem;

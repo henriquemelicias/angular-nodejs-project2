@@ -6,8 +6,8 @@ const { validationResult } = require( "express-validator" );
 const verifyRules = function () {
     return function ( req, res, next ) {
 
-        logger.setCallerInfo( req, 'VerifyRulesMiddleware', "verifyRules" );
         const errors = validationResult( req );
+        logger.setCallerInfo( req, 'VerifyRulesMiddleware', "verifyRules" );
         if ( !errors.isEmpty() ) {
             next( httpError( HttpStatusCode.BadRequest, { errors: errors.array() } ) );
         }
