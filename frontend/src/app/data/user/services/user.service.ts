@@ -13,6 +13,7 @@ import { HttpSettings } from "@core/constants/http-settings.const";
 export class UserService {
 
     public static sessionUser?: UserSchema;
+
     private static _sessionUser$ = new BehaviorSubject<UserSchema | undefined>( undefined );
     private static _API_URI = HttpSettings.API_URL + "/users";
 

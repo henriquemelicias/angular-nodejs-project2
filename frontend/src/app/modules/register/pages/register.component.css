@@ -1,7 +1,31 @@
+.register--container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.register__header {
+  width: 40%;
+  display: table;
+  table-layout: fixed;
+  user-select: none;
+}
+
+.register__title {
+  direction: ltr;
+  margin-block-end: -2rem;
+}
+
+.register__subtitle {
+  direction: rtl;
+  color: var( --secondary-color );
+}
+
 .register-form--container {
   display: block;
   width: 400px;
-  margin: 3rem 1rem 6rem;
+  margin: 2rem 1rem 6rem;
 }
 
 /* Medium devices (tablets, less than 992px) */
@@ -12,10 +36,6 @@
     width: auto;
     margin: 1rem;
   }
-}
-
-.register-form__title {
-  text-align: center;
 }
 
 .register-form__group {

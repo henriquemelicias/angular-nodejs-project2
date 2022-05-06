@@ -1,0 +1,28 @@
+.teams--container{
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+}
+
+.teams__head--container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.accordion-wrapper {
+
+}
+
+.accordion__panel {
+}
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+
+    .teams--container{
+        width: 90vw;
+    }
+}
