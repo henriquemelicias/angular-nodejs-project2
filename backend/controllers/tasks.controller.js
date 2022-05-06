@@ -1,17 +1,18 @@
-var Task = require('../models/task.schema');
+const Task = require( '../models/task.schema' );
 const httpError = require( 'http-errors' );
 const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 const { TaskPriority } = require( "#enums/db-task-priority.enum" );
-var async = require('async');
+const { query } = require( "express-validator" );
+const { URL } = require( "url" );
 
 exports.createTask = function ( req, res, next ) {
     const name = req.body.name;
     const priority = req.body.priority.toUpperCase();
     const percentage = req.body.percentage;
     const madeByUser = req.body.madeByUser;
-    var task;
-    var taskPriority;
- 
+    let task;
+    let taskPriority;
+
     if(priority === TaskPriority.BAIXA.valueOf()){
         taskPriority = TaskPriority.BAIXA.valueOf();
     } else if(priority === TaskPriority.MEDIA.valueOf()) {
@@ -89,3 +90,48 @@ exports.task_update = function (req, res, next ) {
     })
 
 }
+
+exports.getNTasksByPageRules = () => {
+    return [
+        query( "numTasks", 'numTasks must be of Int type with a value of at least 1.' ).exists().toInt().custom( i => i > 0 ),
+        query( "numPage", 'numPages must be of Int type with a value of at least 1.' ).exists().toInt().custom( i => i > 0 ),
+    ];
+}
+
+exports.getNTasksByPage = ( req, res, next ) => {
+    const baseURL = 'http://' + req.headers.host + '/';
+    const searchParams = new URL( req.url, baseURL ).searchParams;
+
+    const numPage = parseInt( searchParams.get( 'numPage' ) ) - 1;
+    const numTasks = parseInt( searchParams.get( 'numTasks' ) );
+
+    Task.find( {} )
+        .lean()
+        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users" ] )
+        .sort( { $natural: 1 } ) // sort by oldest first
+        .skip( numPage * numTasks )
+        .limit( numTasks )
+        .exec( ( error, tasks ) => {
+
+            if ( error ) {
+                next( httpError( HttpStatusCode.InternalServerError ), error );
+                return;
+            }
+
+            res.send( tasks );
+        } );
+}
+
+exports.getNumberOfTasks = ( req, res, next ) => {
+    Task.count( {} )
+        .lean()
+        .exec( ( error, numberOfTasks ) => {
+
+            if ( error ) {
+                next( httpError( HttpStatusCode.InternalServerError ), error );
+                return;
+            }
+
+            res.send( { numberOfTasks: numberOfTasks } );
+        } );
+};
