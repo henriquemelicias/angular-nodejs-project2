@@ -8,7 +8,7 @@ exports.createTask = function ( req, res, next ) {
     const name = req.body.name;
     const priority = req.body.priority.toUpperCase();
     const percentage = req.body.percentage;
-    const madeBy = req.body.madeBy;
+    const madeByUser = req.body.madeByUser;
     var task;
     var taskPriority;
  
@@ -26,7 +26,7 @@ exports.createTask = function ( req, res, next ) {
         name: name,
         priority: taskPriority,
         percentage: percentage,
-        madeByUser: madeBy,
+        madeByUser: madeByUser,
         users: []
     });
     
