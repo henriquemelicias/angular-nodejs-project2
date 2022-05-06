@@ -1,9 +1,14 @@
-<p>Task information</p>
+
 
 <div *ngIf="task">
+    <h1>Task information</h1>
     <h2>Task: {{task.name}}</h2>
     <div><span>id: </span>{{task._id}}</div>
     <div><span>madeBy: </span>{{task.madeByUser}}</div>
     <div><span>priority: </span>{{task.priority}}</div>
     <div><span>percentage: </span>{{task.percentage}} %</div>
 </div>
+
+<div *ngIf="!task"> 
+    <h1>Task not found !</h1>
+ </div>
