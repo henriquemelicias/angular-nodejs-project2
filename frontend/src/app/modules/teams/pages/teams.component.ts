@@ -85,7 +85,7 @@ export class TeamsComponent implements OnInit, OnDestroy {
 
     public reload() {
         this.getNumberOfTeams();
-        this.teamService.loadTeamsByPage$( this.currentPage );
+        this.teamService.loadTeamsByPage( this.currentPage );
     }
 
     selectPage( page: string ) {

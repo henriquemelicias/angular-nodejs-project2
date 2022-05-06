@@ -11,6 +11,6 @@ usersRouter.get( '/by-pages',
     [ verifyToken, oneOf( usersController.getNUsersByPageRules() ), verifyRules ],
     usersController.getNUsersByPage );
 
-usersRouter.get( '/num-entries', [ verifyToken ], usersController.getNumberOfUserss );
+usersRouter.get( '/num-entries', [ verifyToken ], usersController.getNumberOfUsers );
 
 module.exports = usersRouter;
