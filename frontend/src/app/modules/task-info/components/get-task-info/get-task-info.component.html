@@ -10,12 +10,12 @@
 
     <div *ngIf="users">
         <ul *ngFor="let u of users">
-            <a>{{u.username}}</a>
+            <a>User: {{u.username}}</a>
         </ul>
     </div>
 
     <div *ngIf="!users">
-        <h2>no users</h2>
+        <span> Users: No users assigned to this task </span>
     </div>
 
 </div>
