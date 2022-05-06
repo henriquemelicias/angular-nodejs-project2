@@ -60,19 +60,19 @@ exports.task_get = function ( req, res, next ){
     .lean()
     .select(["_id","name","priority","percentage", "madeByUser"])
     .exec( function ( err, task ) {
-        if ( error )
+        if ( err )
         {
-            return next( httpError( HttpStatusCode.InternalServerError, error ) );
+            return next( httpError( HttpStatusCode.InternalServerError, err ) );
         }
         res.status( HttpStatusCode.Created).send( task );
     })     
 }
 
 exports.task_list = function (req, res, next){ 
-    Task.find({}).select(["_id", "name", "priority", "percentage" , "madeByUser"]).exec( function ( err, task ) {
-        if ( error )
+    Task.find({}).select(["_id", "name", "priority", "percentage" , "madeByUser", "users"]).exec( function ( err, task ) {
+        if ( err )
         {
-            return next( httpError( HttpStatusCode.InternalServerError, error ) );
+            return next( httpError( HttpStatusCode.InternalServerError, err ));
         }
         res.status( HttpStatusCode.Created).send( task );
     })
