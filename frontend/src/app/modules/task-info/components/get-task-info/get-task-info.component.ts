@@ -14,6 +14,7 @@ export class GetTaskInfoComponent implements OnInit {
 
   task: TaskSchema | undefined;
   users: UserSchema[] | undefined;
+  selected: UserSchema | undefined;
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute,
@@ -37,6 +38,21 @@ export class GetTaskInfoComponent implements OnInit {
     if(this.task) {
       this.taskService.updateTask(this.task).subscribe();
     }
+  }
+
+  clickedUser(user: UserSchema): void {
+    this.selected = user;
+    
+  }
+
+  addUser(): void {
+  if (this.selected) {
+    this.task?.users?.push(this.selected);
+    if (this.task) {
+      this.taskService.updateTask(this.task).subscribe();
+    }
+  }
+    
   }
 
 }
