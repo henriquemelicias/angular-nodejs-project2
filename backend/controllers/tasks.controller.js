@@ -65,3 +65,13 @@ exports.task_get = function ( req, res, next ){
         res.status( HttpStatusCode.Created).send( task );
     })     
 }
+
+exports.task_list = function (req, res, next){ 
+    Task.find({}).select("_id", "name", "priority", "percentage" , "madeByUser").exec( function ( err, task ) {
+        if ( err )
+        {
+            return next( httpError( HttpStatusCode.InternalServerError, error ) );
+        }
+        res.status( HttpStatusCode.Created).send( task );
+    })
+}
