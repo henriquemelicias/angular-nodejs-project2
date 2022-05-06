@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TaskService } from '@data/task/services/task.service'
 import { TaskSchema } from '@data/task/schemas/task.schema';
 import { UserService } from '@app/data/user/services/user.service';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -11,10 +12,25 @@ import { firstValueFrom } from 'rxjs';
 })
 export class AddTaskFormComponent implements OnInit {
 
+  public taskForm: FormGroup;
+
   selectedPriority: string = '';
   username: string = "";
 
-  constructor(private taskService: TaskService) { 
+  constructor(private taskService: TaskService, private formBuilder: FormBuilder,) {
+    
+    this.taskForm = formBuilder.group(
+      {
+          name: [
+              '', [
+                  Validators.required,
+                  Validators.minLength( 4 ),
+                  Validators.maxLength( 50 ),
+                  Validators.pattern( "[a-zA-Z0-9]*" )
+              ]
+          ]
+  } );
+
     const userPromise = firstValueFrom( UserService.getSessionUser$() );
 
     userPromise.then( user => {
@@ -25,6 +41,16 @@ export class AddTaskFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  public get form(): { [key: string]: AbstractControl; } {
+    return this.taskForm.controls;
+  }
+
+  public onSubmit(): void {
+
+      const taskName = this.form['name'].value;
+      this.addTask( taskName );
   }
 
   selectChangeHandler (event: any) {
