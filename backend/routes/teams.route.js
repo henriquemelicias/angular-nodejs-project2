@@ -7,13 +7,14 @@ const { verifyRules } = require( "#middlewares/core/verify-rules.middleware" );
 const { checkDuplicateName } = require( "#middlewares/teams/teams.middleware" );
 const { oneOf } = require( "express-validator" );
 
-teamsRouter.get( '/',
-    [ verifyToken, oneOf( teamsController.getNTeamsByPageRules() ), verifyRules ],
-    teamsController.getNTeamsByPage );
 
 teamsRouter.post( '/',
     [ verifyToken, verifyIfAdmin, oneOf( teamsController.getTeamRules() ), verifyRules, checkDuplicateName ],
     teamsController.addTeam );
+
+teamsRouter.get( '/by-pages',
+    [ verifyToken, oneOf( teamsController.getNTeamsByPageRules() ), verifyRules ],
+    teamsController.getNTeamsByPage );
 
 teamsRouter.get( '/num-entries', [ verifyToken ], teamsController.getNumberOfTeams );
 
