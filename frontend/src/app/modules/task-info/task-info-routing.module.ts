@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TaskInfoComponent } from '../tasks/components/add-task-form/add-task-form.component';
+import { TaskInfoComponent } from './pages/task-info.component';
 
 export const routes: Routes = [
   { path: '', component: TaskInfoComponent },

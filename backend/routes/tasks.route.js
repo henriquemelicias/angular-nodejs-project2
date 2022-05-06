@@ -6,6 +6,6 @@ tasksRouter.post('', tasksController.createTask);
 
 tasksRouter.delete('/:id', tasksController.task_delete);
 
-tasksRouter.get('/:name', tasksController.task_get);
+tasksRouter.get('/:id', tasksController.task_get);
 
 module.exports = tasksRouter;
