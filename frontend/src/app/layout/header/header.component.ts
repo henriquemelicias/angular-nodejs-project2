@@ -151,6 +151,9 @@ export class HeaderComponent implements OnInit {
 
     logout() {
         this.auth.logout();
+        this.isLoggedIn = false;
+        this.isAdmin = false;
+        this.updateNavItems();
     }
 
     ngOnDestroy() {

@@ -11,10 +11,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { HTTP_INTERCEPTORS } from "@angular/common/http";
-import { AuthTokenInterceptor } from "@core/interceptors/token/auth-token.interceptor";
-import { ErrorInterceptor } from "@core/interceptors/error/error.interceptor";
-
 import { HeaderComponent } from "@app/layout/header/header.component";
 import { ContentLayoutComponent } from "@app/layout/content-layout/content-layout.component";
 import { FooterComponent } from "@app/layout/footer/footer.component";
@@ -48,8 +44,6 @@ import { FooterScrollUpButtonComponent } from '@layout/footer-scroll-up-button/f
     FormsModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

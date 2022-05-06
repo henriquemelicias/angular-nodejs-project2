@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest, HttpStatusCode
+    HttpErrorResponse,
+    HttpHandler,
+    HttpInterceptor,
+    HttpRequest, HttpStatusCode
 } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -18,59 +19,61 @@ import { AlertType } from "@core/models/alert.model";
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor( private router: Router ) {}
+    constructor( private router: Router ) {}
 
-  intercept( request: HttpRequest<unknown>, next: HttpHandler ): Observable<any> {
-    return next.handle( request ).pipe(
-      catchError( error => {
+    intercept( request: HttpRequest<unknown>, next: HttpHandler ): Observable<any> {
+        return next.handle( request ).pipe(
+            catchError( error => {
 
-        const sanitizedError: SanitizedErrorInterface = {
-          name: "",
-          message: "",
-          error: error,
-          hasBeenHandled: false
-        }
+                const sanitizedError: SanitizedErrorInterface = {
+                    name: "",
+                    message: "",
+                    error: error,
+                    hasBeenHandled: false
+                }
 
-        const errorHandler = new AppErrorHandler( sanitizedError );
+                const errorHandler = new AppErrorHandler( sanitizedError );
 
-        errorHandler
-          .clientErrorHandler( () => {
+                errorHandler
+                    .clientErrorHandler( () => {
 
-            errorHandler.name = errorHandler.error.name;
-            errorHandler.message = (errorHandler.error.error && typeof errorHandler.error.error === 'string') ?
-                                   errorHandler.error.error :
-                                   errorHandler.name + ' ' + errorHandler.error.status + ' ' +
-                                   errorHandler.error.statusText;
-          } )
-          .serverErrorHandler( () => {
+                        errorHandler.name = errorHandler.error.name;
+                        errorHandler.message = (errorHandler.error.error && typeof errorHandler.error.error ===
+                                                'string') ?
+                                               errorHandler.error.error :
+                                               errorHandler.name + ' ' + errorHandler.error.status + ' ' +
+                                               errorHandler.error.statusText;
+                    } )
+                    .serverErrorHandler( () => {
 
-            errorHandler.name = errorHandler.error.name;
-            errorHandler.message = (errorHandler.error.error && typeof errorHandler.error.error === 'string') ?
-                                   errorHandler.error.error :
-                                   errorHandler.name + ' ' + errorHandler.error.status + ' ' +
-                                   errorHandler.error.statusText;
+                        errorHandler.name = errorHandler.error.name;
+                        errorHandler.message = (errorHandler.error.error && typeof errorHandler.error.error ===
+                                                'string') ?
+                                               errorHandler.error.error :
+                                               errorHandler.name + ' ' + errorHandler.error.status + ' ' +
+                                               errorHandler.error.statusText;
 
-            this._serverErrors( errorHandler );
+                        this._serverErrors( errorHandler );
 
-          } )
-          .otherErrorHandler( () => {
+                    } )
+                    .otherErrorHandler( () => {
 
-            errorHandler.name = "UnknownError";
-            errorHandler.message = error.message;
-          } )
-          .ifErrorHandlers(
-            () => LoggerService.error(
-              LoggerService.setCaller( this, this.intercept ),
-              "ErrorInterceptor.intercept -> " + errorHandler.message
-            ),
-            undefined
-          );
+                        errorHandler.name = "UnknownError";
+                        errorHandler.message = error.message;
+                    } );
 
-        return throwError( () => errorHandler.sanitizedError );
-      } )
-    );
+                if ( errorHandler.hasBeenHandled )
+                {
+                    return of( error );
+                }
+                else {
+                    return throwError( () => errorHandler.sanitizedError )
+                }
+            } )
+        );
 
-  }
+    }
+
     private _serverErrors( errorHandler: AppErrorHandler ) {
         const logCallers = LoggerService.setCaller( "ErrorInterceptor", "_serverErrors" );
         switch ( errorHandler.error.status ) {
@@ -82,9 +85,15 @@ export class ErrorInterceptor implements HttpInterceptor {
                             _ => {
                                 LoggerService.info(
                                     'Redirected to login due to server 401 HTTP response.',
-                                    logCallers );
+                                    logCallers
+                                );
                                 setTimeout( () => {
-                                    AlertService.alertToApp( AlertType.Warning, `Unauthorized access`, { isAutoClosed: true }, logCallers );
+                                    AlertService.alertToApp(
+                                        AlertType.Warning,
+                                        `Unauthorized access`,
+                                        { isAutoClosed: true },
+                                        logCallers
+                                    );
                                 } );
                             },
                             error => {
@@ -100,9 +109,15 @@ export class ErrorInterceptor implements HttpInterceptor {
                         _ => {
                             LoggerService.info(
                                 'Redirected to home due to server 403 HTTP response.',
-                                logCallers );
+                                logCallers
+                            );
                             setTimeout( () => {
-                                AlertService.alertToApp( AlertType.Warning, `Forbidden access`, { isAutoClosed: true }, logCallers );
+                                AlertService.alertToApp(
+                                    AlertType.Warning,
+                                    `Forbidden access`,
+                                    { isAutoClosed: true },
+                                    logCallers
+                                );
                             } );
                         },
                         error => {
