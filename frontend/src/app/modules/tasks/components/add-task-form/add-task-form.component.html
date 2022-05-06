@@ -1,8 +1,8 @@
-<p>Create new task</p>
+<p>Task menu</p>
 
 <form [formGroup]="taskForm">
   <div class="task-form__group">
-      <label for="task-form-name">Name</label>
+      <label for="task-form-name">Task name</label>
       <input type="text" class="task-form__group__control form-control" id="task-form-name"
              formControlName="name"
              [ngClass]="{'is-invalid': form['name'].errors &&
@@ -11,35 +11,37 @@
       >
   </div>
 
-  <select name="dropdownOption" id="dropdownOption" (change)="selectChangeHandler($event)">
-    <option value="baixa">baixa</option>
-    <option value="media">média</option>
-    <option value="alta">alta</option>
-    <option value="urgente">urgente</option>
-  </select>
-
   <div class="alert alert-danger" [hidden]="form['name'].valid || form['name'].pristine">
       <div *ngIf="form['name'].errors?.['required']">Name is required</div>
       <div *ngIf="form['name'].errors?.['minlength']">Name must be at least 4 characters</div>
       <div *ngIf="form['name'].errors?.['pattern']">Only alphanumeric characters are allowed</div>
   </div>
 
+  <label for="name">Nivel de urgência</label><br>
+
+  <select class="select" name="dropdownOption" id="dropdownOption" (change)="selectChangeHandler($event)">
+    <option value="baixa">Baixa</option>
+    <option value="media">Média</option>
+    <option value="alta">Alta</option>
+    <option value="urgente">Urgente</option>
+  </select>
+
   <div class="task-form__submit-button--container">
       <button type="submit" class="task-form__submit-button default-button"
               [disabled]="!taskForm.valid"
               (click)="onSubmit()"
       >
-          Create
+          Create Task
       </button>
     </div> 
-    
+
   <div class="app-alert-wrapper">
       <app-alert id="alert-task-form" [isOnlyOne]="true"></app-alert>
   </div>
 
-  <label for="name">TaskSchema ID:</label><br>
-    <input type="text" id="name" #taskID><br>
-    <button type="button" (click)="deleteTask(taskID.value)">Delete task</button>
+  <label for="id">TaskSchema ID</label><br>
+    <input class="task-form__group__control form-control" type="text" id="id" #taskID><br>
+    <button class="task-form__submit-button default-button" type="button" (click)="deleteTask(taskID.value)">Delete task</button>
 </form>
 
 
