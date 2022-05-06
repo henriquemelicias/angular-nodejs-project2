@@ -68,7 +68,7 @@ export class UserService {
         )
     }
 
-    public getNumbersOfUsers(): Observable<{ numberOfUsers: number }> {
+    public getNumberOfUsers(): Observable<{ numberOfUsers: number }> {
         return this.http.get<{ numberOfUsers: number }>(
             UserService._API_URI + "/num-entries",
             HttpSettings.HEADER_CONTENT_TYPE_JSON
