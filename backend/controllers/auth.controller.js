@@ -16,7 +16,8 @@ exports.register = ( req, res, next ) => {
     const user = new User( {
         username: req.body.username,
         password: bcrypt.hashSync( req.body.password, 8 ),
-        roles: [ AuthRoles.USER ]
+        roles: [ AuthRoles.USER ],
+        tasks: []
     } );
 
     logger.info( "User to try register: " + JSON.stringify( user ), caller );
