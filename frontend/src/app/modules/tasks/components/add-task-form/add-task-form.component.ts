@@ -64,7 +64,7 @@ export class AddTaskFormComponent implements OnInit {
   }
 
   addTask(name: string): void {
-    const t:TaskSchema = {name: name, priority: this.selectedPriority, percentage: 0, madeBy: this.username};
+    const t:TaskSchema = {name: name, priority: this.selectedPriority, percentage: 0, madeByUser: this.username};
     this.taskService.addTask(t).subscribe();
   }
 

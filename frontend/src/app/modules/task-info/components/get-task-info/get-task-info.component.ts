@@ -20,7 +20,7 @@ export class GetTaskInfoComponent implements OnInit {
 
   getTask(): void {
     this.taskService.getTask(this.route.snapshot.params['id']).subscribe(task => this.task = task);
-    console.log(this.task?.name);
+    
   }
 
 }

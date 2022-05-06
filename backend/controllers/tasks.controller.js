@@ -48,20 +48,14 @@ exports.task_delete = function ( req, res, next ) {
 
 exports.task_get = function ( req, res, next ){
 
-    async.parallel( {
-        task: function ( callback ) {
-            Task.find( {_id: req.params.id} )
-                .exec( callback );
-        }
-    },
-    function ( err, results ) {
+    Task.findOne( {_id: req.params.id} )
+    .lean()
+    .select(["_id","name","priority","percentage", "madeByUser"])
+    .exec( function ( err, task ) {
         if ( err )
         {
             return next( httpError( HttpStatusCode.InternalServerError, error ) );
         }
-
-        res.status( HttpStatusCode.Created).send( results.task );
-    } );
-
-
+        res.status( HttpStatusCode.Created).send( task );
+    })     
 }

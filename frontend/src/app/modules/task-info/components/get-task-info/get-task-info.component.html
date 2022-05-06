@@ -2,7 +2,8 @@
 
 <div *ngIf="task">
     <h2>{{task.name | uppercase}} information</h2>
-    <div><span>madeBy: </span>{{task.madeBy}}</div>
+    <div><span>id: </span>{{task._id}}</div>
+    <div><span>madeBy: </span>{{task.madeByUser}}</div>
     <div><span>priority: </span>{{task.priority}}</div>
-    <div><span>percentage: </span>{{task.percentage}}</div>
+    <div><span>percentage: </span>{{task.percentage}} %</div>
 </div>
