@@ -79,7 +79,7 @@ exports.task_list = function (req, res, next){
 exports.task_update = function (req, res, next ) {
 
     Task.findByIdAndUpdate({_id: req.params.id},
-        { users: req.req.params.users },
+        {$set: {users: req.req.params.users} },
         function (err) {
             if (err) {
                 next( httpError( HttpStatusCode.InternalServerError, error ) );
