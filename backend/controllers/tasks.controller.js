@@ -4,6 +4,7 @@ const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 const { TaskPriority } = require( "#enums/db-task-priority.enum" );
 const { query } = require( "express-validator" );
 const { URL } = require( "url" );
+const { error } = require( "#services/logger.service" );
 
 exports.createTask = function ( req, res, next ) {
     const name = req.body.name;
@@ -43,8 +44,8 @@ exports.createTask = function ( req, res, next ) {
 }
 
 exports.task_delete = function ( req, res, next ) {
-    Task.findOneAndDelete({_id: req.params.id}, function (err) {
-        if (err) {
+    Task.findOneAndDelete({_id: req.params.id}, function (error) {
+        if (error) {
             next( httpError( HttpStatusCode.InternalServerError, error ) );
             return;
         }
@@ -59,7 +60,7 @@ exports.task_get = function ( req, res, next ){
     .lean()
     .select(["_id","name","priority","percentage", "madeByUser"])
     .exec( function ( err, task ) {
-        if ( err )
+        if ( error )
         {
             return next( httpError( HttpStatusCode.InternalServerError, error ) );
         }
@@ -69,7 +70,7 @@ exports.task_get = function ( req, res, next ){
 
 exports.task_list = function (req, res, next){ 
     Task.find({}).select(["_id", "name", "priority", "percentage" , "madeByUser"]).exec( function ( err, task ) {
-        if ( err )
+        if ( error )
         {
             return next( httpError( HttpStatusCode.InternalServerError, error ) );
         }
@@ -81,8 +82,8 @@ exports.task_update = function (req, res, next ) {
 
     Task.findByIdAndUpdate({_id: req.params.id},
         {$set: {users: req.req.params.users} },
-        function (err) {
-            if (err) {
+        function (error, task ) {
+            if (error) {
                 next( httpError( HttpStatusCode.InternalServerError, error ) );
                 return;
             }
