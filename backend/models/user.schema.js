@@ -17,7 +17,7 @@ UserSchema.index( { username: 1 } );
  */
 UserSchema.virtual( 'url' )
     .get( function () {
-        return '/api/user/' + this.username;
+        return '/api/users/' + this.username;
     } );
 
 module.exports = mongoose.model( "User", UserSchema );

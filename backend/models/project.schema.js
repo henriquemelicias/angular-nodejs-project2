@@ -18,7 +18,7 @@ ProjectSchema.index( { acronym: 1 } );
  */
 ProjectSchema.virtual( 'url' )
     .get( function () {
-        return '/api/project/' + this.acronym;
+        return '/api/projects/' + this.acronym;
     } );
 
 // Export Model

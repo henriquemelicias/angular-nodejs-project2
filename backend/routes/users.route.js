@@ -5,7 +5,7 @@ const { verifyToken } = require( "#middlewares/auth/auth.middleware" );
 const { oneOf } = require( "express-validator" );
 const { verifyRules } = require( "#middlewares/core/verify-rules.middleware" );
 
-usersRouter.get( '', usersController.getUsers );
+usersRouter.get( '', [ verifyToken ], usersController.getUsers );
 
 usersRouter.get( '/by-pages',
     [ verifyToken, oneOf( usersController.getNUsersByPageRules() ), verifyRules ],
@@ -13,6 +13,6 @@ usersRouter.get( '/by-pages',
 
 usersRouter.get( '/num-entries', [ verifyToken ], usersController.getNumberOfUsers );
 
-usersRouter.get('/:id', usersController.user_get);
+usersRouter.get( '/:id', [ verifyToken ], usersController.getUserById );
 
 module.exports = usersRouter;

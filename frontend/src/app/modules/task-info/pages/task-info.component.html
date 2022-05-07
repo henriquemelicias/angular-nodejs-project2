@@ -1,1 +1,57 @@
-<app-get-task-info *ngIf="isCurrentUser"></app-get-task-info>
+<div *ngIf="task">
+    <div class="model-info--container">
+
+        <div class="model-info__headers">
+            <h1>Task info</h1>
+        </div>
+        <div class="model-info__content">
+            <div class="model-info__property">
+                <div class="model-info__property__key">
+                    _id:
+                </div>
+                <div class="model-info__property__value">
+                    {{  task._id  }}
+                </div>
+            </div>
+            <div class="model-info__property">
+                <div class="model-info__property__key">
+                    priority:
+                </div>
+                <div class="model-info__property__value">
+                    {{  task.priority  }}
+                </div>
+            </div>
+            <div class="model-info__property">
+                <div class="model-info__property__key">
+                    percentage:
+                </div>
+                <div class="model-info__property__value">
+                    {{  task.percentage  }}
+                </div>
+            </div>
+            <div class="model-info__property">
+                <div class="model-info__property__key">
+                    created by:
+                </div>
+                <div class="model-info__property__value">
+                    {{  task.madeByUser  }}
+                </div>
+            </div>
+            <div class="model-info__property">
+                <div class="model-info__property__key">
+                    users:
+                </div>
+                <div class="model-info__property__value">
+                    {{ task.users.length > 0 ? task.users : "N/A" }}
+                </div>
+            </div>
+        </div>
+        <div class="model-info__operations">
+            <button class="default-button model-info__operations__button">Add user</button>
+            <button class="default-button model-info__operations__button">Remove user</button>
+            <button class="default-button model-info__operations__button">Set project</button>
+            <button class="default-button model-info__operations__button">Delete</button>
+        </div>
+    </div>
+</div>
+

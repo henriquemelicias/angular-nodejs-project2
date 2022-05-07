@@ -83,6 +83,10 @@ ngb-pagination ::ng-deep .page-item.disabled .page-link {
     margin: auto;
 }
 
+.accordion__item__route-link {
+    width: 100%;
+    margin-bottom: 1rem;
+}
 
 /* Medium devices (tablets, less than 992px) */
 @media (max-width: 991.98px) {

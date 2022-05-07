@@ -104,5 +104,4 @@ export class TasksComponent implements OnInit {
     public openOffCanvas( content: any ) {
         this.offcanvasService.open( content, { position: 'end' } );
     }
-
 }

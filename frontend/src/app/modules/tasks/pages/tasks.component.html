@@ -30,15 +30,23 @@
                            id="tasks-accordion-static-{{ i }}"
                            title="{{ (i + 1) + (currentPage - 1) * PAGE_SIZE }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{task.name }}">
                     <ng-template class="accordion__panel__template" ngbPanelContent>
+                        <div class="accordion__item ">
+                            <a routerLink="/tasks/{{ task._id }}">
+                                <button class="accordion__item__route-link default-button">
+                                    Go to info
+                                </button>
+                            </a>
+                        </div>
                         <div class="accordion__item"><span>id:</span> {{ task._id  }}</div>
                         <div class="accordion__item">
                             <span>priority:</span> {{ task.priority }}</div>
                         <div class="accordion__item">
-                            <span>percentage:</span> {{ task.percentage }}</div>
+                            <span>percentage:</span> {{ task.percentage }}%
+                        </div>
                         <div class="accordion__item">
                             <span>created by:</span> {{ task.madeByUser }}</div>
                         <div class="accordion__item">
-                            <span>users:</span> {{ task.users }}</div>
+                            <span>users:</span> {{ task.users.length > 0 ? task.users : "N/A" }}</div>
                     </ng-template>
                 </ngb-panel>
             </ngb-accordion>

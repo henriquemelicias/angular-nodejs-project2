@@ -9,12 +9,14 @@ const TeamSchema = new Schema(
         projects: [{type: mongoose.Schema.Types.ObjectId, ref: 'Project'}]
     } );
 
+TeamSchema.index( { name: 1 } );
+
 /**
  * Get team url.
  */
 TeamSchema.virtual( 'url' )
     .get( function () {
-        return '/api/team/' + this.name;
+        return '/api/teams/' + this.name;
     } );
 
 module.exports = mongoose.model( "Team", TeamSchema );

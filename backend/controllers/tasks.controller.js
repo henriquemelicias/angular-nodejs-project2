@@ -4,7 +4,6 @@ const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 const { TaskPriority } = require( "#enums/db-task-priority.enum" );
 const { query, body, param } = require( "express-validator" );
 const { URL } = require( "url" );
-const { error } = require( "#services/logger.service" );
 const logger = require( "#services/logger.service" );
 
 exports.getAddTaskRules = () => {

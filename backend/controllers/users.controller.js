@@ -5,25 +5,29 @@ const { query } = require( "express-validator" );
 const { URL } = require( "url" );
 
 exports.getUsers = function ( req, res, next ) {
-    User.find( {} ).select( [ "username", "roles", "tasks" ] ).exec( function ( err, user ) {
-        if ( err ) {
-            return next( httpError( HttpStatusCode.InternalServerError, error ) );
-        }
-        res.status( HttpStatusCode.Created ).send( user );
-    } )
+    User.find( {} )
+        .lean()
+        .select( [ "username", "roles", "tasks" ] )
+        .exec( function ( error, users ) {
+
+            if ( error ) {
+                return next( httpError( HttpStatusCode.InternalServerError, error ) );
+            }
+
+            res.send( users );
+        } )
 }
 
-exports.user_get = function (req, res, next) {
-    User.findOne({_id: req.params.id})
+exports.getUserById = function ( req, res, next ) {
+    User.findOne( { _id: req.params.id } )
         .lean()
-        .select(["_id", "username", "roles", "tasks"])
-        .exec( function ( err, user ) {
-        if ( err )
-        {
-            return next( httpError( HttpStatusCode.InternalServerError, error ) );
-        }
-        res.status( HttpStatusCode.Created).send( user );
-    }) 
+        .select( [ "_id", "username", "roles", "tasks" ] )
+        .exec( function ( error, user ) {
+            if ( error ) {
+                return next( httpError( HttpStatusCode.InternalServerError, error ) );
+            }
+            res.status( HttpStatusCode.Created ).send( user );
+        } )
 }
 
 exports.getNUsersByPageRules = () => {

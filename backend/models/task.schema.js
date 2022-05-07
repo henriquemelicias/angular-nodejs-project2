@@ -17,7 +17,7 @@ const TaskSchema = new Schema(
  */
 TaskSchema.virtual( 'url' )
     .get( function () {
-        return '/api/task/' + this._id;
+        return '/api/tasks/' + this._id;
     } );
 
 module.exports = mongoose.model( "Task", TaskSchema );

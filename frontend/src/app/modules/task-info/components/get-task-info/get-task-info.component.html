@@ -1,5 +1,3 @@
-
-
 <div *ngIf="task">
     <h1>Task information</h1>
     <h2>Task: {{task.name}}</h2>
@@ -12,7 +10,9 @@
         <h2>Users associated</h2>
         <ul>
             <li *ngFor="let u of task_users">
-                <a>User: {{u.username}}</a><button type="submit" class="task-form__submit-button default-button" (click)="disassociate(u._id)">x</button>
+                <a>User: {{u.username}}</a>
+                <button type="submit" class="task-form__submit-button default-button" (click)="disassociate(u._id)">x
+                </button>
             </li>
         </ul>
     </div>
@@ -38,6 +38,6 @@
 
 </div>
 
-<div *ngIf="!task"> 
+<div *ngIf="!task">
     <h1>Task not found !</h1>
- </div>
+</div>

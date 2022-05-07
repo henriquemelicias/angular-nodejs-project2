@@ -6,5 +6,5 @@ export interface TaskSchema {
     priority: string;
     percentage: number;
     madeByUser: string;
-    users?: UserSchema[];
+    users: UserSchema[];
 }

@@ -83,6 +83,11 @@ ngb-pagination ::ng-deep .page-item.disabled .page-link {
     font-weight: bold;
 }
 
+.accordion__item__route-link {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
 /* Medium devices (tablets, less than 992px) */
 @media (max-width: 991.98px) {
 
