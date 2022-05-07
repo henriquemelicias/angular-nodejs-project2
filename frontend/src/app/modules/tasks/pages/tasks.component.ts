@@ -23,7 +23,7 @@ export class TasksComponent implements OnInit {
     public PAGE_SIZE = TaskService.TASKS_PER_PAGE;
 
     public tasksObserver$ = TaskService.getTasksByPage$();
-    public isSessionUserAdmin = UserService.isSessionUserAdmin();
+    public isLoggedIn = UserService.hasSessionUser();
     public tasksPages?: TaskSchema[][];
     public currentPage = 1;
     public numberOfEntries = 0;
