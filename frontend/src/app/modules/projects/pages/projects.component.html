@@ -1,5 +1,85 @@
-<app-add-project-form *ngIf="isCurrentUserAdmin"></app-add-project-form>
+<div class="page--container">
+    <div class="page__content">
+        <div class="page__head--container">
+        <span class="page__head"><h1 class="page__title">Teams</h1><h2
+                class="page__subtitle">Everyone is here</h2></span>
+            <div *ngIf="isSessionUserAdmin">
+                <ng-template #content let-offcanvas>
+                    <div class="offcanvas-header">
+                        <h3 class="offcanvas-title" id="offcanvas-basic-title">Team Dashboard</h3>
+                        <button type="button" class="btn-close btn-close-white" aria-label="Close"
+                                (click)="offcanvas.dismiss()"></button>
+                    </div>
+                    <div class="offcanvas-body" (focusout)="reload()">
+                        <app-add-project-form></app-add-project-form>
+                        <div class="app-alert-wrapper">
+                            <app-alert id="alert-project-form" [isOnlyOne]="true"></app-alert>
+                        </div>
+                    </div>
+                </ng-template>
 
-<div class="app-alert-wrapper">
-    <app-alert id="alert-project-form" [isOnlyOne]="true"></app-alert>
+                <button class="btn-lg default-button" (click)="openOffCanvas(content)">Add new project</button>
+            </div>
+        </div>
+
+        <div *ngIf="(projectsObserver$ | async) as projectPages">
+            <ngb-accordion *ngIf="projectsPages && projectsPages.length >= currentPage"
+                           class="accordion--wrapper"
+                           [closeOthers]="true" activeIds="projects-accordion-static-0">
+                <ngb-panel *ngFor="let project of projectPages[currentPage - 1]; let i = index" class="accordion__panel"
+                           id="projects-accordion-static-{{ i }}"
+                           title="{{ (i + 1) + (currentPage - 1) * PAGE_SIZE }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{project.name }}">
+                    <ng-template class="accordion__panel__template" ngbPanelContent>
+                        <div class="accordion__item ">
+                            <a routerLink="/projects/{{ project.acronym }}">
+                                <button class="accordion__item__route-link default-button">
+                                    Go to info
+                                </button>
+                            </a>
+                        </div>
+                        <div class="accordion__item">
+                            <span>start date::</span> {{ project.startDate  }}</div>
+                        <div class="accordion__item">
+                            <span>end date::</span> {{ project.endDate ? project.endDate : "N/A" }}</div>
+                        <div class="accordion__item">
+                            <span>tasks:</span> {{ project.tasks.length == 0 ? "N/A" : project.tasks }}</div>
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+        </div>
+    </div>
+
+    <div class="page__pagination--wrapper">
+        <ngb-pagination class="page__pagination" [collectionSize]="numberOfEntries" [pageSize]="10"
+                        [(page)]="currentPage"
+                        (pageChange)="reload()"
+                        [boundaryLinks]="true">
+            <ng-template ngbPaginationPages let-page let-pages="pages">
+                <li class="ngb-custom-pages-item" *ngIf="pages.length > 0">
+                    <div class="mb-3 d-flex flex-nowrap px-2">
+                        <label
+                                id="paginationInputLabel"
+                                for="paginationInput"
+                                class="col-form-label me-2 ms-1"
+                        >Page</label>
+                        <input #i
+                               type="text"
+                               inputmode="numeric"
+                               pattern="[0-9]*"
+                               class="form-control custom-pages-input"
+                               id="paginationInput"
+                               [value]="page"
+                               (keyup.enter)="selectPage(i.value)"
+                               (blur)="selectPage(i.value)"
+                               (input)="formatInput($any($event).target)"
+                               aria-labelledby="paginationInputLabel paginationDescription"
+                               style="width: 2.5rem; height: 2.5rem; font-weight: bold; text-align: center"
+                        />
+                        <span id="paginationDescription" class="col-form-label text-nowrap px-2">
+                  of {{pages.length}}</span>
+                    </div>
+                </li>
+            </ng-template>
+        </ngb-pagination>
+    </div>
 </div>

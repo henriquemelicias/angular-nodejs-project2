@@ -7,6 +7,7 @@ import { ProjectsRoutingModule } from "./projects-routing.module";
 import { ProjectsComponent } from './pages/projects.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AddProjectFormComponent } from './components/add-project-form/add-project-form.component';
+import { NgbAccordionModule, NgbPaginationModule } from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule( {
                declarations: [
@@ -18,7 +19,9 @@ import { AddProjectFormComponent } from './components/add-project-form/add-proje
                    SharedModule,
                    ProjectsRoutingModule,
                    FormsModule,
-                   ReactiveFormsModule
+                   ReactiveFormsModule,
+                   NgbAccordionModule,
+                   NgbPaginationModule
                ]
            } )
 export class ProjectsModule {}

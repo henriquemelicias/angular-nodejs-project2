@@ -1,0 +1,124 @@
+.page--container {
+    display: flex;
+    flex-direction: column;
+    justify-items: end;
+    justify-content: space-between;
+    align-content: space-between;
+    width: 50vw;
+    min-height: 100vh;
+}
+
+.page__head--container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page__head {
+    width: 35%;
+    display: table;
+    table-layout: fixed;
+    user-select: none;
+}
+
+.page__title {
+    direction: ltr;
+    margin-block-end: -2rem;
+}
+
+.page__subtitle {
+    direction: rtl;
+    color: var(--secondary-color);
+}
+
+.page__pagination {
+    margin-top: 1.5rem;
+    display: flex;
+    border-radius: 15px;
+    margin-left: auto;
+    max-width: 80vw;
+}
+
+ngb-pagination ::ng-deep a {
+    color: var(--font-color-on-surface) !important;
+    background-color: var(--surface-color) !important;
+    box-shadow: none;
+    border: solid var(--background-color) 1px;
+}
+
+ngb-pagination ::ng-deep a:hover {
+    color: var(--font-color-on-secondary) !important;
+    background-color: var(--secondary-color) !important;
+    box-shadow: none;
+    border: solid var(--background-color) 1px;
+}
+
+ngb-pagination ::ng-deep a:focus {
+    color: var(--font-color-on-secondary) !important;
+    background-color: var(--secondary-color) !important;
+    box-shadow: none;
+    border: solid var(--background-color) 1px;
+}
+
+ngb-pagination ::ng-deep .page-item.disabled .page-link {
+    color: var(--font-color-on-surface) !important;
+    background-color: var(--surface-color) !important;
+    box-shadow: none;
+    border: solid var(--surface-color) 1px;
+    opacity: 0.4;
+}
+
+.page__pagination--wrapper{
+    display: flex;
+    margin-bottom: 6rem;
+}
+
+.accordion__item span {
+    color: var(--font-color-highlight);
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+.offcanvas-title {
+    margin: auto;
+}
+
+.accordion__item__route-link {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+
+    .page--container {
+        width: 90vw;
+    }
+
+    .page__pagination--wrapper{
+        display: flex;
+        justify-content: center;
+        margin-bottom: 6rem;
+    }
+
+    .page__pagination {
+        justify-content: center;
+        margin-left: unset;
+    }
+
+    .page__head--container {
+        margin: 1rem;
+    }
+
+    .page__head {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .page__title {
+        margin-block-end: -1.5rem;
+    }
+}

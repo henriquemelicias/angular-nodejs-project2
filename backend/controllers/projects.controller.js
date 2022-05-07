@@ -6,6 +6,7 @@ const logger = require( "#services/logger.service" );
 const DateTime = require( "date-and-time" );
 const { URL } = require( "url" );
 const Team = require( "#models/team.schema" );
+const Task = require( "#models/task.schema" );
 
 const projectParams = {
     name: "name",
@@ -96,7 +97,7 @@ exports.getProjectByAcronymUrl = function ( req, rest, next ) {
 }
 
 
-exports.modifyProject = function ( req, rest, next ) {
+exports.modifyProject = function ( req, res, next ) {
 
     const name = req.body.name;
     const acronym = req.body.acronym;
@@ -121,8 +122,9 @@ exports.modifyProject = function ( req, rest, next ) {
 
 }
 
-exports.getProjects = function ( req, rest, next ) {
+exports.getProjects = ( req, res, next ) => {
     Project.find( {} )
+        .lean()
         .then( function ( projects ) {
             res.send( projects );
         } );
@@ -172,3 +174,16 @@ exports.getNumberOfProjects = ( req, res, next ) => {
             res.send( { numberOfProjects: numberOfProjects } );
         } );
 };
+
+exports.updateProjectTasks = ( req, res, next ) => {
+
+    Project.findByIdAndUpdate( { _id: req.params.id }, { $set: { tasks: req.body.tasks } } )
+        .lean()
+        .exec( ( error, project ) => {
+            if ( error ) {
+                next( httpError( HttpStatusCode.InternalServerError, error ) );
+                return;
+            }
+            res.send( project );
+        } );
+}

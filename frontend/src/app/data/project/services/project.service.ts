@@ -102,4 +102,12 @@ export class ProjectService {
                 }
             } );
     }
+
+    updateProject( project: ProjectSchema ) {
+        return this.http.put<ProjectSchema>(
+            ProjectService._API_URI + "/" + project.acronym,
+            project,
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    }
 }

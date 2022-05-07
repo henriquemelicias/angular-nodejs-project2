@@ -9,7 +9,9 @@ import { ModalComponent } from "@shared/components/modal/modal.component";
 import { MdbModalRef, MdbModalService } from "mdb-angular-ui-kit/modal";
 import { UserService } from "@data/user/services/user.service";
 import { UserSchema } from "@data/user/schemas/user.schema";
-import { FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { ProjectSchema } from "@data/project/schemas/project.schema";
+import { ProjectService } from "@data/project/services/project.service";
 
 @Component( {
                 selector: 'app-task-info',
@@ -23,8 +25,12 @@ export class TaskInfoComponent implements OnInit {
     modalRef: MdbModalRef<ModalComponent> | null = null; // set task modal
 
     users!: UserSchema[];
+    projects!: ProjectSchema[];
+    selectedProject?: ProjectSchema;
+    selectedTarget!: String;
 
     setUsersForm: FormGroup;
+    setProjectForm: FormGroup;
 
     constructor( private taskService: TaskService,
                  private route: ActivatedRoute,
@@ -32,6 +38,7 @@ export class TaskInfoComponent implements OnInit {
                  private modal: MdbModalService,
                  private router: Router,
                  private userService: UserService,
+                 private projectService: ProjectService,
                  fb: FormBuilder
     ) {
         this._getTaskByIdFromRoute();
@@ -41,6 +48,19 @@ export class TaskInfoComponent implements OnInit {
                                           selectedUsers: new FormArray( [] )
                                       } );
 
+        this.setProjectForm = fb.group(
+            {
+                project: [
+                    '', [
+                        Validators.required,
+                    ]
+                ],
+            } );
+
+    }
+
+    public get form(): { [key: string]: AbstractControl; } {
+        return this.setProjectForm.controls;
     }
 
     ngOnInit(): void {
@@ -54,7 +74,7 @@ export class TaskInfoComponent implements OnInit {
     }
 
     public openSetProjectsModal( longContent: any ) {
-        this.setUsers().then( _ => {
+        this.setProjects().then( _ => {
             this._openModal( longContent );
         } );
     }
@@ -96,9 +116,15 @@ export class TaskInfoComponent implements OnInit {
         } );
     };
 
-    async setUsers() {
+    private async setUsers() {
         return this.userService.getUsers().subscribe( users => {
             this.users = users
+        } );
+    }
+
+    private async setProjects() {
+        return this.projectService.getProjects().subscribe( projects => {
+            this.projects = projects
         } );
     }
 
@@ -119,5 +145,28 @@ export class TaskInfoComponent implements OnInit {
         this.task.users = this.setUsersForm.controls['selectedUsers'].value;
         this.taskService.updateTask( this.task ).subscribe( task => this.task = task );
         window.location.reload();
+    }
+
+    setProjectSubmit() {
+        if ( !this.selectedTarget ) return;
+
+        this.selectedProject = this.projects.filter( p => p.acronym === this.selectedTarget )[0];
+
+        const isTaskInProjectAlready = this.selectedProject.tasks.includes( this.task );
+
+        if ( isTaskInProjectAlready )
+        {
+            this.selectedProject.tasks = this.selectedProject.tasks.filter( t => t !== this.task );
+        }
+        else {
+            this.selectedProject.tasks.push( this.task );
+        }
+
+        this.projectService.updateProject( this.selectedProject ).subscribe();
+        window.location.reload();
+    }
+
+    selectChangeHandler( event: any ) {
+        this.selectedTarget = event.target.value;
     }
 }

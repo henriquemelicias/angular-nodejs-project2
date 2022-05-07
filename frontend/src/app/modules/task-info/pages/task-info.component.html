@@ -55,8 +55,12 @@
             </div>
         </div>
         <div class="model-info__operations">
-            <button class="default-button model-info__operations__button" (click)="openSetUsersModal( setUsersModal )">Set users</button>
-            <button class="default-button model-info__operations__button" (click)="openSetProjectsModal( setProjectModal )">Set project</button>
+            <button class="default-button model-info__operations__button" (click)="openSetUsersModal( setUsersModal )">
+                Set users
+            </button>
+            <button class="default-button model-info__operations__button"
+                    (click)="openSetProjectsModal( setProjectModal )">Set project
+            </button>
             <button class="default-button model-info__operations__button" (click)="openModalSimple(  )">Delete</button>
         </div>
     </div>
@@ -71,7 +75,8 @@
         <section>
             <form [formGroup]="setUsersForm" (ngSubmit)="setUsersSubmit()" novalidate>
                 <div *ngFor="let user of users; let i=index">
-                    <input type="checkbox" formArrayName="selectedUsers" [value]="user.username" (change)="onCheckboxChange($event)" [checked]="task.users.includes( user.username )"
+                    <input type="checkbox" formArrayName="selectedUsers" [value]="user.username"
+                           (change)="onCheckboxChange($event)" [checked]="task.users.includes( user.username )"
                     />
                     {{ user.username}}
                 </div>
@@ -91,6 +96,33 @@
         <h2 class="modal-title">Set project</h2>
     </div>
     <div class="modal-body">
+
+        <form [formGroup]="setProjectForm">
+
+            <label for="task-set-project-dropdown">Project</label>
+            <select class="add-task-form__group form-select" name="dropdownOption" id="task-set-project-dropdown"
+                    (change)="selectChangeHandler($event)"
+                    formControlName="project">
+                <option *ngFor="let project of projects" [value]="project.acronym">{{ project.name + ( project.tasks.includes( this.task ) ? "Task present. Select to remove." : "" )}}</option>
+            </select>
+
+            <div class="alert alert-danger" [hidden]="form['project'].valid || form['project'].pristine">
+                <div *ngIf="form['project'].errors?.['required']">Id is required</div>
+            </div>
+
+            <div class="add-task-form__submit-button--container">
+                <button type="submit" class="add-task-form__submit-button default-button"
+                        [disabled]="!setProjectForm.valid"
+                        (click)="setProjectSubmit()"
+                >
+                    Select
+                </button>
+            </div>
+        </form>
+
+        <div class="app-alert-wrapper">
+            <app-alert id="alert-task-delete-form" [isOnlyOne]="true"></app-alert>
+        </div>
 
     </div>
     <div class="modal-footer">
