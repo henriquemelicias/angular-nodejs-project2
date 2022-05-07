@@ -5,17 +5,15 @@ import { SharedModule } from "@shared/shared.module";
 import { TaskInfoRoutingModule } from './task-info-routing.module';
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { GetTaskInfoComponent } from './components/get-task-info/get-task-info.component';
 import { TaskInfoComponent } from './pages/task-info.component';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-
-
+import { AddUserToTaskForm } from "@modules/task-info/forms/set-users-to-task-form.component";
 
 
 @NgModule({
   declarations: [
     TaskInfoComponent,
-    GetTaskInfoComponent
+    AddUserToTaskForm
   ],
   imports: [
     CommonModule,

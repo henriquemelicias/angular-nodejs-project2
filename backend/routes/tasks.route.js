@@ -27,7 +27,7 @@ tasksRouter.get( '/:_id', [ verifyToken,
 
 tasksRouter.get( '', [ verifyToken ], tasksController.getTasks );
 
-tasksRouter.put( '/:_id', [ verifyToken,
+tasksRouter.put( '/:id', [ verifyToken,
                             oneOf( tasksController.getUpdateTaskRules() ),
                             verifyRules ], tasksController.updateTask )
 

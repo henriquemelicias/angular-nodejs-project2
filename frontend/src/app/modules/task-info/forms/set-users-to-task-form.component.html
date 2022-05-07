@@ -1,0 +1,13 @@
+<div class="form--container">
+    <form [formGroup]="addUsersToTaskForm" (ngSubmit)="submitForm()" novalidate>
+        <div class="form__group">
+            <div *ngFor="let user of users; let i=index">
+                <label>
+                    <input type="checkbox"  [checked]="task.users.includes( user.username )" [value]="user.username" (change)="onCheckChange($event)"/>
+                    {{user.username}}
+                </label>
+            </div>
+        </div>
+        <input type="submit" value="Submit">
+    </form>
+</div>

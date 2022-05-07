@@ -109,6 +109,8 @@ exports.getTasks = ( req, res, next ) => {
 
 exports.getUpdateTaskRules = () => {
     return [
+        param( "_id", '_id is required' ).exists(),
+        param( "_id", '_id must be of String type' ).isString(),
         body( "name", 'Task name is required.' ).exists(),
         body( "name", 'Task name must be of string type.' ).isString(),
         body( "name", 'Task name must have minimum length of 4.' ).isLength( { min: 4 } ),
@@ -124,7 +126,7 @@ exports.getUpdateTaskRules = () => {
 
 exports.updateTask = ( req, res, next ) => {
 
-    Task.findByIdAndUpdate( { _id: req.params.id }, { $set: { users: req.req.params.users } } )
+    Task.findByIdAndUpdate( { _id: req.params.id }, { $set: { users: req.body.users } } )
         .lean()
         .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users" ] )
         .exec( ( error, task ) => {

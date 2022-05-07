@@ -1,4 +1,4 @@
-<div *ngIf="task">
+<div *ngIf="hasTask">
     <div class="model-info--container">
 
         <div class="model-info__headers">
@@ -11,6 +11,14 @@
                 </div>
                 <div class="model-info__property__value">
                     {{  task._id  }}
+                </div>
+            </div>
+            <div class="model-info__property">
+                <div class="model-info__property__key">
+                    name:
+                </div>
+                <div class="model-info__property__value">
+                    {{  task.name  }}
                 </div>
             </div>
             <div class="model-info__property">
@@ -47,11 +55,35 @@
             </div>
         </div>
         <div class="model-info__operations">
-            <button class="default-button model-info__operations__button">Add user</button>
-            <button class="default-button model-info__operations__button">Remove user</button>
-            <button class="default-button model-info__operations__button">Set project</button>
-            <button class="default-button model-info__operations__button">Delete</button>
+            <button class="default-button model-info__operations__button" (click)="openSetUsersModal( setUsersModal )">Set users</button>
+            <button class="default-button model-info__operations__button" (click)="openSetProjectsModal( setProjectModal )">Set project</button>
+            <button class="default-button model-info__operations__button" (click)="openModalSimple(  )">Delete</button>
         </div>
     </div>
 </div>
+
+
+<ng-template #setUsersModal let-modal>
+    <div class="modal-header">
+        <h2 class="modal-title">Set Users</h2>
+    </div>
+    <div class="modal-body">
+        <app-set-users-to-task-form [users]="users" [task]="task" (taskChange)="update($event)"></app-set-users-to-task-form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="default-button" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>
+
+<ng-template #setProjectModal let-modal>
+    <div class="modal-header">
+        <h2 class="modal-title">Set project</h2>
+    </div>
+    <div class="modal-body">
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="default-button" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>
 

@@ -10,7 +10,7 @@
 .model-info__content {
     display: flex;
     flex-direction: column;
-    background-color: var( --footer-background-color );
+    background-color: var(--footer-background-color);
     padding: 2rem;
     border-radius: 20px;
 }
@@ -23,7 +23,7 @@
 .model-info__property__key {
     font-size: 1.4rem;
     margin-right: 1rem;
-    color: var( --font-color-highlight );
+    color: var(--font-color-highlight);
 }
 
 .model-info__property__value {
@@ -48,6 +48,7 @@
     .model-info--container {
         width: 90vw;
     }
+
     .model-info__operations {
         flex-direction: column;
     }
@@ -56,4 +57,30 @@
         width: 90vw;
         margin-top: 1rem;
     }
+}
+
+.modal-header {
+    display: block;
+    text-align: center;
+}
+
+.modal-title {
+    margin-top: -0.5rem;
+    font-size: 2rem;
+    color: var(--font-color-highlight);
+}
+
+.modal-header, .modal-body, .modal-footer {
+    background-color: var( --surface-color );
+    border: none;
+    padding: 2rem;
+}
+
+.modal-footer button {
+    width: 100%;
+    height: 40px;
+}
+
+.modal-footer button:focus {
+    border: white;
 }

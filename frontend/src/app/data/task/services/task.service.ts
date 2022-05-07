@@ -50,8 +50,8 @@ export class TaskService {
         return this.http.get<TaskSchema[]>( TaskService._API_URI, HttpSettings.HEADER_CONTENT_TYPE_JSON );
     };
 
-    public updateTask( task: TaskSchema ): Observable<void> {
-        return this.http.put<void>(
+    public updateTask( task: TaskSchema ): Observable<TaskSchema> {
+        return this.http.put<TaskSchema>(
             TaskService._API_URI + "/" + task._id,
             task,
             HttpSettings.HEADER_CONTENT_TYPE_JSON
