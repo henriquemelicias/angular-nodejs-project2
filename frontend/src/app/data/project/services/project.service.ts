@@ -52,7 +52,7 @@ export class ProjectService {
 
     public getNumberOfProjects(): Observable<{ numberOfProjects: number }> {
         return this.http.get<{ numberOfProjects: number; }>(
-            ProjectService._API_URI + 'num-entries',
+            ProjectService._API_URI + '/num-entries',
             HttpSettings.HEADER_CONTENT_TYPE_JSON
         );
     }
