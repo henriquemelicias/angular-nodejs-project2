@@ -13,4 +13,6 @@ usersRouter.get( '/by-pages',
 
 usersRouter.get( '/num-entries', [ verifyToken ], usersController.getNumberOfUsers );
 
+usersRouter.get('/:id', usersController.user_get);
+
 module.exports = usersRouter;

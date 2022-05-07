@@ -26,7 +26,7 @@ exports.addTask = ( req, res, next ) => {
     let taskPriority;
 
     let BAIXA, MEDIA, ALTA, URGENTE;
-    switch (  req.body.priority ) {
+    switch ( req.body.priority ) {
         case (BAIXA = TaskPriority.BAIXA.valueOf()):
             taskPriority = BAIXA;
             break;
@@ -67,6 +67,7 @@ exports.getDeleteGetAndUpdateTaskRules = () => {
         param( "_id", 'Task _id must be of string type.' ).isString(),
     ];
 }
+
 
 exports.deleteTask = function ( req, res, next ) {
     Task.findOneAndDelete( { _id: req.params._id } )

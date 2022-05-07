@@ -13,8 +13,10 @@ import { UserService } from '@app/data/user/services/user.service';
 export class GetTaskInfoComponent implements OnInit {
 
   task: TaskSchema | undefined;
+  task_users: UserSchema[] = [];
   users: UserSchema[] | undefined;
   selected: UserSchema | undefined;
+  search: UserSchema[] = [];
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute,
@@ -28,10 +30,31 @@ export class GetTaskInfoComponent implements OnInit {
 
   getTask(): void {
     this.taskService.getTask(this.route.snapshot.params['id']).subscribe(task => this.task = task);
+    this.task_users = [];
+    if (this.task?.users) {
+    console.log(this.task?.users);
+    
+      for (let index = 0; index < this.task.users.length; index++) {
+        this.getUserById(this.task.users[index]._id);
+      }
+    }
+    console.log(this.task_users);
+    
+  }
+
+  getUserById(id: string): void {
+    if (id) {
+      this.userService.getUsersById(id).subscribe(user => this.task_users.push(user));
+    }
+    
   }
 
   getUsers(): void {  
     this.userService.getUsers().subscribe(users => this.users = users);
+    console.log("hahahha");
+    
+    console.log(this.users);
+    
   }
 
   save(): void {
@@ -42,17 +65,37 @@ export class GetTaskInfoComponent implements OnInit {
 
   clickedUser(user: UserSchema): void {
     this.selected = user;
-    
   }
 
-  addUser(): void {
-  if (this.selected) {
-    this.task?.users?.push(this.selected);
-    if (this.task) {
-      this.taskService.updateTask(this.task).subscribe();
+  associate(): void {
+    if (this.selected) {
+      this.task?.users?.push(this.selected);
+    }
+    this.save();
+    this.update();
+  }
+
+  disassociate(id: string): void {
+    if(this.task?.users) {
+      let i = undefined;
+      for (let index = 0; index < this.task.users.length; index++) {
+        if (String(this.task.users[index]) === id) {
+          i = index;
+        }        
+      }
+
+      if (i) {
+        this.task.users.splice(i, 1);
+        
+      }
+      this.save();
+      this.update(); 
     }
   }
-    
+
+  update(): void {
+    this.getTask();
+    this.getUsers();
   }
 
 }

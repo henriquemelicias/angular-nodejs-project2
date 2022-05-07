@@ -16,20 +16,19 @@ tasksRouter.get( '/by-pages',
 tasksRouter.get( '/num-entries', [ verifyToken ], tasksController.getNumberOfTasks );
 
 tasksRouter.delete( '/:_id', [ verifyToken,
-                              oneOf( tasksController.getDeleteGetAndUpdateTaskRules() ),
-                              verifyRules
+                               oneOf( tasksController.getDeleteGetAndUpdateTaskRules() ),
+                               verifyRules
 ], tasksController.deleteTask );
 
 tasksRouter.get( '/:_id', [ verifyToken,
-                           oneOf( tasksController.getDeleteGetAndUpdateTaskRules() ),
-                           verifyRules
+                            oneOf( tasksController.getDeleteGetAndUpdateTaskRules() ),
+                            verifyRules
 ], tasksController.getTask );
 
 tasksRouter.get( '', [ verifyToken ], tasksController.getTasks );
 
 tasksRouter.put( '/:_id', [ verifyToken,
-                           oneOf( tasksController.getUpdateTaskRules() ),
-                           verifyRules
-], tasksController.updateTask )
+                            oneOf( tasksController.getUpdateTaskRules() ),
+                            verifyRules ], tasksController.updateTask )
 
 module.exports = tasksRouter;
