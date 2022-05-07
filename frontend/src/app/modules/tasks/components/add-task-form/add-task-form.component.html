@@ -28,6 +28,33 @@
             <option value="URGENTE">Urgente</option>
         </select>
 
+        <label for="add-task-form-start-date">Start Date</label>
+        <div class="add-task-form__group input-group">
+            <input class="add-task-form__group__start-date-control form-control" id="add-task-form-start-date"
+                   formControlName="startDate"
+                   (keydown.enter)="form['startDate'].enabled"
+                   type="date"
+                   min="{{todayDate | date:'yyyy-MM-dd'}}"
+                   [ngClass]="{'is-invalid': form['startDate'].errors && (form['startDate'].touched || form['startDate'].dirty), 'is-valid': form['startDate'].valid}"
+            >
+    
+        </div>
+    
+        <div class="alert alert-danger" [hidden]="form['startDate'].valid || form['startDate'].pristine">
+            <div *ngIf="form['startDate'].errors?.['required']">Date is required</div>
+        </div>
+    
+        <label for="add-task-form-end-date">End Date</label>
+        <div class="add-task-form__group input-group">
+            <input class="add-task-form__group__start-date-control form-control" id="add-task-form-end-date"
+                   formControlName="endDate"
+                   type="date"
+                   min="{{form['startDate'].value}}"
+                   [ngClass]="{'is-invalid': (addTaskForm.getError('notValidEndDate') || form['endDate'].errors) && (form['endDate'].touched || form['endDate'].dirty), 'is-valid': form['endDate'].valid}"
+            >
+    
+        </div>        
+
         <div class="add-task-form__submit-button--container">
             <button type="submit" class="add-task-form__submit-button default-button"
                     [disabled]="!addTaskForm.valid"

@@ -4,5 +4,7 @@ export interface TaskSchema {
     priority: string;
     percentage: number;
     madeByUser: string;
+    startDate?: Date;
+    endDate?: Date;
     users: string[];
 }

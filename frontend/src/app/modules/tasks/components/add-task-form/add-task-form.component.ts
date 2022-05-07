@@ -22,6 +22,10 @@ export class AddTaskFormComponent implements OnInit {
     public deleteTaskForm: FormGroup;
     public showCreate = false;
     public showDelete = false;
+    todayDate = new Date();
+    datePlusOneDay = new Date().setDate( this.todayDate.getDate() + 1 );
+    
+
 
     selectedPriority: string = TaskPriorityEnum.BAIXA.valueOf();
     username: string = "";
@@ -43,9 +47,26 @@ export class AddTaskFormComponent implements OnInit {
                     [
                         Validators.required
                     ]
+                ],
+                startDate: [
+                  '', []
+                ],
+                endDate: [
+                  '', []
                 ]
             } );
 
+          this.form['startDate'].valueChanges.subscribe( _ => {
+            if ( this.form['endDate'].value !== "" )
+            {
+              this.form['endDate'].reset();
+              AlertService.warn(
+                  `Please select a new end date`,
+                  { id: "alert-task-form", isAutoClosed: true }
+              );
+            }
+          } );
+        
         this.deleteTaskForm = formBuilder.group(
             {
                 id: [
@@ -80,10 +101,26 @@ export class AddTaskFormComponent implements OnInit {
     }
 
     public onSubmitAddTask(): void {
+      const startDateTokens = this.form['startDate'].value.split( "-" );
+      const endDateTokens = this.form['endDate'].value.split( "-" );
+  
+      const startDate = new Date(
+          parseInt( startDateTokens[0] ),
+          parseInt( startDateTokens[1] ),
+          parseInt( startDateTokens[2] )
+      );
+      const endDate = new Date(
+          parseInt( endDateTokens[0] ),
+          parseInt( endDateTokens[1] ),
+          parseInt( endDateTokens[2] )
+      )
+
         const task = {} as AddTaskOutput;
         task.name = this.form['name'].value;
         task.madeByUser = this.username;
         task.priority = this.form['priority'].value;
+        task.startDate = startDate;
+        task.endDate = endDate;
         this._addTask( task );
     }
 

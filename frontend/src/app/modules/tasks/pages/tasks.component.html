@@ -15,7 +15,7 @@
                     </div>
                 </ng-template>
 
-                <button class="btn-lg default-button" (click)="openOffCanvas(content)">Add new task</button>
+                <button class="btn-lg default-button" (click)="openOffCanvas(content)">Create/Delete task</button>
             </div>
         </div>
 
@@ -44,6 +44,12 @@
                             <span>created by:</span> {{ task.madeByUser }}</div>
                         <div class="accordion__item">
                             <span>users:</span> {{ task.users.length > 0 ? task.users : "N/A" }}</div>
+                        <div class="accordion__item">
+                            <span>start date:</span> {{ task.startDate ? task.startDate : "N/A"}}
+                        </div>
+                        <div class="accordion__item">
+                            <span>end date:</span> {{ task.endDate ? task.endDate : "N/A"}}
+                        </div>
                     </ng-template>
                 </ngb-panel>
             </ngb-accordion>

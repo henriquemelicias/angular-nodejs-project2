@@ -9,6 +9,8 @@ const TaskSchema = new Schema(
         percentage: { type: Number, required: true, min: 0, max: 100 },
         madeByUser: { type: String, required: true }, // username
         users: [{ type: String }],
+        startDate: { type: Date, required: false },
+        endDate: { type: Date, required: false },
         //checkList: {type: mongoose.Schema.CheckListSchema, ref: 'Checklist'}
     } );
 
