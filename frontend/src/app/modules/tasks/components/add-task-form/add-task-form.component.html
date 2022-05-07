@@ -1,74 +1,78 @@
-<p>Task menu</p>
+<div class="add-task-form--container">
+    <form [formGroup]="addTaskForm">
+        <h2>Create a new task</h2>
 
-<form [formGroup]="taskForm">
-  <div class="task-form__group">
-      <label for="task-form-name">Task name</label>
-      <input type="text" class="task-form__group__control form-control" id="task-form-name"
-             formControlName="name"
-             [ngClass]="{'is-invalid': form['name'].errors &&
+        <div class="add-task-form__group">
+            <label for="task-form-name">Name</label>
+            <input type="text" class="add-task-form__group__control form-control" id="task-form-name"
+                   formControlName="name"
+                   [ngClass]="{'is-invalid': form['name'].errors &&
                                     (form['name'].touched || form['name'].dirty),
                        'is-valid': form['name'].valid }"
-      >
-  </div>
+            >
+        </div>
 
-  <div class="alert alert-danger" [hidden]="form['name'].valid || form['name'].pristine">
-      <div *ngIf="form['name'].errors?.['required']">Name is required</div>
-      <div *ngIf="form['name'].errors?.['minlength']">Name must be at least 4 characters</div>
-      <div *ngIf="form['name'].errors?.['pattern']">Only alphanumeric characters are allowed</div>
-  </div>
+        <div class="alert alert-danger" [hidden]="form['name'].valid || form['name'].pristine">
+            <div *ngIf="form['name'].errors?.['required']">Name is required</div>
+            <div *ngIf="form['name'].errors?.['minlength']">Name must be at least 4 characters</div>
+            <div *ngIf="form['name'].errors?.['pattern']">Only alphanumeric characters are allowed</div>
+        </div>
 
-  <label for="name">Nivel de urgência</label><br>
+        <label for="add-task-priority-dropdown">Priority</label>
+        <select class="add-task-form__group form-select" name="dropdownOption" id="add-task-priority-dropdown"
+                (change)="selectChangeHandler($event)"
+                formControlName="priority">
+            <option value="BAIXA">Baixa</option>
+            <option value="MEDIA">Média</option>
+            <option value="ALTA">Alta</option>
+            <option value="URGENTE">Urgente</option>
+        </select>
 
-  <select class="select" name="dropdownOption" id="dropdownOption" (change)="selectChangeHandler($event)">
-    <option value="baixa">Baixa</option>
-    <option value="media">Média</option>
-    <option value="alta">Alta</option>
-    <option value="urgente">Urgente</option>
-  </select>
+        <div class="add-task-form__submit-button--container">
+            <button type="submit" class="add-task-form__submit-button default-button"
+                    [disabled]="!addTaskForm.valid"
+                    (click)="onSubmitAddTask()"
+            >
+                Create Task
+            </button>
+            <p *ngIf="showCreate">Task created</p>
+        </div>
 
-  <div class="task-form__submit-button--container">
-      <button type="submit" class="task-form__submit-button default-button"
-              [disabled]="!taskForm.valid"
-              (click)="onSubmit()"
-      >
-          Create Task
-      </button>
-      <p *ngIf="showCreate">Task created</p>
-    </div> 
+    </form>
 
-  <div class="app-alert-wrapper">
-      <app-alert id="alert-task-form" [isOnlyOne]="true"></app-alert>
-  </div>
+    <div class="app-alert-wrapper">
+        <app-alert id="alert-task-form" [isOnlyOne]="true"></app-alert>
+    </div>
 
-  <label for="id">TaskSchema ID</label><br>
-    <input class="task-form__group__control form-control" type="text" id="id" #taskID><br>
-    <button class="task-form__submit-button default-button" type="button" (click)="deleteTask(taskID.value)">Delete task</button>
-    <p *ngIf="showDelete">Query to delete task sent</p>
-</form>
+    <form [formGroup]="deleteTaskForm">
+        <h2>Remove a task</h2>
 
+        <div class="add-task-form__group">
+            <label for="add-task-form-delete">Task ID</label><br>
+            <input class="add-task-form__group__control form-control" type="text" id="add-task-form-delete"
+                   formControlName="id"
+                   [ngClass]="{'is-invalid': form2['id'].errors &&
+                                    (form2['id'].touched || form2['id'].dirty),
+                       'is-valid': form2['id'].valid }"
+            >
+        </div>
 
+        <div class="alert alert-danger" [hidden]="form2['id'].valid || form2['id'].pristine">
+            <div *ngIf="form2['id'].errors?.['required']">Id is required</div>
+        </div>
 
+        <div class="add-task-form__submit-button--container">
+            <button type="submit" class="add-task-form__submit-button default-button"
+                    [disabled]="!deleteTaskForm.valid"
+                    (click)="onSubmitDeleteTask()"
+            >
+                Delete Task
+            </button>
+        </div>
+    </form>
 
-
-<!--
-<p>Create new task</p>
-<form>
-    <label for="name">TaskSchema name:</label><br>
-    <input type="text" id="name" name="name" #taskName><br>
-    
-    <select name="dropdownOption" id="dropdownOption" (change)="selectChangeHandler($event)">
-      <option value="baixa">baixa</option>
-      <option value="media">média</option>
-      <option value="alta">alta</option>
-      <option value="urgente">urgente</option>
-    </select>
-    <br>
-    <button type="button" (click)="addTask(taskName.value)" >Create task</button>
-    <br>
-    <label for="name">TaskSchema ID:</label><br>
-    <input type="text" id="name" #taskID><br>
-    <button type="button" (click)="deleteTask(taskID.value)">Delete task</button>
-</form>
--->
-
+    <div class="app-alert-wrapper">
+        <app-alert id="alert-task-delete-form" [isOnlyOne]="true"></app-alert>
+    </div>
+</div>
   

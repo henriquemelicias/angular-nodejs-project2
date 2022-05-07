@@ -7,7 +7,6 @@ import { HttpStatusCode } from "@angular/common/http";
 import { AlertType } from "@core/models/alert.model";
 import { GenericMessageEnum } from "@core/enums/generic-message.enum";
 import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { AddProjectInput } from "@data/project/services/project.service";
 import { LoggerService } from "@core/services/logger/logger.service";
 
 @Component( {

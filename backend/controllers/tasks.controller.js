@@ -2,94 +2,138 @@ const Task = require( '../models/task.schema' );
 const httpError = require( 'http-errors' );
 const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 const { TaskPriority } = require( "#enums/db-task-priority.enum" );
-const { query } = require( "express-validator" );
+const { query, body, param } = require( "express-validator" );
 const { URL } = require( "url" );
 const { error } = require( "#services/logger.service" );
+const logger = require( "#services/logger.service" );
 
-exports.createTask = function ( req, res, next ) {
-    const name = req.body.name;
-    const priority = req.body.priority.toUpperCase();
-    const percentage = req.body.percentage;
-    const madeByUser = req.body.madeByUser;
-    let task;
+exports.getAddTaskRules = () => {
+    return [
+        body( "name", 'Task name is required.' ).exists(),
+        body( "name", 'Task name must be of string type.' ).isString(),
+        body( "name", 'Task name must have minimum length of 4.' ).isLength( { min: 4 } ),
+        body( "name", 'Task name can only have alphanumeric characters.' ).isAlphanumeric(),
+        body( "priority", 'Task priority is required.' ).exists(),
+        body( "priority", 'Task priority must be of string type.' ).isString(),
+        body( "madeByUser", 'madeByUser is required.' ).exists(),
+        body( "madeByUser", 'madeByUser must be of string type.' ).isString(),
+    ];
+}
+
+exports.addTask = ( req, res, next ) => {
+    const caller = logger.setCallerInfo( req, "TaskController", "addTask" );
+
     let taskPriority;
 
-    if(priority === TaskPriority.BAIXA.valueOf()){
-        taskPriority = TaskPriority.BAIXA.valueOf();
-    } else if(priority === TaskPriority.MEDIA.valueOf()) {
-        taskPriority = TaskPriority.MEDIA.valueOf();
-    } else if(priority === TaskPriority.ALTA.valueOf()) {
-        taskPriority = TaskPriority.ALTA.valueOf();
-    } else if(priority === TaskPriority.URGENTE.valueOf()) {
-        taskPriority = TaskPriority.URGENTE.valueOf(); 
+    let BAIXA, MEDIA, ALTA, URGENTE;
+    switch (  req.body.priority ) {
+        case (BAIXA = TaskPriority.BAIXA.valueOf()):
+            taskPriority = BAIXA;
+            break;
+        case (MEDIA = TaskPriority.MEDIA.valueOf()):
+            taskPriority = MEDIA;
+            break;
+        case (ALTA = TaskPriority.ALTA.valueOf()):
+            taskPriority = ALTA;
+            break;
+        case (URGENTE = TaskPriority.URGENTE.valueOf()):
+            taskPriority = URGENTE;
+            break;
     }
 
-    task = new Task({
-        name: name,
+    const task = new Task( {
+        name: req.body.name,
         priority: taskPriority,
-        percentage: percentage,
-        madeByUser: madeByUser,
+        percentage: 0,
+        madeByUser: req.body.madeByUser,
         users: []
-    });
-    
-    
+    } );
+
+
     task.save( ( error, _ ) => {
-        if (error) {
+        if ( error ) {
             next( httpError( HttpStatusCode.InternalServerError, error ) );
             return;
         }
 
-        res.status( HttpStatusCode.Created ).send( "POST foi feito com sucesso!" );
-    });
+        logger.info( `Task ${ req.body.name } added with success.`, caller );
+        res.status( HttpStatusCode.Created ).send();
+    } );
 }
 
-exports.task_delete = function ( req, res, next ) {
-    Task.findOneAndDelete({_id: req.params.id}, function (error) {
-        if (error) {
-            next( httpError( HttpStatusCode.InternalServerError, error ) );
-            return;
-        }
-
-        res.status( HttpStatusCode.Created ).send( "DELETE foi feito com sucesso!" );
-    });
+exports.getDeleteGetAndUpdateTaskRules = () => {
+    return [
+        param( "_id", 'Task _id is required.' ).exists(),
+        param( "_id", 'Task _id must be of string type.' ).isString(),
+    ];
 }
 
-exports.task_get = function ( req, res, next ){
+exports.deleteTask = function ( req, res, next ) {
+    Task.findOneAndDelete( { _id: req.params._id } )
+        .lean()
+        .exec( ( error ) => {
+                if ( error ) {
+                    next( httpError( HttpStatusCode.InternalServerError, error ) );
+                    return;
+                }
 
-    Task.findOne( {_id: req.params.id} )
-    .lean()
-    .select(["_id","name","priority","percentage", "madeByUser"])
-    .exec( function ( err, task ) {
-        if ( error )
-        {
-            return next( httpError( HttpStatusCode.InternalServerError, error ) );
-        }
-        res.status( HttpStatusCode.Created).send( task );
-    })     
+                res.send();
+            }
+        )
 }
 
-exports.task_list = function (req, res, next){ 
-    Task.find({}).select(["_id", "name", "priority", "percentage" , "madeByUser"]).exec( function ( err, task ) {
-        if ( error )
-        {
-            return next( httpError( HttpStatusCode.InternalServerError, error ) );
-        }
-        res.status( HttpStatusCode.Created).send( task );
-    })
+exports.getTask = ( req, res, next ) => {
+
+    Task.findOne( { _id: req.params._id } )
+        .lean()
+        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users" ] )
+        .exec( function ( error, task ) {
+            if ( error ) {
+                return next( httpError( HttpStatusCode.InternalServerError, error ) );
+            }
+            res.send( task );
+        } )
 }
 
-exports.task_update = function (req, res, next ) {
+exports.getTasks = ( req, res, next ) => {
+    Task.find( {} )
+        .lean()
+        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users" ] )
+        .exec( ( error, tasks ) => {
+            if ( error ) {
+                return next( httpError( HttpStatusCode.InternalServerError, error ) );
+            }
+            res.send( tasks );
+        } )
+}
 
-    Task.findByIdAndUpdate({_id: req.params.id},
-        {$set: {users: req.req.params.users} },
-        function (error, task ) {
-            if (error) {
+exports.getUpdateTaskRules = () => {
+    return [
+        body( "name", 'Task name is required.' ).exists(),
+        body( "name", 'Task name must be of string type.' ).isString(),
+        body( "name", 'Task name must have minimum length of 4.' ).isLength( { min: 4 } ),
+        body( "name", 'Task name can only have alphanumeric characters.' ).isAlphanumeric(),
+        body( "priority", 'Task priority is required.' ).exists(),
+        body( "priority", 'Task priority must be of string type.' ).isString(),
+        body( "madeByUser", 'madeByUser is required.' ).exists(),
+        body( "madeByUser", 'madeByUser must be of string type.' ).isString(),
+        body( "percentage", 'percentage is required.' ).exists(),
+        body( "percentage", 'percentage must be of Integer type. and between 0 and 100, inclusive.' ).toInt().custom( p => 0 <= p && p <= 100 ),
+    ];
+}
+
+exports.updateTask = ( req, res, next ) => {
+
+    Task.findByIdAndUpdate( { _id: req.params.id }, { $set: { users: req.req.params.users } } )
+        .lean()
+        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users" ] )
+        .exec( ( error, task ) => {
+            if ( error ) {
                 next( httpError( HttpStatusCode.InternalServerError, error ) );
                 return;
             }
-            res.status( HttpStatusCode.Created ).send( task );
-    })
-
+            res.send( task );
+        } );
 }
 
 exports.getNTasksByPageRules = () => {

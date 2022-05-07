@@ -73,9 +73,29 @@ ngb-pagination ::ng-deep .page-item.disabled .page-link {
     margin-bottom: 6rem;
 }
 
+.accordion__item span {
+    color: var(--font-color-highlight);
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+.offcanvas-title {
+    margin: auto;
+}
+
 
 /* Medium devices (tablets, less than 992px) */
 @media (max-width: 991.98px) {
+
+    .page--container {
+        width: 90vw;
+    }
+
+    .page__pagination--wrapper{
+        display: flex;
+        justify-content: center;
+        margin-bottom: 6rem;
+    }
 
     .page__pagination {
         justify-content: center;
@@ -96,26 +116,5 @@ ngb-pagination ::ng-deep .page-item.disabled .page-link {
 
     .page__title {
         margin-block-end: -1.5rem;
-    }
-
-    .page__subtitle {
-    }
-}
-
-.accordion__item {
-
-}
-
-.accordion__item span {
-    color: var(--font-color-highlight);
-    margin-right: 0.5rem;
-    font-weight: bold;
-}
-
-/* Medium devices (tablets, less than 992px) */
-@media (max-width: 991.98px) {
-
-    .page--container {
-        width: 90vw;
     }
 }

@@ -9,6 +9,13 @@ import { AlertService } from "@core/services/alert/alert.service";
 import { AlertType } from "@core/models/alert.model";
 import { GenericMessageEnum } from "@core/enums/generic-message.enum";
 import { LoggerService } from "@core/services/logger/logger.service";
+import { TaskPriorityEnum } from "@data/task/enums/task-priority.enum";
+
+export interface AddTaskOutput {
+    name: string,
+    madeByUser: string,
+    priority: TaskPriorityEnum
+}
 
 @Injectable( {
                  providedIn: 'root'
@@ -24,24 +31,24 @@ export class TaskService {
 
     constructor( private http: HttpClient ) { }
 
-    //Post
-    public addTask( task: TaskSchema ): Observable<void> {
+    // Post
+    public addTask( task: AddTaskOutput ): Observable<void> {
         return this.http.post<void>( TaskService._API_URI, task, HttpSettings.HEADER_CONTENT_TYPE_JSON );
-    }
+    };
 
     //Delete
-    public deleteTask( id: string ): Observable<TaskSchema> {
-        return this.http.delete<TaskSchema>( TaskService._API_URI + "/" + id, HttpSettings.HEADER_CONTENT_TYPE_JSON );
-    }
+    public deleteTask( id: string ): Observable<void> {
+        return this.http.delete<void>( TaskService._API_URI + "/" + id, HttpSettings.HEADER_CONTENT_TYPE_JSON );
+    };
 
     //Get
     public getTask( id: string ): Observable<TaskSchema> {
         return this.http.get<TaskSchema>( TaskService._API_URI + "/" + id, HttpSettings.HEADER_CONTENT_TYPE_JSON );
-    }
+    };
 
     public getTasks(): Observable<TaskSchema[]> {
         return this.http.get<TaskSchema[]>( TaskService._API_URI, HttpSettings.HEADER_CONTENT_TYPE_JSON );
-    }
+    };
 
     public updateTask( task: TaskSchema ): Observable<void> {
         return this.http.put<void>(
@@ -49,25 +56,25 @@ export class TaskService {
             task,
             HttpSettings.HEADER_CONTENT_TYPE_JSON
         );
-    }
+    };
 
     public static getTasksByPage$(): Observable<TaskSchema[][] | undefined> {
         return this._tasksByPage$;
-    }
+    };
 
     public getTasksByPage( numTasks: Number, numPage: Number ): Observable<TaskSchema[]> {
         return this.http.get <TaskSchema[]>(
-            TaskService._API_URI + '/by-page?numTasks=' + numTasks + "&numPage=" +
-            numPage, HttpSettings.HEADER_CONTENT_TYPE_JSON
+            TaskService._API_URI + '/by-pages?numTasks=' + numTasks + '&numPage=' + numPage,
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
         )
-    }
+    };
 
     public getNumberOfTasks(): Observable<{ numberOfTasks: number }> {
         return this.http.get<{ numberOfTasks: number; }>(
             TaskService._API_URI + '/num-entries',
             HttpSettings.HEADER_CONTENT_TYPE_JSON
         );
-    }
+    };
 
     public loadTasksByPage( numPage: Number ) {
         TaskService._currentTasksByPage = TaskService._tasksByPage$.getValue();

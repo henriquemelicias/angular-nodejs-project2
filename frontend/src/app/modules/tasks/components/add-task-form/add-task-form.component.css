@@ -1,5 +1,37 @@
-.select{
-  font-family: Arial;
-  width: 24.5em;
-  height: 2.25em;
+.add-task-form--container {
 }
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+
+  .add-task-form--container {
+    display: block;
+    width: auto;
+    margin: 1rem;
+  }
+}
+
+.add-task-form__group {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.add-task-form__submit-button--container {
+  display: flex;
+  justify-content: center;
+}
+
+.add-task-form__submit-button {
+  width: 100%;
+  text-align: center;
+}
+
+.input-group-text {
+  height: 100%;
+  cursor: pointer;
+}
+
+.app-alert-wrapper {
+  margin-top: 1rem;
+}
+
