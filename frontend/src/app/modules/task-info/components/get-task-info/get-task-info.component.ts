@@ -16,6 +16,7 @@ export class GetTaskInfoComponent implements OnInit {
   task_users: UserSchema[] = [];
   users: UserSchema[] | undefined;
   selected: UserSchema | undefined;
+  search: UserSchema[] = [];
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute,
@@ -23,7 +24,8 @@ export class GetTaskInfoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.update();
+    this.getTask();
+    this.getUsers();
   }
 
   getTask(): void {
@@ -49,6 +51,10 @@ export class GetTaskInfoComponent implements OnInit {
 
   getUsers(): void {  
     this.userService.getUsers().subscribe(users => this.users = users);
+    console.log("hahahha");
+    
+    console.log(this.users);
+    
   }
 
   save(): void {
@@ -61,16 +67,12 @@ export class GetTaskInfoComponent implements OnInit {
     this.selected = user;
   }
 
-  addUser(): void {
+  associate(): void {
     if (this.selected) {
       this.task?.users?.push(this.selected);
-      if (this.task) {
-        console.log(this.task);
-      
-        this.taskService.updateTask(this.task).subscribe();
-      }
     }
-    
+    this.save();
+    this.update();
   }
 
   disassociate(id: string): void {
@@ -86,7 +88,7 @@ export class GetTaskInfoComponent implements OnInit {
         this.task.users.splice(i, 1);
         
       }
-      this.taskService.updateTask(this.task).subscribe();
+      this.save();
       this.update(); 
     }
   }

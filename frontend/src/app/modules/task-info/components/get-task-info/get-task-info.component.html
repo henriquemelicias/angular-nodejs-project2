@@ -21,8 +21,19 @@
         <h2> Users: No users assigned to this task </h2>
     </div>
 
-    <div>
-        <h2></h2>
+    <div *ngIf="users">
+        <h2>Associate user</h2>
+        <ul>
+            <li *ngFor="let s in users" (click)="clickedUser(s)">
+                {{s.username}}
+            </li>
+        </ul>
+
+        <div *ngIf="selected">
+            <a>{{selected.username}}</a>
+            <br>
+            <button type="submit" class="task-form__submit-button default-button" (click)="associate()">save</button>
+        </div>
     </div>
 
 </div>
