@@ -5,6 +5,7 @@ const { TaskPriority } = require( "#enums/db-task-priority.enum" );
 const { query, body, param } = require( "express-validator" );
 const { URL } = require( "url" );
 const logger = require( "#services/logger.service" );
+const DateTime = require( "date-and-time" );
 
 exports.getAddTaskRules = () => {
     return [
@@ -40,11 +41,29 @@ exports.addTask = ( req, res, next ) => {
             break;
     }
 
+    // Verify if dates are valid.
+    const todayDate = new Date();
+    const todayDateMinusOneDay = new DateTime.addDays( todayDate, -1 );
+
+    if ( req.body.startDate <= todayDateMinusOneDay ) {
+        next( httpError( HttpStatusCode.BadRequest, "Start date before current date." ) );
+        return;
+    }
+
+    if ( req.body.endDate ) {
+        if ( req.body.endDate <= req.body.startDate ) {
+            next( httpError( HttpStatusCode.BadRequest, "End date equal/before start date." ) );
+            return;
+        }
+    }
+
     const task = new Task( {
         name: req.body.name,
         priority: taskPriority,
         percentage: 0,
         madeByUser: req.body.madeByUser,
+        startDate: req.body.startDate || null,
+        endDate: req.body.endDate || null,
         users: []
     } );
 
@@ -86,7 +105,7 @@ exports.getTask = ( req, res, next ) => {
 
     Task.findOne( { _id: req.params._id } )
         .lean()
-        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users" ] )
+        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users","startDate","endDate" ] )
         .exec( function ( error, task ) {
             if ( error ) {
                 return next( httpError( HttpStatusCode.InternalServerError, error ) );
@@ -98,7 +117,7 @@ exports.getTask = ( req, res, next ) => {
 exports.getTasks = ( req, res, next ) => {
     Task.find( {} )
         .lean()
-        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users" ] )
+        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users","startDate","endDate" ] )
         .exec( ( error, tasks ) => {
             if ( error ) {
                 return next( httpError( HttpStatusCode.InternalServerError, error ) );
@@ -154,7 +173,7 @@ exports.getNTasksByPage = ( req, res, next ) => {
 
     Task.find( {} )
         .lean()
-        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users" ] )
+        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users", "startDate", "endDate" ] )
         .sort( { $natural: 1 } ) // sort by oldest first
         .skip( numPage * numTasks )
         .limit( numTasks )

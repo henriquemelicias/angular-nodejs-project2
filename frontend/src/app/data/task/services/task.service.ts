@@ -14,7 +14,9 @@ import { TaskPriorityEnum } from "@data/task/enums/task-priority.enum";
 export interface AddTaskOutput {
     name: string,
     madeByUser: string,
-    priority: TaskPriorityEnum
+    priority: TaskPriorityEnum,
+    startDate?: Date;
+    endDate?: Date;
 }
 
 @Injectable( {

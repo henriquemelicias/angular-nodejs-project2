@@ -53,6 +53,22 @@
                     {{ task.users.length > 0 ? task.users : "N/A" }}
                 </div>
             </div>
+            <div class="model-info__property">
+                <div class="model-info__property__key">
+                    start date:
+                </div>
+                <div class="model-info__property__value">
+                    {{ task.startDate ? task.startDate : "N/A" }}
+                </div>
+            </div>
+            <div class="model-info__property">
+                <div class="model-info__property__key">
+                    end date:
+                </div>
+                <div class="model-info__property__value">
+                    {{ task.endDate ? task.endDate : "N/A" }}
+                </div>
+            </div>
         </div>
         <div class="model-info__operations">
             <button class="default-button model-info__operations__button" (click)="openSetUsersModal( setUsersModal )">Set users</button>
