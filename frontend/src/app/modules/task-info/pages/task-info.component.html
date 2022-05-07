@@ -84,7 +84,18 @@
         <h2 class="modal-title">Set Users</h2>
     </div>
     <div class="modal-body">
-        <app-set-users-to-task-form [users]="users" [task]="task" (taskChange)="update($event)"></app-set-users-to-task-form>
+        <section>
+            <form [formGroup]="setUsersForm" (ngSubmit)="setUsersSubmit()" novalidate>
+                <div *ngFor="let user of users; let i=index">
+                    <input type="checkbox" formArrayName="selectedUsers" [value]="user.username" (change)="onCheckboxChange($event)" [checked]="task.users.includes( user.username )"
+                    />
+                    {{ user.username}}
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+
+            <p>{{ setUsersForm.value | json }}</p>
+        </section>
     </div>
     <div class="modal-footer">
         <button type="button" class="default-button" (click)="modal.close('Close click')">Close</button>

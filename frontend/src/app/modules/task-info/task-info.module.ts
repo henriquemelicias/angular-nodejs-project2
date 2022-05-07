@@ -7,13 +7,11 @@ import { TaskInfoRoutingModule } from './task-info-routing.module';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TaskInfoComponent } from './pages/task-info.component';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { AddUserToTaskForm } from "@modules/task-info/forms/set-users-to-task-form.component";
 
 
 @NgModule({
   declarations: [
     TaskInfoComponent,
-    AddUserToTaskForm
   ],
   imports: [
     CommonModule,

@@ -9,6 +9,7 @@ import { ModalComponent } from "@shared/components/modal/modal.component";
 import { MdbModalRef, MdbModalService } from "mdb-angular-ui-kit/modal";
 import { UserService } from "@data/user/services/user.service";
 import { UserSchema } from "@data/user/schemas/user.schema";
+import { FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
 
 @Component( {
                 selector: 'app-task-info',
@@ -23,15 +24,23 @@ export class TaskInfoComponent implements OnInit {
 
     users!: UserSchema[];
 
+    setUsersForm: FormGroup;
+
     constructor( private taskService: TaskService,
                  private route: ActivatedRoute,
                  private modalService: NgbModal,
                  private modal: MdbModalService,
                  private router: Router,
-                 private userService: UserService
+                 private userService: UserService,
+                 fb: FormBuilder
     ) {
         this._getTaskByIdFromRoute();
         this._ifNoTaskFound();
+
+        this.setUsersForm = fb.group( {
+                                          selectedUsers: new FormArray( [] )
+                                      } );
+
     }
 
     ngOnInit(): void {
@@ -39,6 +48,7 @@ export class TaskInfoComponent implements OnInit {
 
     public openSetUsersModal( longContent: any ) {
         this.setUsers().then( _ => {
+            this.task.users.forEach( t => this.setUsersForm.controls['selectedUsers'].value.push( t ) );
             this._openModal( longContent );
         } );
     }
@@ -92,7 +102,22 @@ export class TaskInfoComponent implements OnInit {
         } );
     }
 
-    update( task: TaskSchema ) {
-        this.task = task;
+
+    onCheckboxChange( event: any ) {
+        const selectedUsers = (this.setUsersForm.controls['selectedUsers'] as FormArray);
+        if ( event.target.checked ) {
+            selectedUsers.push( new FormControl( event.target.value ) );
+        }
+        else {
+            const index = selectedUsers.controls
+                                       .findIndex( x => x.value === event.target.value );
+            selectedUsers.removeAt( index );
+        }
+    }
+
+    setUsersSubmit() {
+        this.task.users = this.setUsersForm.controls['selectedUsers'].value;
+        this.taskService.updateTask( this.task ).subscribe( task => this.task = task );
+        window.location.reload();
     }
 }
