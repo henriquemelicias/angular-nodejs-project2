@@ -143,27 +143,11 @@ export class TaskInfoComponent implements OnInit {
 
     setUsersSubmit() {
         this.task.users = this.setUsersForm.controls['selectedUsers'].value;
-        this.taskService.updateTask( this.task ).subscribe( task => this.task = task );
-        window.location.reload();
+        this.taskService.updateTask( this.task ).subscribe(  );
     }
 
     setProjectSubmit() {
-        if ( !this.selectedTarget ) return;
 
-        this.selectedProject = this.projects.filter( p => p.acronym === this.selectedTarget )[0];
-
-        const isTaskInProjectAlready = this.selectedProject.tasks.includes( this.task );
-
-        if ( isTaskInProjectAlready )
-        {
-            this.selectedProject.tasks = this.selectedProject.tasks.filter( t => t !== this.task );
-        }
-        else {
-            this.selectedProject.tasks.push( this.task );
-        }
-
-        this.projectService.updateProject( this.selectedProject ).subscribe();
-        window.location.reload();
     }
 
     selectChangeHandler( event: any ) {

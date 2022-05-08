@@ -64,7 +64,7 @@ const routes: Routes = [
                     import('@modules/projects/projects.module').then( m => m.ProjectsModule )
             },
             {
-                path: 'projects/:_id',
+                path: 'projects/:acronym',
                 canLoad: [ AuthGuard ],
                 loadChildren: () =>
                     import( '@modules/project-info/project-info.module').then( m => m.ProjectInfoModule )

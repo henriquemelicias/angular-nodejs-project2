@@ -46,20 +46,7 @@ mongoose.connect( appConfig.MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTop
 
 /* App settings */
 
-// Some security settings.
-app.use( helmet() );
-
-// Headers allowed.
-const allowedHeaders = [].concat( Object.values( HttpCustomHeaderEnum ), [ "Content-Type" ] );
-
-// Disable the browser from preventing requests to/from unknown addresses.
-const frontendOrigin = `http://${ appConfig.FRONTEND_HOST }:${ appConfig.FRONTEND_PORT }`;
-logger.info( logger.callerInfo( 'app.js' ), `Frontend origin must be: ${ frontendOrigin }` );
-const corOptions = {
-    origin: frontendOrigin,
-    methods: [ 'GET', 'POST', 'PUT', 'PATCH', 'DELETE' ],
-    allowedHeaders: allowedHeaders,
-};
+app.use( cors() );
 
 // JSON will be used.
 app.use( express.json() );
@@ -81,12 +68,22 @@ app.use( methodOverride() );
 /* Compression */
 app.use( compression() )
 
+// Headers allowed.
+app.use( function(req,res,next) {
+    res.header(
+        "Access-Control-Allow-Headers",
+        "x-csrf-token, Origin, Content-Type, Accept",
+        "x-user-roles, Origin, Content-Type, Accept"
+    );
+    next();
+} );
+
 /* HTTP logger middleware */
 app.use( httpLoggerMiddleware );
 
 /* Routes */
 app.use( '', indexRouter );
-app.use( '/api', cors( corOptions ), apiRouter ); // Cors only on api
+app.use( '/api' , apiRouter ); // Cors only on api
 
 /* 404 Not found redirect to error */
 app.use( notFoundThrowerMiddleware );

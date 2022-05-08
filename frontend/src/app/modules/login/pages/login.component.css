@@ -1,11 +1,41 @@
 .login-form--container {
-  display: block;
-  width: 400px;
-  margin: 3rem 1rem 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.login__header {
+  width: 40%;
+  display: table;
+  table-layout: fixed;
+  user-select: none;
+}
+
+.login__title {
+  direction: ltr;
+  margin-block-end: -2rem;
+}
+
+.login__subtitle {
+  direction: rtl;
+  color: var( --secondary-color );
 }
 
 /* Medium devices (tablets, less than 992px) */
 @media (max-width: 991.98px) {
+
+  .login__header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    user-select: none;
+  }
+
+  .login__title {
+    margin-block-end: -1rem;
+  }
 
   .login-form--container {
     display: block;

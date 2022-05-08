@@ -41,12 +41,12 @@ ou
 
 ## Executar no [backend](/backend)
 
-> npm run start-prod &
+> npm run prod-start &
 > disown
 
 ou
 
-> nohup npm run start-prod &
+> nohup npm run prod-start &
 
 ## Como terminar estes processos:
 

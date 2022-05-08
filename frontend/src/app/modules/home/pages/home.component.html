@@ -1,4 +1,7 @@
 <div class="home-container">
+
+  <span class="register__header"><h1 class="register__title">Home</h1><h2 class="register__subtitle">This is a placeholder</h2></span>
+
   <a class="blog-entry {{ i == 0 ? 'featured-blog' : '' }}" *ngFor="let blogEntry of blogEntries; let i = index"
      [attr.data-index]="i"
      href="{{uriPrefix + blogEntry.id}}" routerLink="{{uriPrefix + blogEntry.id}}">

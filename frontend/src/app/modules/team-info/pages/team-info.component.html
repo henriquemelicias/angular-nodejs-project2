@@ -1,1 +1,71 @@
-<p>team-info works!</p>
+<div *ngIf="hasTeam">
+    <div class="model-info--container">
+
+        <div class="model-info__headers">
+            <h1>Team info</h1>
+        </div>
+        <div class="model-info__content">
+            <div class="model-info__property">
+                <div class="model-info__property__key">
+                    _id:
+                </div>
+                <div class="model-info__property__value">
+                    {{  team._id  }}
+                </div>
+            </div>
+            <div class="model-info__property">
+                <div class="model-info__property__key">
+                    name:
+                </div>
+                <div class="model-info__property__value">
+                    {{  team.name  }}
+                </div>
+            </div>
+            <div class="model-info__property">
+                <div class="model-info__property__key">
+                    members:
+                </div>
+                <div class="model-info__property__value">
+                    {{  (team.members.length > 0 ) ? team.members : "N/A"  }}
+                </div>
+            </div>
+            <div class="model-info__property">
+                <div class="model-info__property__key">
+                    projects:
+                </div>
+                <div class="model-info__property__value">
+                    {{  (team.projects.length > 0 ) ? team.projects : "N/A"  }}
+                </div>
+            </div>
+        </div>
+
+        <div class="model-info__operations">
+            <button *ngIf="isAdmin" class="default-button model-info__operations__button" (click)="openSetProjectsModal( setProjectsModal )">
+                Set projects
+            </button>
+        </div>
+    </div>
+
+    <ng-template #setProjectsModal let-modal>
+        <div class="modal-header">
+            <h2 class="modal-title">Set Projects</h2>
+        </div>
+        <div class="modal-body">
+            <section>
+                <form [formGroup]="setProjectsForm" novalidate>
+                    <div class="modal-body__row" *ngFor="let project of projects; let i=index">
+                        <input class="modal-body__row__checkbox" type="checkbox" formArrayName="selectedProjects" [value]="project.acronym"
+                               (change)="onCheckboxChange($event)" [checked]="team.projects.includes( project.acronym )"
+                        />
+                        <div class="modal-body__row__text" >{{ project.acronym }} : {{ project.name }}</div>
+                    </div>
+                </form>
+            </section>
+        </div>
+        <div class="modal-footer">
+            <button class="default-button"  type="submit" (keydown.enter)="setProjectsSubmit()" (click)="setProjectsSubmit();modal.close('Close click')">Save</button>
+            <button type="button" class="modal-footer__close-btn default-button" (click)="modal.close('Close click')">Close</button>
+        </div>
+    </ng-template>
+</div>
+

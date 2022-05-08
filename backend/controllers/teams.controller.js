@@ -82,23 +82,19 @@ exports.getNumberOfTeams = ( req, res, next ) => {
 
 exports.getTeamByName = ( req, res, next ) => {
 
-    async.parallel( {
-            team: function ( callback ) {
-                Team.find( { name: req.params.name } )
-                    .exec( callback );
-            }
-        },
-        function ( error, results ) {
-            if ( err ) {
+    Team.findOne( { name: req.params.name } )
+        .lean()
+        .exec( ( error, team ) => {
+            if ( error ) {
                 return next( httpError( HttpStatusCode.InternalServerError, error ) );
             }
 
-            if ( results.project == null ) {
+            if ( !team ) {
 
                 return next( httpError( HttpStatusCode.NotFound, error ) );
             }
 
-            res.send( results.team );
+            res.send( team );
         } );
 
 }
@@ -109,18 +105,12 @@ exports.modifyTeam = ( req, res, next ) => {
     const members = req.body.members;
     const projects = req.body.projects;
 
-
-    if ( name != null ) {
-
-        Team.findOneAndUpdate( name, { name: name, members: members, projects: projects }, function ( err ) {
-            if ( err ) {
-                return next( err );
+    Team.findOneAndUpdate( {  name: name }, { members: members, projects: projects } )
+        .lean()
+        .exec( ( error, team ) => {
+            if ( error ) {
+                return next( error );
             }
-            res.send( "Team updated." );
+            res.send( team );
         } );
-    }
-    else {
-        res.send( "Team wasn't updated" );
-    }
-
 }

@@ -83,4 +83,18 @@ export class TeamService {
                 }
             } );
     }
+
+    getTeamByName( name: string ) {
+        return this.http.get<TeamSchema>(
+            TeamService._API_URI + '/' + name,
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    }
+
+    updateTeam( team: TeamSchema ) {
+        return this.http.put<TeamSchema>(
+            TeamService._API_URI + '/' + team.name, team,
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    }
 }

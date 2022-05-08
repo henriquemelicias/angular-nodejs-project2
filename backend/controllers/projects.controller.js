@@ -74,25 +74,21 @@ exports.getProjectRules = () => {
 
     ]
 }
-exports.getProjectByAcronymUrl = function ( req, rest, next ) {
+exports.getProjectByAcronym = function ( req, res, next ) {
 
-    async.parallel( {
-            project: function ( callback ) {
-                Project.find( { name: req.params.name } )
-                    .exec( callback );
-            }
-        },
-        function ( err, results ) {
-            if ( err ) {
+    Project.findOne( { acronym: req.params.acronym } )
+        .lean()
+        .exec( ( error, project ) => {
+            if ( error ) {
                 return next( httpError( HttpStatusCode.InternalServerError, error ) );
             }
 
-            if ( results.project == null ) {
+            if ( !project ) {
 
                 return next( httpError( HttpStatusCode.NotFound, error ) );
             }
 
-            res.send( results.project );
+            res.send( project );
         } );
 }
 
@@ -105,27 +101,29 @@ exports.modifyProject = function ( req, res, next ) {
     const endDate = req.body.endDate;
     const tasks = req.body.tasks;
 
-    if ( name != null ) {
-
-        Project.findOneAndUpdate( name, {
-            name: name, acronym: acronym, startDate: startDate, endDate: endDate, tasks: tasks
-        }, function ( err ) {
-            if ( err ) {
-                return next( err );
+    Project.findOneAndUpdate( { acronym: acronym }, {
+        name: name, startDate: startDate, endDate: endDate, tasks: tasks
+    } )
+        .lean()
+        .exec( ( error, project ) => {
+            if ( error ) {
+                return next( httpError( HttpStatusCode.InternalServerError ), error );
             }
-            res.send( "Project updated." );
-        } );
-    }
-    else {
-        res.send( "Project wasn't updated" );
-    }
 
+            res.send( project );
+        } )
 }
 
 exports.getProjects = ( req, res, next ) => {
     Project.find( {} )
         .lean()
         .then( function ( projects ) {
+
+            if ( !projects ) {
+                next();
+                return;
+            }
+
             res.send( projects );
         } );
 }

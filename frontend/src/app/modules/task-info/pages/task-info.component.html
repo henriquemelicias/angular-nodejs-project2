@@ -55,7 +55,7 @@
             </div>
             <div class="model-info__property">
                 <div class="model-info__property__key">
-                    start date:
+                    start date/time:
                 </div>
                 <div class="model-info__property__value">
                     {{ task.startDate ? task.startDate : "N/A" }}
@@ -63,7 +63,7 @@
             </div>
             <div class="model-info__property">
                 <div class="model-info__property__key">
-                    end date:
+                    end date/time:
                 </div>
                 <div class="model-info__property__value">
                     {{ task.endDate ? task.endDate : "N/A" }}
@@ -89,21 +89,19 @@
     </div>
     <div class="modal-body">
         <section>
-            <form [formGroup]="setUsersForm" (ngSubmit)="setUsersSubmit()" novalidate>
-                <div *ngFor="let user of users; let i=index">
-                    <input type="checkbox" formArrayName="selectedUsers" [value]="user.username"
+            <form [formGroup]="setUsersForm" novalidate>
+                <div class="modal-body__row" *ngFor="let user of users; let i=index">
+                    <input class="modal-body__row__checkbox"  type="checkbox" formArrayName="selectedUsers" [value]="user.username"
                            (change)="onCheckboxChange($event)" [checked]="task.users.includes( user.username )"
                     />
-                    {{ user.username}}
+                    <div class="modal-body__row__text" >{{ user.username }}</div>
                 </div>
-                <button type="submit">Submit</button>
             </form>
-
-            <p>{{ setUsersForm.value | json }}</p>
         </section>
     </div>
     <div class="modal-footer">
-        <button type="button" class="default-button" (click)="modal.close('Close click')">Close</button>
+        <button class="default-button" type="submit" (keydown.enter)="setUsersSubmit()" (click)="setUsersSubmit();modal.close('Close click')">Save</button>
+        <button type="button" class="default-button modal-footer__close-btn" (click)="modal.close('Close click')">Close</button>
     </div>
 </ng-template>
 
@@ -119,7 +117,7 @@
             <select class="add-task-form__group form-select" name="dropdownOption" id="task-set-project-dropdown"
                     (change)="selectChangeHandler($event)"
                     formControlName="project">
-                <option *ngFor="let project of projects" [value]="project.acronym">{{ project.name + ( project.tasks.includes( this.task ) ? "Task present. Select to remove." : "" )}}</option>
+                <option *ngFor="let project of projects" [value]="project.acronym">{{ project.name + ( project.tasks.includes( this.task._id ) ? "Task present. Select to remove." : "" )}}</option>
             </select>
 
             <div class="alert alert-danger" [hidden]="form['project'].valid || form['project'].pristine">
@@ -130,6 +128,7 @@
                 <button type="submit" class="add-task-form__submit-button default-button"
                         [disabled]="!setProjectForm.valid"
                         (click)="setProjectSubmit()"
+                        (keydown.enter)="setProjectSubmit()"
                 >
                     Select
                 </button>

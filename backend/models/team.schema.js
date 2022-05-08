@@ -5,8 +5,8 @@ const Schema = mongoose.Schema;
 const TeamSchema = new Schema(
     {
         name: {type: String, required: true, minlength: 4, unique: true },
-        members: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-        projects: [{type: mongoose.Schema.Types.ObjectId, ref: 'Project'}]
+        members: [{type: mongoose.Schema.Types.String, ref: 'User'}],
+        projects: [ {type: String}]
     } );
 
 TeamSchema.index( { name: 1 } );

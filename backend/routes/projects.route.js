@@ -23,7 +23,7 @@ projectsRouter.post(
     projectController.addProject
 );
 
-projectsRouter.get( '/:acronym', projectController.getProjectByAcronymUrl );
+projectsRouter.get( '/:acronym', projectController.getProjectByAcronym );
 projectsRouter.put( '/:acronym', [ verifyToken, oneOf( projectController.getProjectRules() ),
                                    verifyRules
 ], projectController.modifyProject )

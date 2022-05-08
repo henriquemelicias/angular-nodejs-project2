@@ -122,3 +122,13 @@ ngb-pagination ::ng-deep .page-item.disabled .page-link {
         margin-block-end: -1.5rem;
     }
 }
+
+@media (max-width: 500px ) {
+    .page__title {
+        margin-bottom: auto;
+        float: left;
+    }
+    .page__subtitle {
+        display: none;
+    }
+}

@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '@data/project/services/project.service'
 import { ProjectSchema } from '@data/project/schemas/project.schema';
+import { ActivatedRoute, Router } from "@angular/router";
+import { AlertService } from "@core/services/alert/alert.service";
+import { AlertType } from "@core/models/alert.model";
+import { FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { TaskService } from "@data/task/services/task.service";
+import { TaskSchema } from "@data/task/schemas/task.schema";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { MdbModalService } from "mdb-angular-ui-kit/modal";
 
 
 @Component( {
@@ -12,34 +20,88 @@ import { ProjectSchema } from '@data/project/schemas/project.schema';
 
 export class ProjectInfoComponent implements OnInit {
 
-    constructor( private ProjectService: ProjectService ) {}
+    hasProject: boolean = false;
+    project!: ProjectSchema;
+    projectTasks: any;
 
-    date: String | undefined;
+    tasks!: TaskSchema[]
 
+    setTasksForm: FormGroup
+
+    constructor( private route: ActivatedRoute,
+                 private projectService: ProjectService,
+                 private taskService: TaskService,
+                 fb: FormBuilder,
+                 private modalService: NgbModal,
+                 private modal: MdbModalService,
+    ) {
+        this._getProjectByAcronymRoute();
+        this._ifNoProjectFound();
+
+        this.setTasksForm = fb.group( {
+                                          selectedTasks: new FormArray( [] )
+                                      } );
+    }
 
     ngOnInit(): void {
-
-        this.date = new Date().toISOString().slice( 0, 10 );
-
     }
 
-    addProject( name: string, acronym: string, startDate: string, endDate: string ) {
 
-        let sDate = new Date(
-            parseInt( startDate.split( "-" )[0] ),
-            parseInt( startDate.split( "-" )[1] ),
-            parseInt( startDate.split( "-" )[2] )
-        )
-        let eDate = new Date(
-            parseInt( endDate.split( "-" )[0] ),
-            parseInt( endDate.split( "-" )[1] ),
-            parseInt( endDate.split( "-" )[2] )
-        )
-
-        const p: ProjectSchema = { name: name, acronym: acronym, startDate: sDate, endDate: eDate, tasks: [] };
-
-        this.ProjectService.addProject( p );
-
+    private _getProjectByAcronymRoute() {
+        this.projectService.getProjectByAcronym( this.route.snapshot.params['acronym'] )
+            .subscribe(
+                {
+                    next: project => {
+                        this.project = project;
+                        this.hasProject = true;
+                        this.projectTasks = this.project.tasks.map( t => t + "\n" );
+                    }
+                } )
     }
 
+    private _ifNoProjectFound() {
+        setTimeout( () => {
+            if ( !this.hasProject ) {
+                AlertService.alertToApp( AlertType.Error, "Project not found" );
+            }
+        }, 1000 );
+    }
+
+    private async setTasks() {
+        return this.taskService.getTasks().subscribe( tasks => {
+            this.tasks = tasks
+        } );
+    }
+
+
+    onCheckboxChange( event: any ) {
+        const selectedTasks = (this.setTasksForm.controls['selectedTasks'] as FormArray);
+        if ( event.target.checked ) {
+            selectedTasks.push( new FormControl( event.target.value ) );
+        }
+        else {
+            const index = selectedTasks.controls
+                                       .findIndex( x => x.value === event.target.value );
+            selectedTasks.removeAt( index );
+        }
+    }
+
+    setTasksSubmit() {
+        this.project.tasks = this.setTasksForm.controls['selectedTasks'].value;
+        this.projectService.updateProject( this.project ).subscribe( );
+        window.location.reload();
+    }
+
+    public openSetTasksModal( longContent: any ) {
+        this.setTasks().then( _ => {
+            (this.setTasksForm.controls['selectedTasks'] as FormArray).clear();
+            this.project.tasks.forEach( t =>{
+                (this.setTasksForm.controls['selectedTasks'] as FormArray).push( new FormControl( t ) );} );
+            this._openModal( longContent );
+        } );
+    }
+
+    private _openModal( longContent: any ) {
+        this.modalService.open( longContent, { scrollable: true, size: "lg" } );
+    }
 }

@@ -45,13 +45,13 @@ exports.addTask = ( req, res, next ) => {
     const todayDate = new Date();
     const todayDateMinusOneDay = new DateTime.addDays( todayDate, -1 );
 
-    if ( req.body.startDate <= todayDateMinusOneDay ) {
+    if ( req.body.startDate && req.body.startDate <= todayDateMinusOneDay ) {
         next( httpError( HttpStatusCode.BadRequest, "Start date before current date." ) );
         return;
     }
 
     if ( req.body.endDate ) {
-        if ( req.body.endDate <= req.body.startDate ) {
+        if ( req.body.startDate && req.body.endDate <= req.body.startDate ) {
             next( httpError( HttpStatusCode.BadRequest, "End date equal/before start date." ) );
             return;
         }

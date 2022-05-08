@@ -110,4 +110,11 @@ export class ProjectService {
             HttpSettings.HEADER_CONTENT_TYPE_JSON
         );
     }
+
+    getProjectByAcronym( acronym: string ) {
+        return this.http.get<ProjectSchema>(
+            ProjectService._API_URI + "/" + acronym,
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    }
 }

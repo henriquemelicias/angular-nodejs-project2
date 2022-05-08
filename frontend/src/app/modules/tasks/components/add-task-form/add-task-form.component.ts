@@ -10,6 +10,7 @@ import { AppErrorHandler } from "@core/utils/class-error-handler.util";
 import { AlertType } from "@core/models/alert.model";
 import { GenericMessageEnum } from "@core/enums/generic-message.enum";
 import { TaskPriorityEnum } from "@data/task/enums/task-priority.enum";
+import { HttpStatusCode } from "@angular/common/http";
 
 @Component( {
                 selector: 'app-add-task-form',
@@ -22,13 +23,12 @@ export class AddTaskFormComponent implements OnInit {
     public deleteTaskForm: FormGroup;
     public showCreate = false;
     public showDelete = false;
-    todayDate = new Date();
-    datePlusOneDay = new Date().setDate( this.todayDate.getDate() + 1 );
-    
+    public todayDate: Date;
 
 
     selectedPriority: string = TaskPriorityEnum.BAIXA.valueOf();
     username: string = "";
+    todayWithPipe = null;
 
     constructor( private taskService: TaskService, private formBuilder: FormBuilder, ) {
 
@@ -49,24 +49,15 @@ export class AddTaskFormComponent implements OnInit {
                     ]
                 ],
                 startDate: [
-                  '', []
+                    '', []
                 ],
                 endDate: [
-                  '', []
+                    '', []
                 ]
-            } );
+            },
+            { validators: [ this.dateLessThan( 'startDate', 'endDate' ), this.dateAfterNow( 'startDate', 'endDate' ) ] }
+        );
 
-          this.form['startDate'].valueChanges.subscribe( _ => {
-            if ( this.form['endDate'].value !== "" )
-            {
-              this.form['endDate'].reset();
-              AlertService.warn(
-                  `Please select a new end date`,
-                  { id: "alert-task-form", isAutoClosed: true }
-              );
-            }
-          } );
-        
         this.deleteTaskForm = formBuilder.group(
             {
                 id: [
@@ -75,6 +66,9 @@ export class AddTaskFormComponent implements OnInit {
                     ]
                 ],
             } );
+
+        this.todayDate = new Date();
+        this.todayDate.setMinutes( this.todayDate.getMinutes() - this.todayDate.getTimezoneOffset() );
 
         const userPromise = firstValueFrom( UserService.getSessionUser$() );
 
@@ -101,19 +95,31 @@ export class AddTaskFormComponent implements OnInit {
     }
 
     public onSubmitAddTask(): void {
-      const startDateTokens = this.form['startDate'].value.split( "-" );
-      const endDateTokens = this.form['endDate'].value.split( "-" );
-  
-      const startDate = new Date(
-          parseInt( startDateTokens[0] ),
-          parseInt( startDateTokens[1] ),
-          parseInt( startDateTokens[2] )
-      );
-      const endDate = new Date(
-          parseInt( endDateTokens[0] ),
-          parseInt( endDateTokens[1] ),
-          parseInt( endDateTokens[2] )
-      )
+        const startDateFormValue = this.form['startDate'].value;
+
+        let startDate;
+        if ( startDateFormValue ) {
+            const startDateTokens = startDateFormValue.split( "-" );
+            startDate = new Date(
+                parseInt( startDateTokens[0] ),
+                parseInt( startDateTokens[1] ),
+                parseInt( startDateTokens[2] )
+            );
+        }
+
+
+        const endDateFormValue = this.form['endDate'].value;
+        let endDate;
+        if ( endDateFormValue ) {
+            const endDateTokens = endDateFormValue.split( "-" );
+
+
+            endDate = new Date(
+                parseInt( endDateTokens[0] ),
+                parseInt( endDateTokens[1] ),
+                parseInt( endDateTokens[2] )
+            )
+        }
 
         const task = {} as AddTaskOutput;
         task.name = this.form['name'].value;
@@ -146,6 +152,17 @@ export class AddTaskFormComponent implements OnInit {
 
                     const errorHandler = new AppErrorHandler( error );
                     errorHandler
+                        .serverErrorHandler( () => {
+
+                            if ( errorHandler.error.status === HttpStatusCode.Conflict ) {
+                                AlertService.error(
+                                    error.message,
+                                    { id: 'alert-task-form' },
+                                    logCallers
+                                );
+                                errorHandler.hasBeenHandled = true;
+                            }
+                        } )
                         .ifErrorHandlers( null, () => {
                             AlertService.alertToApp(
                                 AlertType.Error,
@@ -186,5 +203,42 @@ export class AddTaskFormComponent implements OnInit {
                         } ).toObservable();
                 }
             } );
+    }
+
+    dateLessThan( from: string, to: string ) {
+        return ( group: FormGroup ): { [key: string]: any } => {
+            let f = group.controls[from];
+            let t = group.controls[to];
+            if ( !f.value || !t.value ) return {};
+            if ( f.value >= t.value ) {
+                return {
+                    dates: "Start date should be before end date."
+                };
+            }
+            return {};
+        }
+    }
+
+    dateAfterNow( from: string, to: string ) {
+        return ( group: FormGroup ): { [key: string]: any } => {
+            let f = group.controls[from];
+            let t = group.controls[to];
+            if ( f.value ) {
+                if ( new Date( f.value ) < (new Date()) ) {
+                    return {
+                        dates3: "Dates should be after now."
+                    };
+                }
+            }
+            if ( t.value )
+            {
+                if ( new Date( t.value ) < (new Date()) ) {
+                return {
+                    dates2: "Dates should be after now."
+                };
+            }
+            }
+            return {};
+        }
     }
 }
