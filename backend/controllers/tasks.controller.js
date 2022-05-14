@@ -64,7 +64,8 @@ exports.addTask = ( req, res, next ) => {
         madeByUser: req.body.madeByUser,
         startDate: req.body.startDate || null,
         endDate: req.body.endDate || null,
-        users: []
+        users: [],
+        checklist: []
     } );
 
 
@@ -105,7 +106,7 @@ exports.getTask = ( req, res, next ) => {
 
     Task.findOne( { _id: req.params._id } )
         .lean()
-        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users","startDate","endDate" ] )
+        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users","startDate","endDate", "checklist" ] )
         .exec( function ( error, task ) {
             if ( error ) {
                 return next( httpError( HttpStatusCode.InternalServerError, error ) );
@@ -117,7 +118,7 @@ exports.getTask = ( req, res, next ) => {
 exports.getTasks = ( req, res, next ) => {
     Task.find( {} )
         .lean()
-        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users","startDate","endDate" ] )
+        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users","startDate","endDate", "checklist" ] )
         .exec( ( error, tasks ) => {
             if ( error ) {
                 return next( httpError( HttpStatusCode.InternalServerError, error ) );
