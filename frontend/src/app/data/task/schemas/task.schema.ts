@@ -1,3 +1,5 @@
+import { ChecklistItemSchema } from '@data/task/schemas/checklistItem.schema'
+
 export interface TaskSchema {
     _id: string;
     name: string;
@@ -7,4 +9,5 @@ export interface TaskSchema {
     startDate?: Date;
     endDate?: Date;
     users: string[];
+    checklist: ChecklistItemSchema[];
 }

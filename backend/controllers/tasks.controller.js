@@ -6,6 +6,7 @@ const { query, body, param } = require( "express-validator" );
 const { URL } = require( "url" );
 const logger = require( "#services/logger.service" );
 const DateTime = require( "date-and-time" );
+const checklistItem = require('#models/checklistItem.schema');
 
 exports.getAddTaskRules = () => {
     return [
@@ -146,9 +147,9 @@ exports.getUpdateTaskRules = () => {
 
 exports.updateTask = ( req, res, next ) => {
 
-    Task.findByIdAndUpdate( { _id: req.params.id }, { $set: { users: req.body.users } } )
+    Task.findByIdAndUpdate( { _id: req.params.id }, { $set: { users: req.body.users, checklist: req.body.checklist } } )
         .lean()
-        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users" ] )
+        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users", "checklist" ] )
         .exec( ( error, task ) => {
             if ( error ) {
                 next( httpError( HttpStatusCode.InternalServerError, error ) );

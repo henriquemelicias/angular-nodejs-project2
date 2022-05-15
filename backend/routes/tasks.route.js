@@ -31,7 +31,4 @@ tasksRouter.put( '/:id', [ verifyToken,
                             oneOf( tasksController.getUpdateTaskRules() ),
                             verifyRules ], tasksController.updateTask )
 
-//checklists
-tasksRouter.post( '/checklists', checklistRoute )
-
 module.exports = tasksRouter;

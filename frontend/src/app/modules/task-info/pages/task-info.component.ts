@@ -12,6 +12,7 @@ import { UserSchema } from "@data/user/schemas/user.schema";
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ProjectSchema } from "@data/project/schemas/project.schema";
 import { ProjectService } from "@data/project/services/project.service";
+import { ChecklistItemSchema } from '@app/data/task/schemas/checklistItem.schema';
 
 @Component( {
                 selector: 'app-task-info',
@@ -30,7 +31,7 @@ export class TaskInfoComponent implements OnInit {
     selectedTarget!: String;
 
     setUsersForm: FormGroup;
-    setProjectForm: FormGroup;
+    public addChecklistItemForm: FormGroup;
 
     constructor( private taskService: TaskService,
                  private route: ActivatedRoute,
@@ -41,6 +42,19 @@ export class TaskInfoComponent implements OnInit {
                  private projectService: ProjectService,
                  fb: FormBuilder
     ) {
+
+        this.addChecklistItemForm= fb.group(
+            {
+                name: [
+                    '', [
+                        Validators.required,
+                        Validators.minLength( 4 ),
+                        Validators.pattern( "[a-zA-Z0-9]*" )
+                    ]
+                ],
+            });
+
+
         this._getTaskByIdFromRoute();
         this._ifNoTaskFound();
 
@@ -48,19 +62,11 @@ export class TaskInfoComponent implements OnInit {
                                           selectedUsers: new FormArray( [] )
                                       } );
 
-        this.setProjectForm = fb.group(
-            {
-                project: [
-                    '', [
-                        Validators.required,
-                    ]
-                ],
-            } );
-
     }
 
+
     public get form(): { [key: string]: AbstractControl; } {
-        return this.setProjectForm.controls;
+        return this.addChecklistItemForm.controls;
     }
 
     ngOnInit(): void {
@@ -73,7 +79,7 @@ export class TaskInfoComponent implements OnInit {
         } );
     }
 
-    public openSetProjectsModal( longContent: any ) {
+    public openAddChecklistItemModal( longContent: any ) {
         this.setProjects().then( _ => {
             this._openModal( longContent );
         } );
@@ -146,8 +152,12 @@ export class TaskInfoComponent implements OnInit {
         this.taskService.updateTask( this.task ).subscribe(  );
     }
 
-    setProjectSubmit() {
-
+    addChecklistItemSubmit() {
+        const item = {} as ChecklistItemSchema;
+        item.name = this.form['name'].value;
+        item.toComplete = false;
+        this.task.checklist.push(item);
+        this.taskService.updateTask(this.task).subscribe();           
     }
 
     selectChangeHandler( event: any ) {
