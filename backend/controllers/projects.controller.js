@@ -6,8 +6,6 @@ const logger = require( "#services/logger.service" );
 const DateTime = require( "date-and-time" );
 const { URL } = require( "url" );
 const Team = require( "#models/team.schema" );
-const Task = require( "#models/task.schema" );
-const { AuthRoles } = require( "#enums/db-auth-roles.enum" );
 
 const projectParams = {
     name: "name",
@@ -93,7 +91,6 @@ exports.getProjectByAcronym = function ( req, res, next ) {
         } );
 }
 
-
 exports.modifyProject = function ( req, res, next ) {
 
     const name = req.body.name;
@@ -135,18 +132,18 @@ exports.getProjects = ( req, res, next ) => {
     } // User
     else {
         // Find projects by projects in user teams
-        Team.find( { members: req.userUsername } )
+        Team.find( { members: req.userUsername, project: { $ne: null | undefined } } )
             .lean()
-            .select( "projects" )
+            .select( "project" )
             .exec( ( error, teams ) => {
 
                 if ( error ) {
                     return next( httpError( HttpStatusCode.InternalServerError ), error );
                 }
 
-                // Get project acronyms
+                // Get project acronym
                 const projectAcronyms = teams
-                    .map( t => t.projects )
+                    .map( t => t.project )
                     .flat()
                     .filter(
                         ( value, index, self ) => {
@@ -166,6 +163,38 @@ exports.getProjects = ( req, res, next ) => {
                     } );
             } )
     }
+}
+
+exports.getAvailableProjects = ( req, res, next ) => {
+
+    Team.find( { project: { $ne: (null | undefined) } } )
+        .lean()
+        .select( "projectAcronym" )
+        .exec( ( error, teams ) => {
+
+            if ( error ) {
+                return next( httpError( HttpStatusCode.InternalServerError ), error );
+            }
+
+            const projectAcronyms = teams
+                .map( t => t.projectAcronym )
+                .flat()
+                .filter(
+                    ( value, index, self ) => {
+                        return self.indexOf( value ) === index;
+                    } );
+
+            Project.find( { acronym: { $nin: projectAcronyms } } )
+                .lean()
+                .exec( ( error, projects ) => {
+
+                    if ( error ) {
+                        return next( httpError( HttpStatusCode.InternalServerError ), error );
+                    }
+
+                    res.send( projects );
+                } );
+        } )
 }
 
 exports.getNProjectsByPageRules = () => {
@@ -202,7 +231,7 @@ exports.getNProjectsByPage = ( req, res, next ) => {
     } // User
     else {
         // Find projects by projects in user teams
-        Team.find( { members: req.userUsername } )
+        Team.find( { members: req.userUsername, project: { $ne: null } } )
             .lean()
             .select( "projects" )
             .exec( ( error, teams ) => {
@@ -213,7 +242,7 @@ exports.getNProjectsByPage = ( req, res, next ) => {
 
                 // Get project acronyms
                 const projectAcronyms = teams
-                    .map( t => t.projects )
+                    .map( t => t.project )
                     .flat()
                     .filter(
                         ( value, index, self ) => {

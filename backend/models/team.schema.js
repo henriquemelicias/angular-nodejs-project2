@@ -6,10 +6,11 @@ const TeamSchema = new Schema(
     {
         name: {type: String, required: true, minlength: 4, unique: true },
         members: [{type: mongoose.Schema.Types.String, ref: 'User'}],
-        project: { type: String }
+        projectAcronym: { type: String }
     } );
 
 TeamSchema.index( { name: 1 } );
+TeamSchema.index( { projectAcronym: 1 } );
 
 /**
  * Get team url.

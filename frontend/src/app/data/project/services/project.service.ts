@@ -39,6 +39,13 @@ export class ProjectService {
         return this.http.get<ProjectSchema[]>( ProjectService._API_URI, HttpSettings.HEADER_CONTENT_TYPE_JSON );
     }
 
+    public getAvailableProjects(): Observable<ProjectSchema[]> {
+        return this.http.get<ProjectSchema[]>(
+            ProjectService._API_URI + "/available",
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    }
+
     public static getProjectsByPage$(): Observable<ProjectSchema[][] | undefined> {
         return this._projectsByPage$.asObservable();
     }

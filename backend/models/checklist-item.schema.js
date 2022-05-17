@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const checklistItemSchema = new Schema(
     {
         name: { type: String, required: true, minlength: 4 },
-        isComplete: { type: Boolean, required: true, default: false}
+        isComplete: { type: Boolean, required: true, default: false }
     } );
 
 /**

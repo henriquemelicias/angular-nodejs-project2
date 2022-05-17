@@ -8,6 +8,7 @@ const { oneOf } = require( "express-validator" );
 const { verifyToken } = require( "#middlewares/auth/auth.middleware" );
 
 projectsRouter.get( '/', [ verifyToken ], projectController.getProjects );
+projectsRouter.get( '/available', [ verifyToken ], projectController.getAvailableProjects );
 
 projectsRouter.get( '/by-pages',
     [ verifyToken,

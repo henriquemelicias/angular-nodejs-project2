@@ -33,7 +33,7 @@
                            title="{{ (i + 1) + (currentPage - 1) * PAGE_SIZE }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{task.name }}">
                     <ng-template class="accordion__panel__template" ngbPanelContent>
                         <div class="accordion__item ">
-                            <a routerLink="/tasks/{{ task._id }}">
+                            <a routerLink="/tasks/{{ task._id }}" tabindex="-1">
                                 <button class="accordion__item__route-link default-button">
                                     Go to info
                                 </button>

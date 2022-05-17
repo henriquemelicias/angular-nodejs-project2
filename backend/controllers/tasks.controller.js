@@ -6,7 +6,7 @@ const { query, body, param } = require( "express-validator" );
 const { URL } = require( "url" );
 const logger = require( "#services/logger.service" );
 const DateTime = require( "date-and-time" );
-const checklistItem = require('#models/checklistItem.schema');
+const checklistItem = require('#models/checklist-item.schema');
 
 exports.getAddTaskRules = () => {
     return [

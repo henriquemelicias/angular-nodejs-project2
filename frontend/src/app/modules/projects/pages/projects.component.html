@@ -36,7 +36,7 @@
                            title="{{ (i + 1) + (currentPage - 1) * PAGE_SIZE }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{project.name }}">
                     <ng-template class="accordion__panel__template" ngbPanelContent>
                         <div class="accordion__item ">
-                            <a routerLink="/projects/{{ project.acronym }}">
+                            <a routerLink="/projects/{{ project.acronym }}" tabindex="-1">
                                 <button class="accordion__item__route-link default-button">
                                     Go to info
                                 </button>

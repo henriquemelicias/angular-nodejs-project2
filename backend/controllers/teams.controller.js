@@ -19,8 +19,7 @@ exports.addTeam = ( req, res, next ) => {
 
     const team = new Team( {
         name: req.body.name,
-        members: [],
-        projects: []
+        members: []
     } );
 
     team.save( ( error, _ ) => {
@@ -50,7 +49,7 @@ exports.getNTeamsByPage = ( req, res, next ) => {
 
     Team.find( {} )
         .lean()
-        .select( [ "_id", "name", "members", "projects" ] )
+        .select( [ "_id", "name", "members", "project" ] )
         .sort( { $natural: 1 } ) // sort by oldest first
         .skip( numPage * numTeams )
         .limit( numTeams )
@@ -103,9 +102,9 @@ exports.modifyTeam = ( req, res, next ) => {
 
     const name = req.body.name;
     const members = req.body.members;
-    const projects = req.body.projects;
+    const projectAcronym = req.body.projectAcronym;
 
-    Team.findOneAndUpdate( {  name: name }, { members: members, projects: projects } )
+    Team.findOneAndUpdate( {  name: name }, { $set: { members: members, projectAcronym: projectAcronym } } )
         .lean()
         .exec( ( error, team ) => {
             if ( error ) {

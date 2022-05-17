@@ -111,7 +111,7 @@
     background-color: var( --error-color);
 }
 
-input[type=checkbox]
+input[type=radio]
 {
     /* Double-sized Checkboxes */
     -ms-transform: scale(2); /* IE */

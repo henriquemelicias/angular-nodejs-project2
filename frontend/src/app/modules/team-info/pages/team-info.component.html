@@ -15,39 +15,40 @@
             </div>
             <div class="model-info__property">
                 <div class="model-info__property__key">
+                    project:
+                </div>
+                <div class="model-info__property__value">
+                    {{  (team.projectAcronym ) ? team.projectAcronym : "N/A"  }}
+                </div>
+            </div>
+            <div class="model-info__property">
+                <div class="model-info__property__key">
                     members:
                 </div>
                 <div class="model-info__property__value">
                     {{  (team.members.length > 0 ) ? team.members : "N/A"  }}
                 </div>
             </div>
-            <div class="model-info__property">
-                <div class="model-info__property__key">
-                    project:
-                </div>
-                <div class="model-info__property__value">
-                    {{  (team.project ) ? team.project : "N/A"  }}
-                </div>
-            </div>
         </div>
 
         <div class="model-info__operations">
             <button *ngIf="isAdmin" class="default-button model-info__operations__button" (click)="openSetProjectsModal( setProjectsModal )">
-                Set projects
+                Set project
             </button>
         </div>
     </div>
 
     <ng-template #setProjectsModal let-modal>
         <div class="modal-header">
-            <h2 class="modal-title">Set Projects</h2>
+            <h2 class="modal-title">Set Project</h2>
         </div>
         <div class="modal-body">
             <section>
-                <form [formGroup]="setProjectsForm" novalidate>
+                <form [formGroup]="setProjectForm" novalidate>
+                    <h4 *ngIf="projects && projects.length === 0" style="text-align: center"> No projects available</h4>
                     <div class="modal-body__row" *ngFor="let project of projects; let i=index">
-                        <input class="modal-body__row__checkbox" type="checkbox" formArrayName="selectedProjects" [value]="project.acronym"
-                               (change)="onCheckboxChange($event)" [checked]="team.project.includes( project.acronym )"
+                        <input class="modal-body__row__checkbox" type="radio" formArrayName="projects" [value]="project.acronym"
+                               (click)="onRadioClick($event)" [checked]="project.acronym == selectedProject"
                         />
                         <div class="modal-body__row__text" >{{ project.acronym }} : {{ project.name }}</div>
                     </div>
@@ -55,7 +56,7 @@
             </section>
         </div>
         <div class="modal-footer">
-            <button class="default-button"  type="submit" (keydown.enter)="setProjectsSubmit()" (click)="setProjectsSubmit();modal.close('Close click')">Save</button>
+            <button class="default-button" type="submit" (keydown.enter)="setProjectSubmit()" (click)="setProjectSubmit();modal.close('Close click')">Save</button>
             <button type="button" class="modal-footer__close-btn default-button" (click)="modal.close('Close click')">Close</button>
         </div>
     </ng-template>

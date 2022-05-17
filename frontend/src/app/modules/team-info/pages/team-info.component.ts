@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TeamSchema } from "@data/team/schemas/team.schema";
 import { UserService } from "@data/user/services/user.service";
 import { TaskSchema } from "@data/task/schemas/task.schema";
-import { FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { ProjectSchema } from "@data/project/schemas/project.schema";
 import { ActivatedRoute } from "@angular/router";
 import { TeamService } from "@data/team/services/team.service";
@@ -19,6 +19,8 @@ import { Title } from "@angular/platform-browser";
             } )
 export class TeamInfoComponent implements OnInit {
 
+    REMOVE_PROJECT = "Remove current project";
+
     hasTeam: boolean = false;
     team!: TeamSchema;
 
@@ -26,8 +28,9 @@ export class TeamInfoComponent implements OnInit {
 
     tasks!: TaskSchema[]
 
-    setProjectsForm: FormGroup
+    setProjectForm: FormGroup
     projects?: ProjectSchema[];
+    selectedProject?: string | null;
 
     constructor( private route: ActivatedRoute,
                  private teamService: TeamService,
@@ -39,13 +42,13 @@ export class TeamInfoComponent implements OnInit {
         this._getTeamByNameUrl();
         this._ifNoTeamFound();
 
-        this.setProjectsForm = fb.group( {
-                                             selectedProjects: new FormArray( [] )
-                                         } );
+        this.setProjectForm = fb.group( {
+                                            projects: []
+                                        } );
     }
 
     ngOnInit(): void {
-        this.titleService.setTitle( "Gira - Team-info" );
+        this.titleService.setTitle( "Gira - Team " + this.route.snapshot.params['name'] );
     }
 
 
@@ -69,38 +72,45 @@ export class TeamInfoComponent implements OnInit {
     }
 
     private async setProjects() {
-        return this.projectService.getProjects().subscribe( projects => {
-            this.projects = projects
+        return this.projectService.getAvailableProjects().subscribe( projects => {
+            this.projects = projects;
+            if ( this.team.projectAcronym ) {
+                this.projects.push( {
+                                        acronym: this.REMOVE_PROJECT,
+                                        name: this.team.projectAcronym
+                                    } as ProjectSchema );
+            }
+            this.projects.reverse();
         } );
     }
 
 
-    onCheckboxChange( event: any ) {
-        const selectedProjects = (this.setProjectsForm.controls['selectedProjects'] as FormArray);
-        if ( event.target.checked ) {
-            selectedProjects.push( new FormControl( event.target.value ) );
+    onRadioClick( event: any ) {
+        if ( event.target.checked && this.selectedProject === event.target.value ) {
+            this.selectedProject = undefined;
+            event.target.checked = false;
         }
-        else {
-            const index = selectedProjects.controls
-                                          .findIndex( x => x.value === event.target.value );
-            selectedProjects.removeAt( index );
+        else if ( event.target.checked ) {
+            this.selectedProject = event.target.value;
         }
     }
 
-    setProjectsSubmit() {
-        this.team.project = this.setProjectsForm.controls['selectedProjects'].value;
+    setProjectSubmit() {
+        if ( this.selectedProject === this.REMOVE_PROJECT ) {
+            this.team.projectAcronym = null;
+        }
+        else {
+            this.team.projectAcronym = this.selectedProject;
+        }
         this.teamService.updateTeam( this.team ).subscribe();
     }
 
-    public openSetProjectsModal( longContent: any ) {
-        this.setProjects().then( _ => {
-            (this.setProjectsForm.controls['selectedProjects'] as FormArray).clear();
-            this.team.project.forEach( t => {
-                (this.setProjectsForm.controls['selectedProjects'] as FormArray).push( new FormControl( t ) )
-            } );
-
-            this._openModal( longContent );
+    public async openSetProjectsModal( longContent: any ) {
+        await this.setProjects().then( _ => {
+            this.selectedProject = this.team.projectAcronym;
         } );
+
+        this._openModal( longContent );
     }
 
     private _openModal( longContent: any ) {
