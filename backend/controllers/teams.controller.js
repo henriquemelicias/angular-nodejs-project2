@@ -49,7 +49,6 @@ exports.getNTeamsByPage = ( req, res, next ) => {
 
     Team.find( {} )
         .lean()
-        .select( [ "_id", "name", "members", "project" ] )
         .sort( { $natural: 1 } ) // sort by oldest first
         .skip( numPage * numTeams )
         .limit( numTeams )
