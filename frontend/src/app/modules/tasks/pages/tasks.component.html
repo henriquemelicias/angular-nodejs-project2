@@ -20,7 +20,7 @@
                     </div>
                 </ng-template>
 
-                <button class="btn-lg default-button" (click)="openOffCanvas(content)">Create/Delete task</button>
+                <button class="btn-lg default-button" (click)="openOffCanvas(content)">Create task</button>
             </div>
         </div>
 
@@ -39,7 +39,6 @@
                                 </button>
                             </a>
                         </div>
-                        <div class="accordion__item"><span>id:</span> {{ task._id  }}</div>
                         <div class="accordion__item">
                             <span>priority:</span> {{ task.priority }}</div>
                         <div class="accordion__item">
@@ -54,6 +53,9 @@
                         </div>
                         <div class="accordion__item">
                             <span>end date/time:</span> {{ task.endDate ? task.endDate : "N/A"}}
+                        </div>
+                        <div class="accordion__item">
+                            <span>checklist:</span> {{ task.checklist ? task.checklist : "N/A"}}
                         </div>
                     </ng-template>
                 </ngb-panel>

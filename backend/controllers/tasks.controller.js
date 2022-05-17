@@ -6,6 +6,7 @@ const { query, body, param } = require( "express-validator" );
 const { URL } = require( "url" );
 const logger = require( "#services/logger.service" );
 const DateTime = require( "date-and-time" );
+const checklistItem = require('#models/checklistItem.schema');
 
 exports.getAddTaskRules = () => {
     return [
@@ -64,7 +65,8 @@ exports.addTask = ( req, res, next ) => {
         madeByUser: req.body.madeByUser,
         startDate: req.body.startDate || null,
         endDate: req.body.endDate || null,
-        users: []
+        users: [],
+        checklist: []
     } );
 
 
@@ -105,7 +107,7 @@ exports.getTask = ( req, res, next ) => {
 
     Task.findOne( { _id: req.params._id } )
         .lean()
-        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users","startDate","endDate" ] )
+        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users","startDate","endDate", "checklist" ] )
         .exec( function ( error, task ) {
             if ( error ) {
                 return next( httpError( HttpStatusCode.InternalServerError, error ) );
@@ -117,7 +119,7 @@ exports.getTask = ( req, res, next ) => {
 exports.getTasks = ( req, res, next ) => {
     Task.find( {} )
         .lean()
-        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users","startDate","endDate" ] )
+        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users","startDate","endDate", "checklist" ] )
         .exec( ( error, tasks ) => {
             if ( error ) {
                 return next( httpError( HttpStatusCode.InternalServerError, error ) );
@@ -145,9 +147,9 @@ exports.getUpdateTaskRules = () => {
 
 exports.updateTask = ( req, res, next ) => {
 
-    Task.findByIdAndUpdate( { _id: req.params.id }, { $set: { users: req.body.users } } )
+    Task.findByIdAndUpdate( { _id: req.params.id }, { $set: { users: req.body.users, checklist: req.body.checklist } } )
         .lean()
-        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users" ] )
+        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users", "checklist" ] )
         .exec( ( error, task ) => {
             if ( error ) {
                 next( httpError( HttpStatusCode.InternalServerError, error ) );

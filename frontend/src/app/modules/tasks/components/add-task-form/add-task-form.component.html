@@ -76,35 +76,5 @@
         <app-alert id="alert-task-form" [isOnlyOne]="true"></app-alert>
     </div>
 
-    <form [formGroup]="deleteTaskForm">
-        <h2>Remove a task</h2>
-
-        <div class="add-task-form__group">
-            <label for="add-task-form-delete">Task ID</label><br>
-            <input class="add-task-form__group__control form-control" type="text" id="add-task-form-delete"
-                   formControlName="id"
-                   [ngClass]="{'is-invalid': form2['id'].errors &&
-                                    (form2['id'].touched || form2['id'].dirty),
-                       'is-valid': form2['id'].valid }"
-            >
-        </div>
-
-        <div class="alert alert-danger" [hidden]="form2['id'].valid || form2['id'].pristine">
-            <div *ngIf="form2['id'].errors?.['required']">Id is required</div>
-        </div>
-
-        <div class="add-task-form__submit-button--container">
-            <button type="submit" class="add-task-form__submit-button default-button"
-                    [disabled]="!deleteTaskForm.valid"
-                    (click)="onSubmitDeleteTask()"
-            >
-                Delete Task
-            </button>
-        </div>
-    </form>
-
-    <div class="app-alert-wrapper">
-        <app-alert id="alert-task-delete-form" [isOnlyOne]="true"></app-alert>
-    </div>
 </div>
   

@@ -23,8 +23,11 @@ export class ProjectInfoComponent implements OnInit {
     hasProject: boolean = false;
     project!: ProjectSchema;
     projectTasks: any;
+    taskName: any;
+    taskNameList!: string[];
 
-    tasks!: TaskSchema[]
+    tasks!: TaskSchema[];
+    taskaux!: TaskSchema;
 
     setTasksForm: FormGroup
 
@@ -56,6 +59,23 @@ export class ProjectInfoComponent implements OnInit {
                         this.project = project;
                         this.hasProject = true;
                         this.projectTasks = this.project.tasks.map( t => t + "\n" );
+                        this.taskNameList = [];
+                        for (let i = 0; i < this.project.tasks.length; i++) {
+                            this._getTaskByIdAux(this.project.tasks[i]);
+                        }
+                        this.taskNameList.map( t => t + "\n");
+                        console.log(this.taskNameList);
+                        console.log(this.project.tasks);
+                    }
+                } )
+    }
+
+    private _getTaskByIdAux(myid: string) {
+        this.taskService.getTask(myid)
+            .subscribe(
+                {
+                    next: taskaux1 => {
+                        this.taskNameList.push(taskaux1.name);
                     }
                 } )
     }
@@ -105,4 +125,8 @@ export class ProjectInfoComponent implements OnInit {
     private _openModal( longContent: any ) {
         this.modalService.open( longContent, { scrollable: true, size: "lg" } );
     }
+
+}
+function _getTaskById(value: any) {
+    throw new Error('Function not implemented.');
 }

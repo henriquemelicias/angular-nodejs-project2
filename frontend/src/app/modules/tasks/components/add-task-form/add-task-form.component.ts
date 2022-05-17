@@ -20,7 +20,6 @@ import { HttpStatusCode } from "@angular/common/http";
 export class AddTaskFormComponent implements OnInit {
 
     public addTaskForm: FormGroup;
-    public deleteTaskForm: FormGroup;
     public showCreate = false;
     public showDelete = false;
     public todayDate: Date;
@@ -58,15 +57,6 @@ export class AddTaskFormComponent implements OnInit {
             { validators: [ this.dateLessThan( 'startDate', 'endDate' ), this.dateAfterNow( 'startDate', 'endDate' ) ] }
         );
 
-        this.deleteTaskForm = formBuilder.group(
-            {
-                id: [
-                    '', [
-                        Validators.required,
-                    ]
-                ],
-            } );
-
         this.todayDate = new Date();
         this.todayDate.setMinutes( this.todayDate.getMinutes() - this.todayDate.getTimezoneOffset() );
 
@@ -84,10 +74,6 @@ export class AddTaskFormComponent implements OnInit {
 
     public get form(): { [key: string]: AbstractControl; } {
         return this.addTaskForm.controls;
-    }
-
-    public get form2(): { [key: string]: AbstractControl; } {
-        return this.deleteTaskForm.controls;
     }
 
     selectChangeHandler( event: any ) {
@@ -130,10 +116,6 @@ export class AddTaskFormComponent implements OnInit {
         this._addTask( task );
     }
 
-    public onSubmitDeleteTask(): void {
-        this._deleteTask( this.form2['id'].value );
-    }
-
     private _addTask( task: AddTaskOutput ): void {
         const logCallers = LoggerService.setCaller( this, this._addTask );
 
@@ -163,36 +145,6 @@ export class AddTaskFormComponent implements OnInit {
                                 errorHandler.hasBeenHandled = true;
                             }
                         } )
-                        .ifErrorHandlers( null, () => {
-                            AlertService.alertToApp(
-                                AlertType.Error,
-                                GenericMessageEnum.UNEXPECTED_UNHANDLED_ERROR + error.message,
-                                null,
-                                logCallers
-                            );
-                        } ).toObservable();
-                }
-            } );
-    }
-
-    private _deleteTask( _id: string ) {
-        const logCallers = LoggerService.setCaller( this, this._deleteTask );
-
-        this.taskService.deleteTask( _id ).subscribe(
-            {
-                next: _ => {
-                    this.deleteTaskForm.reset();
-                    AlertService.success(
-                        `Task deleted successfully`,
-                        { id: "alert-task-delete-form", isAutoClosed: true },
-                        logCallers
-                    );
-                },
-                error: ( error: SanitizedErrorInterface ) => {
-                    if ( error.hasBeenHandled ) return;
-
-                    const errorHandler = new AppErrorHandler( error );
-                    errorHandler
                         .ifErrorHandlers( null, () => {
                             AlertService.alertToApp(
                                 AlertType.Error,

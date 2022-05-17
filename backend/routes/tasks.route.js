@@ -20,10 +20,14 @@ tasksRouter.delete( '/:_id', [ verifyToken,
                                verifyRules
 ], tasksController.deleteTask );
 
+/*
 tasksRouter.get( '/:_id', [ verifyToken,
                             oneOf( tasksController.getDeleteGetAndUpdateTaskRules() ),
                             verifyRules
 ], tasksController.getTask );
+*/
+
+tasksRouter.get( '/:_id', tasksController.getTask );
 
 tasksRouter.get( '', [ verifyToken ], tasksController.getTasks );
 
