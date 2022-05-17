@@ -75,7 +75,7 @@ exports.login = ( req, res, next ) => {
             }
 
             const token = jwt.sign(
-                { id: user.id },
+                { username: user.username, isAdmin: user.roles.includes( AuthRoles.ADMIN.valueOf() ) },
                 authConfig.secret,
                 { expiresIn: 86400 }, // 24 hours
                 null

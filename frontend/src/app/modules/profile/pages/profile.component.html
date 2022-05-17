@@ -1,9 +1,16 @@
 <div class="profile--container">
-    <h1>Profile <span>Placeholder</span></h1>
+    <h1>Profile<span *ngIf="currentUser"> {{ currentUser.username }}</span></h1>
     <div *ngIf="currentUser">
-      <h3>User & Token: </h3>
-      Username: {{ currentUser.username }} <br>
-      Token: {{ currentUser.token | slice:0:tokenNumberOfChars }}... <br>
-      Roles: {{ currentUser.roles }}
+        <h3>Token & Roles: </h3>
+        <h5>{{ currentUser.token | slice:0:tokenNumberOfChars }}... </h5>
+        <h5>{{ currentUser.roles }}</h5>
     </div>
+
+    <div class="profile__buttons">
+        <a routerLink="/agenda">
+            <button class="default-button">Agenda</button>
+        </a>
+    </div>
+
+    <app-tasks></app-tasks>
 </div>

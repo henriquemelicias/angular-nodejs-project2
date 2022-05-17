@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import jsonContents from "./data/404-phrases.json";
 
 import { faArrowRotateRight } from "@fortawesome/free-solid-svg-icons";
+import { Title } from "@angular/platform-browser";
 
 
 @Component( {
@@ -15,9 +16,10 @@ export class NotFoundComponent implements OnInit {
     phrase!: string;
     faArrowRotateRight = faArrowRotateRight;
 
-    constructor() { }
+    constructor( private titleService: Title ) { }
 
     ngOnInit(): void {
+        this.titleService.setTitle( "Gira - Not Found" );
         this.chooseRandomPhrase();
     }
 

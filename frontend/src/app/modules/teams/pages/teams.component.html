@@ -37,11 +37,10 @@
                                 </button>
                             </a>
                         </div>
-                        <div class="accordion__item"><span>id:</span> {{ team._id  }}</div>
                         <div class="accordion__item">
                             <span>members:</span> {{ team.members.length == 0 ? "N/A" : team.members }}</div>
                         <div class="accordion__item">
-                            <span>projects:</span> {{ team.projects.length == 0 ? "N/A" : team.projects }}</div>
+                            <span>project:</span> {{ team.project ? team.project : "N/A" }}</div>
                     </ng-template>
                 </ngb-panel>
             </ngb-accordion>

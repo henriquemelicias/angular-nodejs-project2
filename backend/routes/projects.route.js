@@ -2,12 +2,12 @@ const express = require( 'express' )
 const projectsRouter = express.Router();
 const { verifyRules } = require( "#middlewares/core/verify-rules.middleware" );
 const projectController = require( '#controllers/projects.controller' );
-const { verifyIfAdmin } = require( "#middlewares/core/verify-admin.middleware" );
+const { verifyIfAdmin } = require( "#middlewares/auth/verify-admin.middleware" );
 const { checkDuplicateAcronym } = require( "#middlewares/projects/projects.middleware" );
 const { oneOf } = require( "express-validator" );
 const { verifyToken } = require( "#middlewares/auth/auth.middleware" );
 
-projectsRouter.get( '/', projectController.getProjects );
+projectsRouter.get( '/', [ verifyToken ], projectController.getProjects );
 
 projectsRouter.get( '/by-pages',
     [ verifyToken,
@@ -19,13 +19,13 @@ projectsRouter.get( '/num-entries', [ verifyToken ], projectController.getNumber
 
 projectsRouter.post(
     '/',
-    [ verifyIfAdmin, oneOf( projectController.getProjectRules() ), verifyRules, checkDuplicateAcronym ],
+    [ verifyToken, verifyIfAdmin, oneOf( projectController.getProjectRules() ), verifyRules, checkDuplicateAcronym ],
     projectController.addProject
 );
 
-projectsRouter.get( '/:acronym', projectController.getProjectByAcronym );
+projectsRouter.get( '/:acronym', [ verifyToken ], projectController.getProjectByAcronym );
 projectsRouter.put( '/:acronym', [ verifyToken, oneOf( projectController.getProjectRules() ),
                                    verifyRules
-], projectController.modifyProject )
+], projectController.modifyProject );
 
 module.exports = projectsRouter;

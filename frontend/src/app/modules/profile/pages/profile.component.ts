@@ -3,6 +3,7 @@ import { AuthStorageService } from "@core/services/auth-storage/auth-storage.ser
 import { AuthService, LoginOutput } from "@core/services/auth/auth.service";
 import { UserService } from "@data/user/services/user.service";
 import { firstValueFrom } from "rxjs";
+import { Title } from "@angular/platform-browser";
 
 
 @Component( {
@@ -17,7 +18,7 @@ export class ProfileComponent implements OnInit {
     currentUser?: LoginOutput;
     tokenNumberOfChars: number;
 
-    constructor() {
+    constructor( private titleService: Title ) {
         this.tokenNumberOfChars = window.innerWidth / 25;
         const userPromise = firstValueFrom( UserService.getSessionUser$() );
 
@@ -29,10 +30,11 @@ export class ProfileComponent implements OnInit {
     };
 
     ngOnInit(): void {
+        this.titleService.setTitle( "Gira - Profile" );
     }
 
     @HostListener( 'window:resize', [ '$event' ] )
-    onResize( event: Event ) {
+    onResize( _: Event ) {
         this.tokenNumberOfChars = window.innerWidth / 25;
     }
 

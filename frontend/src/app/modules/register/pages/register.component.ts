@@ -13,6 +13,7 @@ import { AlertType } from "@core/models/alert.model";
 import { AuthStorageService } from "@core/services/auth-storage/auth-storage.service";
 import { Router } from "@angular/router";
 import { GenericMessageEnum } from "@core/enums/generic-message.enum";
+import { Title } from "@angular/platform-browser";
 
 @Component( {
                 selector: 'app-pages',
@@ -29,7 +30,8 @@ export class RegisterComponent implements OnInit {
     constructor( private formBuilder: FormBuilder,
                  private authService: AuthService,
                  private authStorage: AuthStorageService,
-                 private router: Router ) {
+                 private router: Router,
+                 private titleService: Title ) {
 
         const savedFormValue = JSON.parse( localStorage.getItem( LocalStorageKeyEnum.REGISTER_FORM )! );
 
@@ -67,6 +69,7 @@ export class RegisterComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.titleService.setTitle( "Gira - Register " );
     }
 
     get form(): { [key: string]: AbstractControl; } {
@@ -96,23 +99,10 @@ export class RegisterComponent implements OnInit {
             {
                 next: _ => {
                     this.registerForm.reset();
-                    this.router.navigateByUrl( '/', { skipLocationChange: true } ).then( () => {
-                        this.router.navigate( [ '/register' ] ).then(
-                            _ => {
-                                setTimeout( () => {
-                                    AlertService.alertToApp(
-                                        AlertType.Success,
-                                        `User ${ registerInput.username } registered successfully`,
-                                        { isAutoClosed: true },
-                                        logCallers
-                                    );
-                                } );
-                            },
-                            error => {
-                                AlertService.alertToApp( AlertType.Error, JSON.stringify( error ), null, logCallers );
-                            }
-                        );
-                    } );
+                    AlertService.success(
+                        "User " + registerInput.username + " registered successfully",
+                        { "id": "alert-register" }, logCallers
+                    );
                 },
                 error: ( error: SanitizedErrorInterface ) => {
                     if ( error.hasBeenHandled ) return;
@@ -124,7 +114,7 @@ export class RegisterComponent implements OnInit {
                             if ( errorHandler.error.status === HttpStatusCode.Conflict ) {
                                 AlertService.error(
                                     error.message,
-                                    { id: 'alert-register', hasAnimationShake: false },
+                                    { id: 'alert-register' },
                                     logCallers
                                 );
                                 errorHandler.hasBeenHandled = true;

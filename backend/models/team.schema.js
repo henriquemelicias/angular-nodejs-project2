@@ -6,7 +6,7 @@ const TeamSchema = new Schema(
     {
         name: {type: String, required: true, minlength: 4, unique: true },
         members: [{type: mongoose.Schema.Types.String, ref: 'User'}],
-        projects: [ {type: String}]
+        project: { type: String }
     } );
 
 TeamSchema.index( { name: 1 } );

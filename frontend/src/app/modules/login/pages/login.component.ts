@@ -12,6 +12,7 @@ import { AlertType } from "@core/models/alert.model";
 import { Router } from "@angular/router";
 import { GenericMessageEnum } from "@core/enums/generic-message.enum";
 import { UserService } from "@data/user/services/user.service";
+import { Title } from "@angular/platform-browser";
 
 @Component( {
               selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginComponent implements OnInit {
 
   constructor( private formBuilder: FormBuilder,
                private authService: AuthService,
-               private router: Router ) {
+               private router: Router,
+               private titleService: Title ) {
 
     // Initial form and validators.
     this.loginForm = formBuilder.group( {
@@ -35,6 +37,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+      this.titleService.setTitle( "Gira - Login" );
   }
 
   get form(): { [key: string]: AbstractControl; } {
@@ -86,7 +89,7 @@ export class LoginComponent implements OnInit {
               if ( errorHandler.error.status === HttpStatusCode.Unauthorized ) {
                 AlertService.error(
                   "Invalid username and/or password",
-                  { id: 'alert-login', hasAnimationShake: false },
+                  { id: 'alert-login' },
                   logCallers
                 );
                 errorHandler.hasBeenHandled = true;

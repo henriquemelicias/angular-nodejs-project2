@@ -31,7 +31,6 @@ export class AuthTokenInterceptor implements HttpInterceptor {
             // Add token and current authenticated user role.
             const reqHeaders = request.headers
                    .set( HttpCustomHeaderEnum.CsrfToken, token )
-                   .set( HttpCustomHeaderEnum.UserRoles, UserService.sessionUser.roles )
 
             requestMaybeWithToken = request.clone( { headers: reqHeaders } )
         }

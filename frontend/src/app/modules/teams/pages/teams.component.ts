@@ -11,6 +11,7 @@ import { AlertService } from "@core/services/alert/alert.service";
 import { AlertType } from "@core/models/alert.model";
 import { GenericMessageEnum } from "@core/enums/generic-message.enum";
 import { LoggerService } from "@core/services/logger/logger.service";
+import { Title } from "@angular/platform-browser";
 
 
 @Component( {
@@ -30,11 +31,13 @@ export class TeamsComponent implements OnInit, OnDestroy {
     public currentPage = 1;
     public numberOfEntries = 0;
 
-    constructor( private offcanvasService: NgbOffcanvas, private teamService: TeamService ) {
+    constructor( private offcanvasService: NgbOffcanvas, private teamService: TeamService, private titleService: Title ) {
         this.selectPage( "1" );
     }
 
     ngOnInit(): void {
+        this.titleService.setTitle( "Gira - Teams" );
+
         TeamService
             .getTeamsByPage$()
             .pipe( takeUntil( this._ngUnsubscribe$ ) )

@@ -1,7 +1,7 @@
 const express = require( 'express' );
 const { verifyRules } = require( "#middlewares/core/verify-rules.middleware" );
-const { verifyIfAdmin } = require( "#middlewares/core/verify-admin.middleware" );
-const { checkDuplicateUsername } = require( "#middlewares/auth/auth.middleware" );
+const { verifyIfAdmin } = require( "#middlewares/auth/verify-admin.middleware" );
+const { checkDuplicateUsername, verifyToken } = require( "#middlewares/auth/auth.middleware" );
 const authController = require( "#controllers/auth.controller" );
 const { oneOf } = require( "express-validator" );
 const authRouter = express.Router();
@@ -9,7 +9,7 @@ const authRouter = express.Router();
 // POST Register user.
 authRouter.post(
     '/register',
-    [ verifyIfAdmin, oneOf( authController.getRegisterRules() ), verifyRules, checkDuplicateUsername ],
+    [ verifyToken, verifyIfAdmin, oneOf( authController.getRegisterRules() ), verifyRules, checkDuplicateUsername ],
     authController.register
 );
 

@@ -73,7 +73,6 @@ app.use( function(req,res,next) {
     res.header(
         "Access-Control-Allow-Headers",
         "x-csrf-token, Origin, Content-Type, Accept",
-        "x-user-roles, Origin, Content-Type, Accept"
     );
     next();
 } );
@@ -83,7 +82,7 @@ app.use( httpLoggerMiddleware );
 
 /* Routes */
 app.use( '', indexRouter );
-app.use( '/api' , apiRouter ); // Cors only on api
+app.use( '/api', apiRouter ); // Cors only on api
 
 /* 404 Not found redirect to error */
 app.use( notFoundThrowerMiddleware );

@@ -38,14 +38,14 @@ function saveAdmins() {
 
     const admin1 = new User( {
         username: "admin001",
-        password: "$2a$08$sRgetZyTetrXoxWnTMZzWeEU2LIWG2nd.blaIS5ZlCcEy9w2L1RDm",
+        password: "$2a$08$/LR8trFroFFsJeJQ/dQUceWkE8N6svATvaiX6w.kcHRkRkF16KS.a",
         roles: [ AuthRoles.ADMIN, AuthRoles.USER ],
         tasks: []
     } );
 
     const admin2 = new User( {
         username: "HaX0rr0flmao",
-        password: "$2a$08$RFgR5xFmcOCFNHR8.77K3uZrOUq71OLsK4F5XhzWYmD9t5xozsZYq",
+        password: "$2a$08$8V4z1.1k9w4v5XWBJfzrmOS81ag0dos9cn2K1hbfuHvo2Z5tCoF.G",
         roles: [ AuthRoles.ADMIN, AuthRoles.USER ],
         tasks: []
     } );

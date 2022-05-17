@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '@data/project/services/project.service'
 import { ProjectSchema } from '@data/project/schemas/project.schema';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { AlertService } from "@core/services/alert/alert.service";
 import { AlertType } from "@core/models/alert.model";
 import { FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { TaskService } from "@data/task/services/task.service";
 import { TaskSchema } from "@data/task/schemas/task.schema";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { MdbModalService } from "mdb-angular-ui-kit/modal";
+import { Title } from "@angular/platform-browser";
 
 
 @Component( {
@@ -33,7 +33,7 @@ export class ProjectInfoComponent implements OnInit {
                  private taskService: TaskService,
                  fb: FormBuilder,
                  private modalService: NgbModal,
-                 private modal: MdbModalService,
+                 private titleService: Title,
     ) {
         this._getProjectByAcronymRoute();
         this._ifNoProjectFound();
@@ -44,6 +44,7 @@ export class ProjectInfoComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.titleService.setTitle( "Gira - Project-info" );
     }
 
 

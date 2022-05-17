@@ -7,14 +7,6 @@
         <div class="model-info__content">
             <div class="model-info__property">
                 <div class="model-info__property__key">
-                    _id:
-                </div>
-                <div class="model-info__property__value">
-                    {{  team._id  }}
-                </div>
-            </div>
-            <div class="model-info__property">
-                <div class="model-info__property__key">
                     name:
                 </div>
                 <div class="model-info__property__value">
@@ -31,10 +23,10 @@
             </div>
             <div class="model-info__property">
                 <div class="model-info__property__key">
-                    projects:
+                    project:
                 </div>
                 <div class="model-info__property__value">
-                    {{  (team.projects.length > 0 ) ? team.projects : "N/A"  }}
+                    {{  (team.project ) ? team.project : "N/A"  }}
                 </div>
             </div>
         </div>
@@ -55,7 +47,7 @@
                 <form [formGroup]="setProjectsForm" novalidate>
                     <div class="modal-body__row" *ngFor="let project of projects; let i=index">
                         <input class="modal-body__row__checkbox" type="checkbox" formArrayName="selectedProjects" [value]="project.acronym"
-                               (change)="onCheckboxChange($event)" [checked]="team.projects.includes( project.acronym )"
+                               (change)="onCheckboxChange($event)" [checked]="team.project.includes( project.acronym )"
                         />
                         <div class="modal-body__row__text" >{{ project.acronym }} : {{ project.name }}</div>
                     </div>

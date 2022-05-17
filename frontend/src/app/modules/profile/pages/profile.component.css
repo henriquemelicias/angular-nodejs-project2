@@ -7,7 +7,29 @@ h1 span {
 
 }
 
+.profile__buttons {
+  margin-top: 4rem;
+  padding-top: 4rem;
+  border-top: 1px solid var( --primary-color  );
+  display: flex;
+  flex-direction: column;
+}
+
+.default-button {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
 h3 {
   color: var(--font-color-highlight);
+
+}
+
+@media  (max-width: 992.98px) {
+
+  .profile--container {
+    width: 85vw;
+  }
 
 }

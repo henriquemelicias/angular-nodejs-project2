@@ -2,7 +2,11 @@
     <div class="page__content">
         <div class="page__head--container">
             <span class="page__head">
-                <h1 class="page__title">Tasks</h1><h2 class="page__subtitle">Straight to the backlog</h2>
+            <h1 *ngIf="isSessionUserAdmin; else notAdmin" class="page__title">Tasks</h1>
+            <ng-template #notAdmin>
+                <h1 class="page__title">My&nbsp;Tasks</h1>
+            </ng-template>
+                <h2 class="page__subtitle">Straight to the backlog</h2>
             </span>
             <div *ngIf="isLoggedIn">
                 <ng-template #content let-offcanvas>

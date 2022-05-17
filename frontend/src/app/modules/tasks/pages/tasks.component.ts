@@ -10,6 +10,7 @@ import { AlertService } from "@core/services/alert/alert.service";
 import { AlertType } from "@core/models/alert.model";
 import { GenericMessageEnum } from "@core/enums/generic-message.enum";
 import { LoggerService } from "@core/services/logger/logger.service";
+import { Title } from "@angular/platform-browser";
 
 @Component( {
                 selector: 'app-tasks',
@@ -27,12 +28,15 @@ export class TasksComponent implements OnInit {
     public tasksPages?: TaskSchema[][];
     public currentPage = 1;
     public numberOfEntries = 0;
+    public isSessionUserAdmin = UserService.isSessionUserAdmin();
 
-    constructor( private offcanvasService: NgbOffcanvas, private taskService: TaskService ) {
+    constructor( private offcanvasService: NgbOffcanvas, private taskService: TaskService, private titleService: Title ) {
         this.selectPage( "1" );
     }
 
     ngOnInit(): void {
+        this.titleService.setTitle( "Gira - " + (UserService.isSessionUserAdmin() ? "Tasks" : "My Tasks") );
+
         TaskService
             .getTasksByPage$()
             .pipe( takeUntil( this._ngUnsubscribe$ ) )

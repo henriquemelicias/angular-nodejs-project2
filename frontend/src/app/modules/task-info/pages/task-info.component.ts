@@ -12,6 +12,7 @@ import { UserSchema } from "@data/user/schemas/user.schema";
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ProjectSchema } from "@data/project/schemas/project.schema";
 import { ProjectService } from "@data/project/services/project.service";
+import { Title } from "@angular/platform-browser";
 
 @Component( {
                 selector: 'app-task-info',
@@ -39,7 +40,8 @@ export class TaskInfoComponent implements OnInit {
                  private router: Router,
                  private userService: UserService,
                  private projectService: ProjectService,
-                 fb: FormBuilder
+                 fb: FormBuilder,
+                 private titleService: Title
     ) {
         this._getTaskByIdFromRoute();
         this._ifNoTaskFound();
@@ -64,6 +66,7 @@ export class TaskInfoComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.titleService.setTitle( "Gira - Task-info" );
     }
 
     public openSetUsersModal( longContent: any ) {

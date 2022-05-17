@@ -1,7 +1,7 @@
 const express = require( 'express' )
 const teamsRouter = express.Router();
 const teamsController = require( '#controllers/teams.controller' );
-const { verifyIfAdmin } = require( "#middlewares/core/verify-admin.middleware" );
+const { verifyIfAdmin } = require( "#middlewares/auth/verify-admin.middleware" );
 const { verifyToken } = require( "#middlewares/auth/auth.middleware" );
 const { verifyRules } = require( "#middlewares/core/verify-rules.middleware" );
 const { checkDuplicateName } = require( "#middlewares/teams/teams.middleware" );
@@ -18,7 +18,7 @@ teamsRouter.get( '/by-pages',
 
 teamsRouter.get( '/num-entries', [ verifyToken ], teamsController.getNumberOfTeams );
 
-teamsRouter.get( '/:name', teamsController.getTeamByName );
+teamsRouter.get( '/:name', [verifyToken ], teamsController.getTeamByName );
 
 teamsRouter.put( '/:name', teamsController.modifyTeam );
 

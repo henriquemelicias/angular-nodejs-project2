@@ -22,7 +22,8 @@ verifyToken = ( req, res, next ) => {
             return;
         }
 
-        req.userId = decoded.id;
+        req.userUsername = decoded.username;
+        req.isAdmin = decoded.isAdmin;
         next();
     } );
 };

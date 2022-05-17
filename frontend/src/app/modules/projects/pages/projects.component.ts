@@ -10,10 +10,11 @@ import { AlertType } from "@core/models/alert.model";
 import { GenericMessageEnum } from "@core/enums/generic-message.enum";
 import { LoggerService } from "@core/services/logger/logger.service";
 import { ProjectSchema } from "@data/project/schemas/project.schema";
+import { Title } from "@angular/platform-browser";
 
 
 @Component( {
-                selector: 'app-projects-info',
+                selector: 'app-projects',
                 templateUrl: './projects.component.html',
                 styleUrls: [ './projects.component.css' ]
             } )
@@ -33,11 +34,13 @@ export class ProjectsComponent implements OnInit {
     public currentPage = 1;
     public numberOfEntries = 0;
 
-    constructor( private offcanvasService: NgbOffcanvas, private projectService: ProjectService ) {
+    constructor( private offcanvasService: NgbOffcanvas, private projectService: ProjectService, private titleService: Title ) {
         this.selectPage( "1" );
     }
 
     ngOnInit(): void {
+        this.titleService.setTitle( "Gira - " + (this.isSessionUserAdmin ? "Projects" : "My Projects") );
+
         ProjectService
             .getProjectsByPage$()
             .pipe( takeUntil( this._ngUnsubscribe$ ) )

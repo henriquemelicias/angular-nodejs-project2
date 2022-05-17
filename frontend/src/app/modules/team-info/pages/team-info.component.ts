@@ -8,9 +8,9 @@ import { ActivatedRoute } from "@angular/router";
 import { TeamService } from "@data/team/services/team.service";
 import { ProjectService } from "@data/project/services/project.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { MdbModalService } from "mdb-angular-ui-kit/modal";
 import { AlertService } from "@core/services/alert/alert.service";
 import { AlertType } from "@core/models/alert.model";
+import { Title } from "@angular/platform-browser";
 
 @Component( {
                 selector: 'app-team-info',
@@ -34,6 +34,7 @@ export class TeamInfoComponent implements OnInit {
                  private projectService: ProjectService,
                  fb: FormBuilder,
                  private modalService: NgbModal,
+                 private titleService: Title
     ) {
         this._getTeamByNameUrl();
         this._ifNoTeamFound();
@@ -44,6 +45,7 @@ export class TeamInfoComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.titleService.setTitle( "Gira - Team-info" );
     }
 
 
@@ -86,14 +88,14 @@ export class TeamInfoComponent implements OnInit {
     }
 
     setProjectsSubmit() {
-        this.team.projects = this.setProjectsForm.controls['selectedProjects'].value;
+        this.team.project = this.setProjectsForm.controls['selectedProjects'].value;
         this.teamService.updateTeam( this.team ).subscribe();
     }
 
     public openSetProjectsModal( longContent: any ) {
         this.setProjects().then( _ => {
             (this.setProjectsForm.controls['selectedProjects'] as FormArray).clear();
-            this.team.projects.forEach( t => {
+            this.team.project.forEach( t => {
                 (this.setProjectsForm.controls['selectedProjects'] as FormArray).push( new FormControl( t ) )
             } );
 

@@ -14,6 +14,9 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
                    TasksComponent,
                    AddTaskFormComponent,
                ],
+               exports: [
+                   TasksComponent
+               ],
                imports: [
                    CommonModule,
                    SharedModule,
