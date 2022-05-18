@@ -43,15 +43,7 @@
                     tasks:
                 </div>
                 <div class="model-info__property__value">
-                    {{  projectTasks  }}
-                </div>
-            </div>
-            <div class="model-info__property">
-                <div class="model-info__property__key">
-                    tasksName:
-                </div>
-                <div class="model-info__property__value">
-                    {{  taskNameList  }}
+                    {{taskNameList.join(", ") || "N/A"}}
                 </div>
             </div>
         </div>

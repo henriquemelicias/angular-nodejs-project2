@@ -63,21 +63,15 @@ export class ProjectInfoComponent implements OnInit {
                         for (let i = 0; i < this.project.tasks.length; i++) {
                             this._getTaskByIdAux(this.project.tasks[i]);
                         }
-                        this.taskNameList.map( t => t + "\n");
-                        console.log(this.taskNameList);
-                        console.log(this.project.tasks);
                     }
-                } )
+                } )             
     }
 
     private _getTaskByIdAux(myid: string) {
         this.taskService.getTask(myid)
-            .subscribe(
-                {
-                    next: taskaux1 => {
-                        this.taskNameList.push(taskaux1.name);
-                    }
-                } )
+            .subscribe(task => {
+                this.taskNameList.push(task.name);
+              });
     }
 
     private _ifNoProjectFound() {
