@@ -9,6 +9,7 @@ const User = require( "#models/user.schema" );
 const Task = require( "#models/task.schema" );
 const Project = require( '#models/project.schema' );
 const Team = require( '#models/team.schema' );
+const ChecklistItem = require ('#models/checklistItem.schema')
 
 exports.purgeDatabase = ( req, res ) => {
     const caller = logger.setCallerInfo( req, 'NonApiController', 'purgeDatabase' );
@@ -36,6 +37,7 @@ exports.showDatabase = async ( req, res ) => {
             await getAllEntriesOfTable( Task, "task", objectToJson ),
             await getAllEntriesOfTable( Project, "project", objectToJson ),
             await getAllEntriesOfTable( Team, "team", objectToJson ),
+            await getAllEntriesOfTable( ChecklistItem, "checklistItem", objectToJson ),
         ]
     ).then( _ => {
         res.setHeader( 'Content-Type', 'text/html' );
@@ -53,6 +55,7 @@ exports.showDatabaseJson = async ( req, res ) => {
             await getAllEntriesOfTable( Task, "task", objectToJson ),
             await getAllEntriesOfTable( Project, "project", objectToJson ),
             await getAllEntriesOfTable( Team, "team", objectToJson ),
+            await getAllEntriesOfTable( ChecklistItem, "checklistItem", objectToJson ),
         ]
     ).then( _ => {
         res.setHeader( 'Content-Type', 'application/json' );

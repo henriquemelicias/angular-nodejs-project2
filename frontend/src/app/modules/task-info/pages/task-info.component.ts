@@ -14,6 +14,7 @@ import { ProjectSchema } from "@data/project/schemas/project.schema";
 import { ProjectService } from "@data/project/services/project.service";
 import { Title } from "@angular/platform-browser";
 import { ChecklistItemSchema } from '@app/data/task/schemas/checklistItem.schema';
+import { ChecklistItemService } from '@app/data/task/services/checklist-item.service';
 
 @Component( {
                 selector: 'app-task-info',
@@ -42,7 +43,8 @@ export class TaskInfoComponent implements OnInit {
                  private userService: UserService,
                  private projectService: ProjectService,
                  fb: FormBuilder,
-                 private titleService: Title
+                 private titleService: Title,
+                 private checklistItemService: ChecklistItemService
     ) {
 
         this.addChecklistItemForm= fb.group(
@@ -156,9 +158,10 @@ export class TaskInfoComponent implements OnInit {
     }
 
     addChecklistItemSubmit() {
-        const item = {} as ChecklistItemSchema;
+        var item = {} as ChecklistItemSchema;
         item.name = this.form['name'].value;
-        item.toComplete = false;
+        item.isComplete = false;
+        this.checklistItemService.addChecklistItem(item).subscribe();
         this.task.checklist.push(item);
         this.taskService.updateTask(this.task).subscribe();
     }

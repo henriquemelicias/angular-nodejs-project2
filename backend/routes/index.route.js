@@ -8,6 +8,7 @@ const tasksRoute = require( "#routes/tasks.route" );
 const projectsRoute = require( "#routes/projects.route" );
 const teamsRoute = require( "#routes/teams.route");
 const usersRoute = require( "#routes/users.route" );
+const checklistItemRoute = require( "#routes/checklistItem.route");
 
 // Controllers.
 const nonApiController = require( "#controllers/non-api.controller" );
@@ -26,6 +27,9 @@ apiRouter.use( '/teams', teamsRoute )
 
 // Users
 apiRouter.use( '/users', usersRoute )
+
+// ChecklistItem
+apiRouter.use( '/checklistItem', checklistItemRoute)
 
 // Index routes (NON API FUNCTIONS).
 indexRouter.get( '/db-purge', nonApiController.purgeDatabase );
