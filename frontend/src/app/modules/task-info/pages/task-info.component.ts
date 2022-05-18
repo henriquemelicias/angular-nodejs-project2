@@ -32,6 +32,8 @@ export class TaskInfoComponent implements OnInit {
     selectedProject?: ProjectSchema;
     selectedTarget!: String;
 
+    public todayDate: Date;
+    changeDateForm: FormGroup;
     setUsersForm: FormGroup;
     public addChecklistItemForm: FormGroup;
 
@@ -46,6 +48,21 @@ export class TaskInfoComponent implements OnInit {
                  private titleService: Title,
                  private checklistItemService: ChecklistItemService
     ) {
+
+        this.changeDateForm = fb.group(
+            {
+                startDate: [
+                    '', []
+                ],
+                endDate: [
+                    '', []
+                ]
+            },
+            { validators: [ this.dateLessThan( 'startDate', 'endDate' ), this.dateAfterNow( 'startDate', 'endDate' ) ] }
+        );
+
+        this.todayDate = new Date();
+        this.todayDate.setMinutes( this.todayDate.getMinutes() - this.todayDate.getTimezoneOffset() );
 
         this.addChecklistItemForm= fb.group(
             {
@@ -85,9 +102,11 @@ export class TaskInfoComponent implements OnInit {
     }
 
     public openAddChecklistItemModal( longContent: any ) {
-        this.setProjects().then( _ => {
-            this._openModal( longContent );
-        } );
+        this._openModal( longContent );
+    }
+
+    public openChangeDateModal( longContent: any ) {
+        this._openModal( longContent );
     }
 
     private _openModal( longContent: any ) {
@@ -157,6 +176,39 @@ export class TaskInfoComponent implements OnInit {
         this.taskService.updateTask( this.task ).subscribe(  );
     }
 
+    changeDateSubmit() {
+        const startDateFormValue = this.form['startDate'].value;
+
+        let startDate;
+        if ( startDateFormValue ) {
+            const startDateTokens = startDateFormValue.split( "-" );
+            startDate = new Date(
+                parseInt( startDateTokens[0] ),
+                parseInt( startDateTokens[1] ),
+                parseInt( startDateTokens[2] )
+            );
+        }
+
+        const endDateFormValue = this.form['endDate'].value;
+        let endDate;
+        if ( endDateFormValue ) {
+            const endDateTokens = endDateFormValue.split( "-" );
+
+
+            endDate = new Date(
+                parseInt( endDateTokens[0] ),
+                parseInt( endDateTokens[1] ),
+                parseInt( endDateTokens[2] )
+            )
+        }
+
+        this.task.startDate = startDate;
+        this.task.endDate = endDate;
+
+        this.taskService.updateTask(this.task).subscribe();
+
+    }
+
     addChecklistItemSubmit() {
         var item = {} as ChecklistItemSchema;
         item.name = this.form['name'].value;
@@ -168,5 +220,42 @@ export class TaskInfoComponent implements OnInit {
 
     selectChangeHandler( event: any ) {
         this.selectedTarget = event.target.value;
+    }
+
+    dateLessThan( from: string, to: string ) {
+        return ( group: FormGroup ): { [key: string]: any } => {
+            let f = group.controls[from];
+            let t = group.controls[to];
+            if ( !f.value || !t.value ) return {};
+            if ( f.value >= t.value ) {
+                return {
+                    dates: "Start date should be before end date."
+                };
+            }
+            return {};
+        }
+    }
+
+    dateAfterNow( from: string, to: string ) {
+        return ( group: FormGroup ): { [key: string]: any } => {
+            let f = group.controls[from];
+            let t = group.controls[to];
+            if ( f.value ) {
+                if ( new Date( f.value ) < (new Date()) ) {
+                    return {
+                        dates3: "Dates should be after now."
+                    };
+                }
+            }
+            if ( t.value )
+            {
+                if ( new Date( t.value ) < (new Date()) ) {
+                return {
+                    dates2: "Dates should be after now."
+                };
+            }
+            }
+            return {};
+        }
     }
 }

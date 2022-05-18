@@ -77,6 +77,9 @@
             <button class="default-button model-info__operations__button"
                     (click)="openAddChecklistItemModal( addChecklistItemModal )">Add checklist item
             </button>
+            <button class="default-button model-info__operations__button"
+                    (click)="openChangeDateModal( changeDateModal )"> Change dates
+            </button>
             <button class="default-button model-info__operations__button" (click)="openModalSimple(  )">Delete</button>
         </div>
     </div>
@@ -136,6 +139,51 @@
     </div>
 </ng-template>
 
+<ng-template #changeDateModal let-modal>
+    <div class="modal-header">
+        <h2 class="modal-title">Change start/end date</h2>
+    </div>
+    <div class="modal-body">
+        <section>
+            <form [formGroup]="changeDateForm">
+                <label for="change-form-start-date">Start Date/Time</label>
+                <div class="change-form__group input-group">
+                    <input class="change-form__group__start-date-control form-control" id="change-form-start-date"
+                           formControlName="startDate"
+                           (keydown.enter)="form['startDate'].enabled"
+                           type="date"
+                           min="{{todayDate | date:'yyyy-MM-dd'}}"
+                           [ngClass]="{'is-invalid': ( form['startDate'].errors || changeDateForm.hasError('dates3')) && (form['startDate'].touched || form['startDate'].dirty), 'is-valid': form['startDate'].valid}"
+                    >
+                </div>
+            
+                <div class="alert alert-danger" [hidden]="( form['startDate'].valid && !this.changeDateForm.hasError('dates3') ) || form['startDate'].pristine">
+                    <div *ngIf="form['startDate'].errors?.['required']">Date is required</div>
+                    <div *ngIf="changeDateForm.hasError('dates3')">Date/time must be after current moment </div>
+                </div>
+            
+                <label for="change-form-end-date">End Date/Time</label>
+                <div class="change-form__group input-group">
+                    <input class="change-form__group__start-date-control form-control" id="change-form-end-date"
+                           formControlName="endDate"
+                           type="date"
+                           [ngClass]="{'is-invalid': (changeDateForm.hasError('dates') || changeDateForm.hasError('dates2') || form['endDate'].errors) && (form['endDate'].touched || form['endDate'].dirty), 'is-valid': form['endDate'].valid}"
+                    >          
+                </div>
+        
+                <div class="alert alert-danger" [hidden]="(!changeDateForm.hasError('dates') && !changeDateForm.hasError( 'dates2') ) || form['endDate'].pristine">
+                    <div *ngIf="changeDateForm.hasError('dates')">End date/time must be after start date/time</div>
+                    <div *ngIf="changeDateForm.hasError('dates2')">Date/time must be after current moment </div>
+                </div>
+            </form>
+        </section>
+    </div>
+    <div class="modal-footer">
+        <button class="default-button" type="submit" [disabled]="!changeDateForm.valid" (keydown.enter)="changeDateSubmit()" (click)="changeDateSubmit();modal.close('Close click')">Change Date</button>
+        <button type="button" class="default-button modal-footer__close-btn" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>
+
 
 
 
@@ -148,7 +196,7 @@
         <form [formGroup]="setProjectForm">
 
             <label for="task-set-project-dropdown">Project</label>
-            <select class="add-task-form__group form-select" name="dropdownOption" id="task-set-project-dropdown"
+            <select class="change-form__group form-select" name="dropdownOption" id="task-set-project-dropdown"
                     (change)="selectChangeHandler($event)"
                     formControlName="project">
                 <option *ngFor="let project of projects" [value]="project.acronym">{{ project.name + ( project.tasks.includes( this.task._id ) ? "Task present. Select to remove." : "" )}}</option>
@@ -158,8 +206,8 @@
                 <div *ngIf="form['project'].errors?.['required']">Id is required</div>
             </div>
 
-            <div class="add-task-form__submit-button--container">
-                <button type="submit" class="add-task-form__submit-button default-button"
+            <div class="change-form__submit-button--container">
+                <button type="submit" class="change-form__submit-button default-button"
                         [disabled]="!setProjectForm.valid"
                         (click)="setProjectSubmit()"
                         (keydown.enter)="setProjectSubmit()"

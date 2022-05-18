@@ -33,7 +33,7 @@
             <input class="add-task-form__group__start-date-control form-control" id="add-task-form-start-date"
                    formControlName="startDate"
                    (keydown.enter)="form['startDate'].enabled"
-                   type="datetime-local"
+                   type="date"
                    min="{{todayDate | date:'yyyy-MM-dd'}}"
                    [ngClass]="{'is-invalid': ( form['startDate'].errors || addTaskForm.hasError('dates3')) && (form['startDate'].touched || form['startDate'].dirty), 'is-valid': form['startDate'].valid}"
             >
@@ -49,7 +49,7 @@
         <div class="add-task-form__group input-group">
             <input class="add-task-form__group__start-date-control form-control" id="add-task-form-end-date"
                    formControlName="endDate"
-                   type="datetime-local"
+                   type="date"
                    [ngClass]="{'is-invalid': (addTaskForm.hasError('dates') || addTaskForm.hasError('dates2') || form['endDate'].errors) && (form['endDate'].touched || form['endDate'].dirty), 'is-valid': form['endDate'].valid}"
             >
     
