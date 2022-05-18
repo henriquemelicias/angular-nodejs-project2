@@ -3,6 +3,7 @@ import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from "@angular/forms";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { CoreModule } from '@core/core.module';
 import { SharedModule } from '@shared/shared.module';
@@ -15,6 +16,7 @@ import { HeaderComponent } from "@app/layout/header/header.component";
 import { ContentLayoutComponent } from "@app/layout/content-layout/content-layout.component";
 import { FooterComponent } from "@app/layout/footer/footer.component";
 import { FooterScrollUpButtonComponent } from '@layout/footer-scroll-up-button/footer-scroll-up-button.component';
+
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { FooterScrollUpButtonComponent } from '@layout/footer-scroll-up-button/f
   imports: [
     // Angular
     BrowserModule,
+    BrowserAnimationsModule,
 
     // Core and shared
     CoreModule,
@@ -41,7 +44,7 @@ import { FooterScrollUpButtonComponent } from '@layout/footer-scroll-up-button/f
 
     // Routing and forms
     AppRoutingModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [
   ],

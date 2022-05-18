@@ -41,3 +41,9 @@ body::-webkit-scrollbar-thumb {
 body::-webkit-scrollbar-thumb:hover {
     background-color: var(--secondary-color);
 }
+
+.graph .edge {
+    stroke: var( --font-color-highlight ) !important;
+    stroke-width: 3px;
+    stroke-dasharray: 4;
+}

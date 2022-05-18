@@ -1,0 +1,20 @@
+.overview-container {
+  margin-bottom: 3rem;
+  width: 95vw;
+}
+
+.overview-container h1 {
+  margin-top: -1.5rem;
+}
+
+.graph-container {
+  width: 95vw;
+  height: 80vh;
+  background-color: var( --surface-color );
+  border-radius: 10px;
+}
+
+h1 {
+  text-align: center;
+  border-bottom: 2px solid var( --font-color-on-background );
+}

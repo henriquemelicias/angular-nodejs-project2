@@ -7,7 +7,7 @@ const { verifyRules } = require( "#middlewares/core/verify-rules.middleware" );
 const { checkDuplicateName } = require( "#middlewares/teams/teams.middleware" );
 const { oneOf } = require( "express-validator" );
 
-
+teamsRouter.get( '/', [verifyToken], teamsController.getTeams );
 teamsRouter.post( '/',
     [ verifyToken, verifyIfAdmin, oneOf( teamsController.getTeamRules() ), verifyRules, checkDuplicateName ],
     teamsController.addTeam );

@@ -2,11 +2,20 @@
     <div class="page__content">
         <div class="page__head--container">
             <span class="page__head">
-            <h1 *ngIf="isSessionUserAdmin; else notAdmin" class="page__title">Tasks</h1>
+                <ng-container *ngIf="isProfileRoute; else notProfile">
+                    <h1 class="page__title">My Tasks</h1>
+                    <h2 class="page__subtitle">Straight to the backlog</h2>
+                </ng-container>
+                <ng-template #notProfile>
+                    <ng-container *ngIf="isSessionUserAdmin; else notAdmin" class="page__title">
+                        <h1 class="page__title">Tasks</h1>
+                        <h2 class="page__subtitle">Admins see every task</h2>
+                    </ng-container>
+                </ng-template>
             <ng-template #notAdmin>
-                <h1 class="page__title">My&nbsp;Tasks</h1>
-            </ng-template>
+                <h1 class="page__title">Tasks</h1>
                 <h2 class="page__subtitle">Straight to the backlog</h2>
+            </ng-template>
             </span>
             <div *ngIf="isLoggedIn">
                 <ng-template #content let-offcanvas>

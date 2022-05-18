@@ -63,6 +63,20 @@ exports.getNTeamsByPage = ( req, res, next ) => {
         } );
 }
 
+exports.getTeams = ( req, res, next ) => {
+    Team.find( {} )
+        .lean()
+        .exec( ( error, teams ) => {
+
+            if ( error ) {
+                next( httpError( HttpStatusCode.InternalServerError ), error );
+                return;
+            }
+
+            res.send( teams );
+        } );
+}
+
 exports.getNumberOfTeams = ( req, res, next ) => {
     Team.count( {} )
         .lean()

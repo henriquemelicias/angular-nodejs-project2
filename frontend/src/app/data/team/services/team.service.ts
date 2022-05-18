@@ -97,4 +97,8 @@ export class TeamService {
             HttpSettings.HEADER_CONTENT_TYPE_JSON
         );
     }
+
+    getTeams(): Observable<TeamSchema[]> {
+        return this.http.get<TeamSchema[]>( TeamService._API_URI, HttpSettings.HEADER_CONTENT_TYPE_JSON );
+    }
 }

@@ -1,0 +1,57 @@
+<div class="overview-container">
+    <h1>Overview Graph</h1>
+
+    <div class="graph-container">
+        <ngx-graph
+                class="chart-container"
+                layout="dagreCluster"
+                [showMiniMap]="true"
+                [curve]="shape"
+                [miniMapMaxWidth]="120"
+                [miniMapMaxHeight]="200"
+                [links]="links"
+                [nodes]="nodes"
+                [clusters]="clusters"
+                [update$]="update$"
+                [center$]="center$"
+                [zoomToFit$]="zoomToFit$"
+        >
+            
+
+            <ng-template #clusterTemplate let-cluster>
+                <svg:g class="node cluster">
+                    <svg:rect
+                            rx="5"
+                            ry="5"
+                            [attr.width]="cluster.dimension.width"
+                            [attr.height]="cluster.dimension.height"
+                            [attr.fill]="cluster.data.color"
+                    />
+                </svg:g>
+                <svg:text alignment-baseline="central"
+                          [attr.x]="5"
+                          [attr.y]="25"
+                          [attr.font-size]="30"
+                          [attr.font-family]="'https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap'"
+                          [attr.fill]="'#ffff'">
+                    {{cluster.label}}
+                </svg:text>
+            </ng-template>
+
+            <ng-template #nodeTemplate let-node>
+                <svg:g class="node">
+                    <svg:rect
+                            [attr.width]="node.dimension.width"
+                            [attr.height]="node.dimension.height"
+                            [attr.fill]="node.data.color"
+                    />
+                    <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.dimension.height / 2">
+                        {{ node.type }}
+                        {{node.label}}
+                    </svg:text>
+                </svg:g>
+            </ng-template>
+
+        </ngx-graph>
+    </div>
+</div>
