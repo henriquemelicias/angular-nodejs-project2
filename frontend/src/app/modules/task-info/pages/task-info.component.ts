@@ -60,9 +60,9 @@ export class TaskInfoComponent implements OnInit {
                 percentage: [
                     '', [
                         Validators.required,
-                        Validators.pattern("[0-9]*"),
-                        Validators.maxLength(3)                       
-                        ]
+                        Validators.pattern( "[0-9]*" ),
+                        Validators.maxLength( 3 )
+                    ]
                 ]
             },
             { validators: [ this.percentageBetween( 'percentage' ) ] }
@@ -279,7 +279,7 @@ export class TaskInfoComponent implements OnInit {
                                 AlertService.alertToApp(
                                     AlertType.Warning,
                                     error.message,
-                                    {  },
+                                    {},
                                     logCallers
                                 );
                                 errorHandler.hasBeenHandled = true;
@@ -298,17 +298,27 @@ export class TaskInfoComponent implements OnInit {
     }
 
     addChecklistItemSubmit() {
-        var item = {} as ChecklistItemSchema;
-        item.name = this.form['name'].value;
-        item.isComplete = false;
-        this.checklistItemService.addChecklistItem( item ).subscribe();
-        this.task.checklist.push( item );
-        this.taskService.updateTask( this.task ).subscribe();
+        if ( this.task.checklist.filter( c => !c.isComplete ).length < 7 )
+        {
+            const item = {} as ChecklistItemSchema;
+            item.name = this.form['name'].value;
+            item.isComplete = false;
+            this.checklistItemService.addChecklistItem( item ).subscribe();
+            this.task.checklist.push( item );
+            this.taskService.updateTask( this.task ).subscribe();
+        }
+        else
+        {
+            AlertService.alertToApp(
+                AlertType.Warning,
+                "Each checklist can only contain at most seven to-complete subtasks"
+            );
+        }
     }
 
-    updatePercentageSubmit(){
-        this.task.percentage = parseInt(this.form3['percentage'].value);
-        this.taskService.updateTask(this.task).subscribe();
+    updatePercentageSubmit() {
+        this.task.percentage = parseInt( this.form3['percentage'].value );
+        this.taskService.updateTask( this.task ).subscribe();
     }
 
     selectChangeHandler( event: any ) {
@@ -351,21 +361,42 @@ export class TaskInfoComponent implements OnInit {
         }
     }
 
-    percentageBetween(percentage: string){
+    percentageBetween( percentage: string ) {
         return ( group: FormGroup ): { [key: string]: any } => {
             let f = group.controls[percentage];
-            if(f.value) {
-                if( parseInt(f.value) < 0 || parseInt(f.value) > 100){
+            if ( f.value ) {
+                if ( parseInt( f.value ) < 0 || parseInt( f.value ) > 100 ) {
                     return {
                         between: "Percentage should be between 0% and 100%"
                     }
                 }
             }
-            return{}
+            return {}
         }
     }
 
     beautifyTaskChecklistWowSoPretty( checklist: ChecklistItemSchema[] ) {
-        return checklist.flatMap( c => " " + c.name + (( c.isComplete ) ? ' ✓' : ""  ) )
+        return checklist.flatMap( c => " " + c.name + ((c.isComplete) ? ' ✓' : "") )
+    }
+
+    onChecklistChange( event: any, check: ChecklistItemSchema ): boolean {
+        if ( this.task.checklist.filter( c => !c.isComplete ).length < 7 || !check.isComplete ) {
+            check.isComplete = !check.isComplete;
+            this.modifyTask( this.task );
+            return check.isComplete;
+        }
+        else {
+            const url = this.router.url;
+            this.router.navigateByUrl( '/', { skipLocationChange: true } ).then( () => {
+                this.router.navigateByUrl( url ).then(
+                    () => {
+                        AlertService.alertToApp(
+                            AlertType.Warning,
+                            "Each checklist can only contain at most seven to-complete subtasks"
+                        );
+                    } )
+            } );
+            return check.isComplete;
+        }
     }
 }

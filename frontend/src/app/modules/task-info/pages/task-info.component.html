@@ -67,8 +67,8 @@
                 </div>
                 <div class="model-info__property__value">
                     <div class="model-info__property__checklist" *ngIf="task.checklist.length > 0; else noChecklist">
-                        <div class="model-info__property__checklist__check" *ngFor="let check of task.checklist">
-                            <input type="checkbox" value="{{ check.isComplete }}" name="{{ check.name }}" [checked]="check.isComplete" (change)="check.isComplete = !check.isComplete; modifyTask( task )"> <span> {{ check.name }} </span>
+                        <div class="model-info__property__checklist__check" *ngFor="let check of this.task.checklist">
+                            <input type="checkbox" value="{{ check.isComplete }}" name="{{ check.name }}" [checked]="check.isComplete" (change)="check.isComplete = onChecklistChange( $event, check )"> <span> {{ check.name }} </span>
                         </div>
                     </div>
                     <ng-template #noChecklist>
@@ -106,7 +106,7 @@
                 <div class="modal-body__row" *ngFor="let user of users; let i=index">
                     <input class="modal-body__row__checkbox" type="checkbox" formArrayName="selectedUsers"
                            [value]="user.username"
-                           (change)="onCheckboxChange($event)" [checked]="task.users.includes( user.username )"
+                           (change)="onCheckboxChange( $event )" [checked]="task.users.includes( user.username )"
                     />
                     <div class="modal-body__row__text">{{ user.username }}</div>
                 </div>
@@ -147,7 +147,7 @@
                     <div *ngIf="form3['percentage'].errors?.['maxlength']">Max 3 digits allowed</div>
                     <div *ngIf="updatePercentageForm.hasError('between')">Percentage should be between 0% and 100%</div>
                 </div>
-                
+
             </form>
         </section>
     </div>
@@ -189,7 +189,7 @@
     </div>
     <div class="modal-footer">
         <button class="default-button" type="submit" (keydown.enter)="addChecklistItemSubmit()"
-                (click)="addChecklistItemSubmit();modal.close('Close click')">Add
+                (click)="addChecklistItemSubmit();modal.close('Close click')" [disabled]="!addChecklistItemForm.valid">Add
         </button>
         <button type="button" class="default-button modal-footer__close-btn" (click)="modal.close('Close click')">
             Close
