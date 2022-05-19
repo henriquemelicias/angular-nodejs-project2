@@ -11,6 +11,8 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { AlertService } from "@core/services/alert/alert.service";
 import { AlertType } from "@core/models/alert.model";
 import { Title } from "@angular/platform-browser";
+import { UserSchema } from '@app/data/user/schemas/user.schema';
+import { FormArray, FormControl } from '@angular/forms';
 
 @Component( {
                 selector: 'app-team-info',
@@ -29,12 +31,15 @@ export class TeamInfoComponent implements OnInit {
     tasks!: TaskSchema[]
 
     setProjectForm: FormGroup
+    setMembersForm: FormGroup
     projects?: ProjectSchema[];
+    users?: UserSchema[];
     selectedProject?: string | null;
 
     constructor( private route: ActivatedRoute,
                  private teamService: TeamService,
                  private projectService: ProjectService,
+                 private userService: UserService,
                  fb: FormBuilder,
                  private modalService: NgbModal,
                  private titleService: Title
@@ -45,7 +50,14 @@ export class TeamInfoComponent implements OnInit {
         this.setProjectForm = fb.group( {
                                             projects: []
                                         } );
+
+
+        this.setMembersForm = fb.group( {
+            selectedUsers: new FormArray( [] )
+        } );
     }
+    
+    
 
     ngOnInit(): void {
         this.titleService.setTitle( "Gira - Team " + this.route.snapshot.params['name'] );
@@ -103,6 +115,36 @@ export class TeamInfoComponent implements OnInit {
             this.team.projectAcronym = this.selectedProject;
         }
         this.teamService.updateTeam( this.team ).subscribe();
+    }
+
+    setMembersSubmit(){
+        this.team.members = this.setMembersForm.controls['selectedUsers'].value;
+        this.teamService.updateTeam(this.team).subscribe();
+    }
+
+    openSetMembersModal(longContent: any){
+        this.setUsers().then( _ => {
+            this.team.members.forEach( t => this.setMembersForm.controls['selectedUsers'].value.push( t ) );
+            this._openModal( longContent );
+        } );
+    }
+
+    private async setUsers() {
+        return this.userService.getUsers().subscribe( users => {
+            this.users = users
+        } );
+    }
+
+    onCheckboxChange( event: any ) {
+        const selectedUsers = (this.setMembersForm.controls['selectedUsers'] as FormArray);
+        if ( event.target.checked ) {
+            selectedUsers.push( new FormControl( event.target.value ) );
+        }
+        else {
+            const index = selectedUsers.controls
+                                       .findIndex( x => x.value === event.target.value );
+            selectedUsers.removeAt( index );
+        }
     }
 
     public async openSetProjectsModal( longContent: any ) {

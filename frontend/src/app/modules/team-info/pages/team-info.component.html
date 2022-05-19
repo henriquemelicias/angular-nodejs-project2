@@ -26,7 +26,7 @@
                     members:
                 </div>
                 <div class="model-info__property__value">
-                    {{  (team.members.length > 0 ) ? team.members : "N/A"  }}
+                    {{ team.members.join(", ") || "N/A"  }}
                 </div>
             </div>
         </div>
@@ -35,8 +35,34 @@
             <button *ngIf="isAdmin" class="default-button model-info__operations__button" (click)="openSetProjectsModal( setProjectsModal )">
                 Set project
             </button>
+            <button *ngIf="isAdmin" class="default-button model-info__operations__button" (click)="openSetMembersModal( setMembersModal )">
+                Set Members
+            </button>
         </div>
     </div>
+
+    <ng-template #setMembersModal let-modal>
+        <div class="modal-header">
+            <h2 class="modal-title">Set Members</h2>
+        </div>
+        <div class="modal-body">
+            <section>
+                <form [formGroup]="setMembersForm" novalidate>
+                    <div class="modal-body__row" *ngFor="let user of users; let i=index">
+                        <input class="modal-body__row__checkbox" type="checkbox" formArrayName="selectedUsers"
+                               [value]="user.username"
+                               (change)="onCheckboxChange($event)" [checked]="team.members.includes( user.username )"
+                        />
+                        <div class="modal-body__row__text">{{ user.username }}</div>
+                    </div>
+                </form>
+            </section>
+        </div>
+        <div class="modal-footer">
+            <button class="default-button" type="submit" (keydown.enter)="setMembersSubmit()" (click)="setMembersSubmit();modal.close('Close click')">Save</button>
+            <button type="button" class="modal-footer__close-btn default-button" (click)="modal.close('Close click')">Close</button>
+        </div>
+    </ng-template>
 
     <ng-template #setProjectsModal let-modal>
         <div class="modal-header">
