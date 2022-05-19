@@ -22,9 +22,6 @@ export class ProjectInfoComponent implements OnInit {
 
     hasProject: boolean = false;
     project!: ProjectSchema;
-    projectTasks: any;
-    taskName: any;
-    taskNameList!: string[];
 
     tasks!: TaskSchema[];
     setTasksForm: FormGroup
@@ -56,20 +53,8 @@ export class ProjectInfoComponent implements OnInit {
                     next: project => {
                         this.project = project;
                         this.hasProject = true;
-                        this.projectTasks = this.project.tasks.map( t => t + "\n" );
-                        this.taskNameList = [];
-                        for ( let i = 0; i < this.project.tasks.length; i++ ) {
-                            this._getTaskByIdAux( this.project.tasks[i]._id );
-                        }
                     }
                 } )
-    }
-
-    private _getTaskByIdAux( myid: string ) {
-        this.taskService.getTask( myid )
-            .subscribe( task => {
-                this.taskNameList.push( task.name );
-            } );
     }
 
     private _ifNoProjectFound() {
@@ -104,13 +89,14 @@ export class ProjectInfoComponent implements OnInit {
             return { _id: i, name: this.tasks.find( t => t._id === i ).name }
         } );
         this.projectService.updateProject( this.project ).subscribe();
-        window.location.reload();
     }
 
     public openSetTasksModal( longContent: any ) {
+        const selectedTasks = (this.setTasksForm.controls['selectedTasks'] as FormArray);
+        selectedTasks.clear();
         this.setTasks().then( _ => {
             this.project.tasks.forEach( t => {
-                this.setTasksForm.controls['selectedTasks'].value.push( new FormControl( t ) );
+                selectedTasks.push( new FormControl( t._id ) );
             } );
             this._openModal( longContent );
         } );
@@ -120,8 +106,11 @@ export class ProjectInfoComponent implements OnInit {
         this.modalService.open( longContent, { scrollable: true, size: "lg" } );
     }
 
-}
+    projectTasksIncludesTask( tasks: { _id: string; name: string }[], task: TaskSchema ) {
+        return tasks.flatMap( t => t._id ).includes( task._id );
+    }
 
-function _getTaskById( value: any ) {
-    throw new Error( 'Function not implemented.' );
+    beautifyTasksSoPrettyWow( tasks: { _id: string; name: string }[] ) {
+        return tasks.map( t => t.name );
+    }
 }

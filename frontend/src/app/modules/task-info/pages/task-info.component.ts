@@ -122,8 +122,10 @@ export class TaskInfoComponent implements OnInit {
     }
 
     public openSetUsersModal( longContent: any ) {
+        const selectedUsers = (this.setUsersForm.controls['selectedUsers'] as FormArray);
+        selectedUsers.clear();
         this.setUsers().then( _ => {
-            this.task.users.forEach( t => this.setUsersForm.controls['selectedUsers'].value.push( t ) );
+            this.task.users.forEach( t => selectedUsers.push( new FormControl( t ) ) );
             this._openModal( longContent );
         } );
     }
@@ -236,10 +238,19 @@ export class TaskInfoComponent implements OnInit {
             );
         }
 
-        this.task.startDate = startDate;
-        this.task.endDate = endDate;
+        let task = {
+            _id: this.task._id,
+            name: this.task.name,
+            priority: this.task.priority,
+            percentage: this.task.percentage,
+            madeByUser: this.task.madeByUser,
+            startDate: startDate,
+            endDate: endDate,
+            users: this.task.users,
+            checklist: this.task.checklist
+        };
 
-        this._modifyTask( this.task );
+        this._modifyTask( task );
     }
 
     private _modifyTask( task: TaskSchema ): void {
@@ -249,6 +260,8 @@ export class TaskInfoComponent implements OnInit {
             {
                 next: _ => {
                     this.changeDateForm.reset();
+                    this.task.startDate = task.startDate;
+                    this.task.endDate = task.endDate;
                     AlertService.success(
                         `Task ${ task.name } created successfully`,
                         { id: "alert-task-form", isAutoClosed: true },
@@ -263,9 +276,10 @@ export class TaskInfoComponent implements OnInit {
                         .serverErrorHandler( () => {
 
                             if ( errorHandler.error.status === HttpStatusCode.Conflict ) {
-                                AlertService.error(
+                                AlertService.alertToApp(
+                                    AlertType.Warning,
                                     error.message,
-                                    { id: 'alert-task-form' },
+                                    {  },
                                     logCallers
                                 );
                                 errorHandler.hasBeenHandled = true;

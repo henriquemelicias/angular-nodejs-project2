@@ -97,7 +97,7 @@ export class TeamInfoComponent implements OnInit {
     }
 
 
-    onRadioClick( event: any ) {
+    onCheckboxClick( event: any ) {
         if ( event.target.checked && this.selectedProject === event.target.value ) {
             this.selectedProject = undefined;
             event.target.checked = false;
@@ -123,8 +123,10 @@ export class TeamInfoComponent implements OnInit {
     }
 
     openSetMembersModal(longContent: any){
+        const selectedUsers = (this.setMembersForm.controls['selectedUsers'] as FormArray);
+        selectedUsers.clear();
         this.setUsers().then( _ => {
-            this.team.members.forEach( t => this.setMembersForm.controls['selectedUsers'].value.push( t ) );
+            this.team.members.forEach( u => selectedUsers.push( new FormControl( u ) ) );
             this._openModal( longContent );
         } );
     }

@@ -74,7 +74,7 @@
                     <h4 *ngIf="projects && projects.length === 0" style="text-align: center"> No projects available</h4>
                     <div class="modal-body__row" *ngFor="let project of projects; let i=index">
                         <input class="modal-body__row__checkbox" type="radio" formArrayName="projects" [value]="project.acronym"
-                               (click)="onRadioClick($event)" [checked]="project.acronym == selectedProject"
+                               (click)="onCheckboxClick($event)" [checked]="project.acronym == selectedProject"
                         />
                         <div class="modal-body__row__text" >{{ project.acronym }} : {{ project.name }}</div>
                     </div>

@@ -43,7 +43,7 @@
                     tasks:
                 </div>
                 <div class="model-info__property__value">
-                    {{taskNameList.join( ", " ) || "N/A"}}
+                    {{ project.tasks.length > 0 ? beautifyTasksSoPrettyWow( project.tasks) : "N/A"}}
                 </div>
             </div>
         </div>
@@ -66,7 +66,7 @@
                         <input class="modal-body__row__checkbox" type="checkbox" formArrayName="selectedTasks"
                                [value]="task._id"
                                (change)="onCheckboxChange($event)"
-                               [checked]="this.project.tasks.includes( {_id: task._id, name: task.name}  )"
+                               [checked]="projectTasksIncludesTask( this.project.tasks, task )"
                         />
                         <div class="modal-body__row__text">{{ task.name}}</div>
                     </div>
