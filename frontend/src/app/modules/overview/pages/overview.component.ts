@@ -39,7 +39,7 @@ export class OverviewComponent implements OnInit {
     update$: Subject<boolean> = new Subject();
     center$: Subject<boolean> = new Subject();
     zoomToFit$: Subject<boolean> = new Subject();
-    shape = shape.curveBundle.beta(1);
+    shape = shape.line;
 
     constructor( private titleService: Title, private userService: UserService, private teamService: TeamService, private projectService: ProjectService, private taskService: TaskService  ) {
     }
@@ -114,21 +114,42 @@ export class OverviewComponent implements OnInit {
                     teams.forEach( ( team ) => {
                         const id = 'team' + team._id;
                         teamsCluster.childNodeIds.push( id );
+                        this.nodes.push( { id: 'tp' + id, label: 'works on', type: '' } );
                         this.nodes.push( { id: id, label: team.name, type: 'Team:' } as Node );
                         this.links.push(
                             {
-                                id: team._id + 'tp' + team.projectAcronym,
-                              source: id,
+                                id: team._id + 'tp' + team.projectAcronym + '1',
+                                source: id,
+                                target: 'tp' + id,
+                                label: ''
+                            }
+                        )
+                        this.links.push(
+                            {
+                                id: team._id + 'tp' + team.projectAcronym + '2',
+                              source: 'tp' + id,
                               target: 'project' + team.projectAcronym,
                               label: 'works on'
                             } as Link
                         );
 
+                        if ( team.members.length > 0 )
+                        {
+                            this.nodes.push( { id: 'tm' + id, label: 'has member', type: '' } );
+                            this.links.push(
+                                {
+                                    id: team._id + 'tm',
+                                    source: id,
+                                    target: 'tm' + id,
+                                    label: ''
+                                }
+                            )
+                        }
                         team.members.forEach( ( member ) => {
                             this.links.push(
                                 {
                                     id: team._id + 'tu' + member,
-                                    source: id,
+                                    source: 'tm' + id,
                                     target: 'user' + member,
                                     label: 'has member'
                                 } as Link
@@ -144,7 +165,7 @@ export class OverviewComponent implements OnInit {
 
     reloadProjects(): Promise<void> {
         const projectsCluster = { id: 'projects', label: 'Projects Cluster', childNodeIds: [] } as Cluster;
-        return new Promise((resolve, reject) => this.projectService.getProjects().subscribe(
+        return new Promise((resolve, reject) => this.projectService.getProjectsUnfiltered().subscribe(
             {
                 next: projects => {
                     projects.forEach( ( project ) => {
@@ -152,11 +173,23 @@ export class OverviewComponent implements OnInit {
                         projectsCluster.childNodeIds.push( id );
                         this.nodes.push( { id: id, label: project.acronym + ' - ' + project.name, type: 'Project:' } as Node );
 
+                        if ( project.tasks.length > 0 )
+                        {
+                            this.nodes.push( { id: 'pt' + id, label: 'contains', type: '' } );
+                            this.links.push(
+                                {
+                                    id: project.acronym + 'pt',
+                                    source: id,
+                                    target: 'pt' + id,
+                                    label: ''
+                                }
+                            )
+                        }
                         project.tasks.forEach( ( task ) => {
                             this.links.push(
                                 {
                                     id: project.acronym + 'pt' + task._id,
-                                    source: id,
+                                    source: 'pt' + id,
                                     target: 'task' + task._id,
                                     label: 'contains'
                                 } as Link
@@ -172,14 +205,37 @@ export class OverviewComponent implements OnInit {
 
     reloadTasks(): Promise<void> {
         const tasksCluster = { id: 'tasks', label: 'Tasks Cluster', childNodeIds: [] } as Cluster;
-        return new Promise((resolve, reject) => this.taskService.getTasks().subscribe(
+        return new Promise((resolve, reject) => this.taskService.getTasksUnfiltered().subscribe(
             {
                 next: tasks => {
                     tasks.forEach( ( task ) => {
                         const id = 'task' + task._id;
                         tasksCluster.childNodeIds.push( id );
                         this.nodes.push( { id: id, label: task.name, type: 'Task:' } as Node );
-                    } )
+
+                        if ( task.users.length > 0 )
+                        {
+                            this.nodes.push( { id: 'tu' + id, label: 'assigned to', type: '' } );
+                            this.links.push(
+                                {
+                                    id: task._id + 'tu',
+                                    source: id,
+                                    target: 'tu' + id,
+                                    label: ''
+                                }
+                            )
+                        }
+                        task.users.forEach( user => {
+                            this.links.push(
+                                {
+                                    id: task._id + 'tu' + user,
+                                    source: 'tu' + id,
+                                    target: 'user' + user,
+                                    label: 'assigned to'
+                                }
+                            )
+                        })
+                    } );
                     if ( tasksCluster.childNodeIds.length > 0 ) this.clusters.push( tasksCluster );
                     resolve()
                 },

@@ -12,6 +12,7 @@ tasksRouter.post( '/', [ verifyToken,
 
 tasksRouter.get( '/by-pages',
     [ verifyToken, oneOf( tasksController.getNTasksByPageRules() ), verifyRules ], tasksController.getNTasksByPage );
+tasksRouter.get( '/unfiltered', [ verifyToken ], tasksController.getTasksUnfiltered );
 
 tasksRouter.get( '/num-entries', [ verifyToken ], tasksController.getNumberOfTasks );
 

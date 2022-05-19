@@ -36,7 +36,7 @@ checkOverlapTimes = ( req, res, next ) => {
                 if ( !t.startDate ) t.startDate = new Date();
                 if ( !t.endDate ) t.endDate = new Date().setDate( new Date() + Number.MAX_VALUE );
 
-                if (  t._id !== req.body._id && dateRangeOverlaps( thisStartDate, thisEndDate, t.startDate, t.endDate ) ) {
+                if (  t._id.toString() !== req.body._id && dateRangeOverlaps( thisStartDate, thisEndDate, t.startDate, t.endDate ) ) {
                     return next( httpError( HttpStatusCode.Conflict, "There's an urgent task time overlap with task '" + t.name + "' created by user '" + t.madeByUser + "'.") );
                 }
             } );

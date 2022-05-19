@@ -9,6 +9,7 @@ const { verifyToken } = require( "#middlewares/auth/auth.middleware" );
 
 projectsRouter.get( '/', [ verifyToken ], projectController.getProjects );
 projectsRouter.get( '/available', [ verifyToken ], projectController.getAvailableProjects );
+projectsRouter.get( '/unfiltered', [ verifyToken ], projectController.getProjectsUnfiltered );
 
 projectsRouter.get( '/by-pages',
     [ verifyToken,

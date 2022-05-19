@@ -113,4 +113,7 @@ export class TaskService {
             } );
     }
 
+    getTasksUnfiltered() {
+        return this.http.get<TaskSchema[]>( TaskService._API_URI + '/unfiltered', HttpSettings.HEADER_CONTENT_TYPE_JSON );
+    }
 }

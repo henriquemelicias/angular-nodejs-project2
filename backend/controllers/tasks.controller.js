@@ -173,7 +173,8 @@ exports.updateTask = ( req, res, next ) => {
                 { _id: req.body._id },
                 {
                     $set: {
-                        users: req.body.users, startDate: req.body.startDate, endDate: req.body.endDate, percentage: req.body.percentage,
+                        users: req.body.users, startDate: req.body.startDate, endDate: req.body.endDate,
+                        percentage: req.body.percentage,
                         checklist: req.body.checklist
                     }
                 } )
@@ -232,3 +233,16 @@ exports.getNumberOfTasks = ( req, res, next ) => {
             res.send( { numberOfTasks: numberOfTasks } );
         } );
 };
+
+exports.getTasksUnfiltered = ( req, res, next ) => {
+    Task.find( {} )
+        .lean()
+        .exec( ( error, tasks ) => {
+            if ( error ) {
+                next( httpError( HttpStatusCode.InternalServerError ), error );
+                return;
+            }
+
+            res.send( tasks );
+        } );
+}

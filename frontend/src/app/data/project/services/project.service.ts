@@ -124,4 +124,8 @@ export class ProjectService {
             HttpSettings.HEADER_CONTENT_TYPE_JSON
         );
     }
+
+    getProjectsUnfiltered() {
+        return this.http.get<ProjectSchema[]>( ProjectService._API_URI + '/unfiltered', HttpSettings.HEADER_CONTENT_TYPE_JSON );
+    }
 }

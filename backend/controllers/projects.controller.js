@@ -176,13 +176,8 @@ exports.getAvailableProjects = ( req, res, next ) => {
                 return next( httpError( HttpStatusCode.InternalServerError ), error );
             }
 
-            const projectAcronyms = teams
-                .map( t => t.projectAcronym )
-                .flat()
-                .filter(
-                    ( value, index, self ) => {
-                        return self.indexOf( value ) === index;
-                    } );
+            // Get project acronyms
+            const projectAcronyms = teams.flatMap( t => t.projectAcronym );
 
             Project.find( { acronym: { $nin: projectAcronyms } } )
                 .lean()
@@ -233,7 +228,7 @@ exports.getNProjectsByPage = ( req, res, next ) => {
         // Find projects by projects in user teams
         Team.find( { members: req.userUsername, project: { $ne: null } } )
             .lean()
-            .select( "projects" )
+            .select( "projectAcronym" )
             .exec( ( error, teams ) => {
 
                 if ( error ) {
@@ -241,13 +236,7 @@ exports.getNProjectsByPage = ( req, res, next ) => {
                 }
 
                 // Get project acronyms
-                const projectAcronyms = teams
-                    .map( t => t.project )
-                    .flat()
-                    .filter(
-                        ( value, index, self ) => {
-                            return self.indexOf( value ) === index;
-                        } );
+                const projectAcronyms = teams.flatMap( t => t.projectAcronym );
 
                 // Find projects by acronyms
                 Project.find( { acronym: { $in: projectAcronyms } } )
@@ -292,5 +281,18 @@ exports.updateProjectTasks = ( req, res, next ) => {
                 return;
             }
             res.send( project );
+        } );
+}
+
+exports.getProjectsUnfiltered = ( req, res, next ) => {
+    Project.find( {} )
+        .lean()
+        .exec( ( error, projects ) => {
+            if ( error ) {
+                next( httpError( HttpStatusCode.InternalServerError, error ) );
+                return;
+            }
+
+            res.send( projects );
         } );
 }

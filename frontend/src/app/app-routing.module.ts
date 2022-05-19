@@ -23,15 +23,15 @@ const routes: Routes = [
                     import('@modules/home/home.module').then( m => m.HomeModule )
             },
             {
+                path: 'about',
+                loadChildren: () =>
+                    import('@modules/about/about.module').then( m => m.AboutModule )
+            },
+            {
                 path: 'overview',
                 canLoad: [ AuthGuard ],
                 loadChildren: () =>
                     import('@modules/overview/overview.module').then( m => m.OverviewModule )
-            },
-            {
-                path: 'about',
-                loadChildren: () =>
-                    import('@modules/about/about.module').then( m => m.AboutModule )
             },
             {
                 path: 'login',
