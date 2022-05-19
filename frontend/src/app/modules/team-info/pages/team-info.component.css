@@ -122,6 +122,17 @@ input[type=checkbox]
     padding: 10px;
 }
 
+input[type=radio]
+{
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(2); /* IE */
+    -moz-transform: scale(2); /* FF */
+    -webkit-transform: scale(2); /* Safari and Chrome */
+    -o-transform: scale(2); /* Opera */
+    transform: scale(2);
+    padding: 10px;
+}
+
 .modal-body {
     background-color: var( --surface-color );
     border: none;
