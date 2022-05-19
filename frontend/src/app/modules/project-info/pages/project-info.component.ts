@@ -109,9 +109,8 @@ export class ProjectInfoComponent implements OnInit {
 
     public openSetTasksModal( longContent: any ) {
         this.setTasks().then( _ => {
-            (this.setTasksForm.controls['selectedTasks'] as FormArray).clear();
             this.project.tasks.forEach( t => {
-                (this.setTasksForm.controls['selectedTasks'] as FormArray).push( new FormControl( t ) );
+                this.setTasksForm.controls['selectedTasks'].value.push( new FormControl( t ) );
             } );
             this._openModal( longContent );
         } );
