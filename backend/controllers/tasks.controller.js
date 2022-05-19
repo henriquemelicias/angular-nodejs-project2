@@ -173,7 +173,7 @@ exports.updateTask = ( req, res, next ) => {
                 { _id: req.body._id },
                 {
                     $set: {
-                        users: req.body.users, startDate: req.body.startDate, endDate: req.body.endDate,
+                        users: req.body.users, startDate: req.body.startDate, endDate: req.body.endDate, percentage: req.body.percentage,
                         checklist: req.body.checklist
                     }
                 } )

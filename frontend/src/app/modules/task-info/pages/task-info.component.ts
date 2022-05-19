@@ -40,7 +40,8 @@ export class TaskInfoComponent implements OnInit {
     public todayDate: Date;
     changeDateForm: FormGroup;
     setUsersForm: FormGroup;
-    public addChecklistItemForm: FormGroup;
+    updatePercentageForm: FormGroup;
+    addChecklistItemForm: FormGroup;
 
     constructor( private taskService: TaskService,
                  private route: ActivatedRoute,
@@ -53,6 +54,19 @@ export class TaskInfoComponent implements OnInit {
                  private titleService: Title,
                  private checklistItemService: ChecklistItemService
     ) {
+
+        this.updatePercentageForm = fb.group(
+            {
+                percentage: [
+                    '', [
+                        Validators.required,
+                        Validators.pattern("[0-9]*"),
+                        Validators.maxLength(3)                       
+                        ]
+                ]
+            },
+            { validators: [ this.percentageBetween( 'percentage' ) ] }
+        );
 
         this.changeDateForm = fb.group(
             {
@@ -99,6 +113,10 @@ export class TaskInfoComponent implements OnInit {
         return this.changeDateForm.controls;
     }
 
+    public get form3(): { [key: string]: AbstractControl; } {
+        return this.updatePercentageForm.controls;
+    }
+
     ngOnInit(): void {
         this.titleService.setTitle( "Gira - Task-info" );
     }
@@ -115,6 +133,10 @@ export class TaskInfoComponent implements OnInit {
     }
 
     public openChangeDateModal( longContent: any ) {
+        this._openModal( longContent );
+    }
+
+    public openChangePercentageModal( longContent: any ) {
         this._openModal( longContent );
     }
 
@@ -270,6 +292,11 @@ export class TaskInfoComponent implements OnInit {
         this.taskService.updateTask( this.task ).subscribe();
     }
 
+    updatePercentageSubmit(){
+        this.task.percentage = parseInt(this.form3['percentage'].value);
+        this.taskService.updateTask(this.task).subscribe();
+    }
+
     selectChangeHandler( event: any ) {
         this.selectedTarget = event.target.value;
     }
@@ -307,6 +334,20 @@ export class TaskInfoComponent implements OnInit {
                 }
             }
             return {};
+        }
+    }
+
+    percentageBetween(percentage: string){
+        return ( group: FormGroup ): { [key: string]: any } => {
+            let f = group.controls[percentage];
+            if(f.value) {
+                if( parseInt(f.value) < 0 || parseInt(f.value) > 100){
+                    return {
+                        between: "Percentage should be between 0% and 100%"
+                    }
+                }
+            }
+            return{}
         }
     }
 }
