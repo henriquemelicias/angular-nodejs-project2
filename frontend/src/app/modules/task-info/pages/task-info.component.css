@@ -151,3 +151,7 @@ input[type=checkbox]
     background-color: var( --secondary-color );
 }
 
+.model-info__property__checklist__check span {
+    margin-left: 0.7rem;
+}
+

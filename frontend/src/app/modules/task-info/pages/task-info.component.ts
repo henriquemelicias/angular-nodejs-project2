@@ -250,11 +250,11 @@ export class TaskInfoComponent implements OnInit {
             checklist: this.task.checklist
         };
 
-        this._modifyTask( task );
+        this.modifyTask( task );
     }
 
-    private _modifyTask( task: TaskSchema ): void {
-        const logCallers = LoggerService.setCaller( this, this._modifyTask );
+    public modifyTask( task: TaskSchema ): void {
+        const logCallers = LoggerService.setCaller( this, this.modifyTask );
 
         this.taskService.updateTask( task ).subscribe(
             {
@@ -363,5 +363,9 @@ export class TaskInfoComponent implements OnInit {
             }
             return{}
         }
+    }
+
+    beautifyTaskChecklistWowSoPretty( checklist: ChecklistItemSchema[] ) {
+        return checklist.flatMap( c => " " + c.name + (( c.isComplete ) ? ' ✓' : ""  ) )
     }
 }

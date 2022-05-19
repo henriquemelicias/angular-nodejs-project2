@@ -63,9 +63,6 @@
                         <div class="accordion__item">
                             <span>end date/time:</span> {{ task.endDate ? (task.endDate | date:'long') : "N/A"}}
                         </div>
-                        <div class="accordion__item">
-                            <span>checklist:</span> {{ task.checklist.length > 0 ? task.checklist : "N/A"}}
-                        </div>
                     </ng-template>
                 </ngb-panel>
             </ngb-accordion>

@@ -7,6 +7,8 @@ import { AuthRolesEnum } from "@data/user/enums/auth-roles.enum";
 import { ProjectService } from "@data/project/services/project.service";
 import { TaskService } from "@data/task/services/task.service";
 import * as shape from 'd3-shape';
+import { forceCollide, forceLink, forceManyBody, forceSimulation } from 'd3-force';
+import { DagreClusterCustomLayout } from "@modules/overview/layout/dagreClusterCustom";
 
 interface Link {
     id: string,
@@ -33,15 +35,30 @@ interface Cluster {
                 styleUrls: [ './overview.component.css' ]
             } )
 export class OverviewComponent implements OnInit {
+    layout = 'dagreCluster';
+    layoutSettings = {};
+    // layoutSettings = {
+    //     force: forceSimulation<any>().force( 'charge', forceManyBody().strength( -400 ) ).force(
+    //         'collide',
+    //         forceCollide( 5 )
+    //     ),
+    //     forceLink: forceLink<any, any>()
+    //         .id( (node: any) => node.id )
+    //         .distance( () => 100 )
+    // };
     nodes!: Node[];
     links!: Link[];
     clusters!: Cluster[];
     update$: Subject<boolean> = new Subject();
     center$: Subject<boolean> = new Subject();
     zoomToFit$: Subject<boolean> = new Subject();
-    shape = shape.line;
+    shape = shape.curveMonotoneX;
 
-    constructor( private titleService: Title, private userService: UserService, private teamService: TeamService, private projectService: ProjectService, private taskService: TaskService  ) {
+    constructor( private titleService: Title,
+                 private userService: UserService,
+                 private teamService: TeamService,
+                 private projectService: ProjectService,
+                 private taskService: TaskService ) {
     }
 
     ngOnInit(): void {
@@ -50,18 +67,18 @@ export class OverviewComponent implements OnInit {
     }
 
     updateGraph() {
-        this.update$.next(true)
+        this.update$.next( true )
         this.centerGraph();
         this.fitGraph();
-        console.log( {nodes: this.nodes, clusters: this.clusters, links: this.links } );
+        console.log( { nodes: this.nodes, clusters: this.clusters, links: this.links } );
     }
 
     centerGraph() {
-        this.center$.next(true)
+        this.center$.next( true )
     }
 
     fitGraph() {
-        this.zoomToFit$.next(true)
+        this.zoomToFit$.next( true )
     }
 
     reloadAll(): void {
@@ -80,13 +97,19 @@ export class OverviewComponent implements OnInit {
 
     async reloadUsers(): Promise<void> {
         const usersCluster = { id: 'users', label: 'Users Cluster', childNodeIds: [] } as Cluster;
-        return new Promise((resolve, reject) => this.userService.getUsers().subscribe(
+        return new Promise( ( resolve, reject ) => this.userService.getUsers().subscribe(
             {
                 next: users => {
                     users.forEach( ( user ) => {
                         const id = 'user' + user.username;
                         usersCluster.childNodeIds.push( id );
-                        this.nodes.push( { id: id, label: user.username, type: user.roles.includes( AuthRolesEnum.ADMIN.valueOf() ) ? 'Admin:' : 'User:' } );
+                        this.nodes.push( {
+                                             id: id,
+                                             label: user.username,
+                                             type: user.roles.includes( AuthRolesEnum.ADMIN.valueOf() ) ?
+                                                   'Admin:' :
+                                                   'User:'
+                                         } );
 
                         user.tasks.forEach( ( task ) => {
                             this.links.push(
@@ -108,33 +131,36 @@ export class OverviewComponent implements OnInit {
 
     reloadTeams(): Promise<void> {
         const teamsCluster = { id: 'teams', label: 'Teams Cluster', childNodeIds: [] } as Cluster;
-        return new Promise((resolve, reject) => this.teamService.getTeams().subscribe(
+        return new Promise( ( resolve, reject ) => this.teamService.getTeams().subscribe(
             {
                 next: teams => {
                     teams.forEach( ( team ) => {
                         const id = 'team' + team._id;
                         teamsCluster.childNodeIds.push( id );
-                        this.nodes.push( { id: 'tp' + id, label: 'works on', type: '' } );
                         this.nodes.push( { id: id, label: team.name, type: 'Team:' } as Node );
-                        this.links.push(
-                            {
-                                id: team._id + 'tp' + team.projectAcronym + '1',
-                                source: id,
-                                target: 'tp' + id,
-                                label: ''
-                            }
-                        )
-                        this.links.push(
-                            {
-                                id: team._id + 'tp' + team.projectAcronym + '2',
-                              source: 'tp' + id,
-                              target: 'project' + team.projectAcronym,
-                              label: 'works on'
-                            } as Link
-                        );
 
-                        if ( team.members.length > 0 )
+                        if ( team.projectAcronym )
                         {
+                            this.nodes.push( { id: 'tp' + id, label: 'works on', type: '' } );
+                            this.links.push(
+                                {
+                                    id: team._id + 'tp' + team.projectAcronym + '1',
+                                    source: id,
+                                    target: 'tp' + id,
+                                    label: ''
+                                }
+                            )
+                            this.links.push(
+                                {
+                                    id: team._id + 'tp' + team.projectAcronym + '2',
+                                    source: 'tp' + id,
+                                    target: 'project' + team.projectAcronym,
+                                    label: 'works on'
+                                } as Link
+                            );
+                        }
+
+                        if ( team.members.length > 0 ) {
                             this.nodes.push( { id: 'tm' + id, label: 'has member', type: '' } );
                             this.links.push(
                                 {
@@ -165,16 +191,19 @@ export class OverviewComponent implements OnInit {
 
     reloadProjects(): Promise<void> {
         const projectsCluster = { id: 'projects', label: 'Projects Cluster', childNodeIds: [] } as Cluster;
-        return new Promise((resolve, reject) => this.projectService.getProjectsUnfiltered().subscribe(
+        return new Promise( ( resolve, reject ) => this.projectService.getProjectsUnfiltered().subscribe(
             {
                 next: projects => {
                     projects.forEach( ( project ) => {
                         const id = 'project' + project.acronym;
                         projectsCluster.childNodeIds.push( id );
-                        this.nodes.push( { id: id, label: project.acronym + ' - ' + project.name, type: 'Project:' } as Node );
+                        this.nodes.push( {
+                                             id: id,
+                                             label: project.acronym + ' - ' + project.name,
+                                             type: 'Project:'
+                                         } as Node );
 
-                        if ( project.tasks.length > 0 )
-                        {
+                        if ( project.tasks.length > 0 ) {
                             this.nodes.push( { id: 'pt' + id, label: 'contains', type: '' } );
                             this.links.push(
                                 {
@@ -205,7 +234,7 @@ export class OverviewComponent implements OnInit {
 
     reloadTasks(): Promise<void> {
         const tasksCluster = { id: 'tasks', label: 'Tasks Cluster', childNodeIds: [] } as Cluster;
-        return new Promise((resolve, reject) => this.taskService.getTasksUnfiltered().subscribe(
+        return new Promise( ( resolve, reject ) => this.taskService.getTasksUnfiltered().subscribe(
             {
                 next: tasks => {
                     tasks.forEach( ( task ) => {
@@ -213,8 +242,7 @@ export class OverviewComponent implements OnInit {
                         tasksCluster.childNodeIds.push( id );
                         this.nodes.push( { id: id, label: task.name, type: 'Task:' } as Node );
 
-                        if ( task.users.length > 0 )
-                        {
+                        if ( task.users.length > 0 ) {
                             this.nodes.push( { id: 'tu' + id, label: 'assigned to', type: '' } );
                             this.links.push(
                                 {
@@ -234,7 +262,7 @@ export class OverviewComponent implements OnInit {
                                     label: 'assigned to'
                                 }
                             )
-                        })
+                        } )
                     } );
                     if ( tasksCluster.childNodeIds.length > 0 ) this.clusters.push( tasksCluster );
                     resolve()

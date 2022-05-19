@@ -11,7 +11,7 @@ const TaskSchema = new Schema(
         users: [{ type: String }],
         startDate: { type: Date, required: false },
         endDate: { type: Date, required: false },
-        checklist: [{type: mongoose.Schema.Types.ObjectId, ref: 'ChecklistItem'}]
+        checklist: [ {name: { type: String }, isComplete: { type: Boolean } }]
     } );
 
 /**

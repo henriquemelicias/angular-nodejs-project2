@@ -4,7 +4,8 @@
     <div class="graph-container">
         <ngx-graph
                 class="chart-container"
-                layout="dagreCluster"
+                [layout]="layout"
+                [layoutSettings]="layoutSettings"
                 [showMiniMap]="true"
                 [curve]="shape"
                 [miniMapMaxWidth]="120"

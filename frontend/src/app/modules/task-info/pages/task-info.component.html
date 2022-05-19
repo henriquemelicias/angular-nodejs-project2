@@ -66,7 +66,14 @@
                     checklist:
                 </div>
                 <div class="model-info__property__value">
-                    {{ task.checklist.length > 0 ? task.checklist : "N/A" }}
+                    <div class="model-info__property__checklist" *ngIf="task.checklist.length > 0; else noChecklist">
+                        <div class="model-info__property__checklist__check" *ngFor="let check of task.checklist">
+                            <input type="checkbox" value="{{ check.isComplete }}" name="{{ check.name }}" [checked]="check.isComplete" (change)="check.isComplete = !check.isComplete; modifyTask( task )"> <span> {{ check.name }} </span>
+                        </div>
+                    </div>
+                    <ng-template #noChecklist>
+                        "N/A"
+                    </ng-template>
                 </div>
             </div>
         </div>
@@ -124,9 +131,9 @@
         <section>
             <form [formGroup]="updatePercentageForm" novalidate>
                 <div class="update-percentge-form__group">
-                    <label for="update-percentage-form-percentage"> New percentage: </label>
+                    <label for="update-percentage-item-form-percentage2"> New percentage: </label>
                     <input type="text" class="update-percentage-item-form__group__control form-control"
-                           id="update-percentage-item-form-percentage"
+                           id="update-percentage-item-form-percentage2"
                            formControlName="percentage"
                            [ngClass]="{'is-invalid': form3['percentage'].errors &&
                                         (form3['percentage'].touched || form3['percentage'].dirty),
@@ -162,7 +169,7 @@
         <section>
             <form [formGroup]="addChecklistItemForm">
                 <div class="add-checklistItem-form__group">
-                    <label for="add-checklistItem-form-name">Name</label>
+                    <label for="add-checklist-item-form-name">Name</label>
                     <input type="text" class="add-checklist-item-form__group__control form-control"
                            id="add-checklist-item-form-name"
                            formControlName="name"
