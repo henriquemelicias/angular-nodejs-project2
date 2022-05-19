@@ -9,7 +9,7 @@ const User = require( "#models/user.schema" );
 const Task = require( "#models/task.schema" );
 const Project = require( '#models/project.schema' );
 const Team = require( '#models/team.schema' );
-const ChecklistItem = require ('#models/checklistItem.schema')
+const ChecklistItem = require ('#models/checklist-item.schema')
 
 exports.purgeDatabase = ( req, res ) => {
     const caller = logger.setCallerInfo( req, 'NonApiController', 'purgeDatabase' );

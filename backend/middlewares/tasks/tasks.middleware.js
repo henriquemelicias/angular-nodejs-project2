@@ -21,29 +21,25 @@ checkOverlapTimes = ( req, res, next ) => {
         $or: [ { startDate: { $ne: null } }, { endDate: { $ne: null } } ]
     } )
         .lean()
-        .exec( ( error, projects ) => {
+        .exec( ( error, tasks ) => {
 
             if ( error ) {
                 next( httpError( HttpStatusCode.InternalServerError, error ) );
                 return;
             }
 
-            const thisStartDate = req.body.startDate ? new Date( req.body.startDate) : new Date();
-            const thisEndDate = req.body.endDate ? new Date( req.body.endDate ) : new Date().setDate( new Date() + 1000000 );
+            const thisStartDate = req.body.startDate ? new Date( req.body.startDate ) : new Date();
+            const thisEndDate = req.body.endDate ? new Date( req.body.endDate ) : new Date().setDate( new Date() + Number.MAX_VALUE );
 
             // Check if overlap
-            if ( projects.length > 0 ) {
+            tasks.forEach( t => {
+                if ( !t.startDate ) t.startDate = new Date();
+                if ( !t.endDate ) t.endDate = new Date().setDate( new Date() + Number.MAX_VALUE );
 
-                projects.forEach( p => {
-                    if ( !p.startDate ) p.startDate = new Date();
-                    if ( !p.endDate ) p.endDate = new Date().setDate( new Date() + 1000000 );
-
-                    if ( dateRangeOverlaps( thisStartDate, thisEndDate, p.startDate, p.endDate ) ) {
-                        return next( httpError( HttpStatusCode.Conflict, "There's an urgent task time overlap with " + p._id ) );
-                    }
-
-                } )
-            }
+                if (  t._id !== req.body._id && dateRangeOverlaps( thisStartDate, thisEndDate, t.startDate, t.endDate ) ) {
+                    return next( httpError( HttpStatusCode.Conflict, "There's an urgent task time overlap with task '" + t.name + "' created by user '" + t.madeByUser + "'.") );
+                }
+            } );
 
             next();
         } );

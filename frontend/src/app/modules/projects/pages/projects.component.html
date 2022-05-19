@@ -43,15 +43,13 @@
                             </a>
                         </div>
                         <div class="accordion__item">
-                            <span>Project name:</span> {{ project.name }}</div>
-                        <div class="accordion__item">
                             <span>acronym:</span> {{ project.acronym }}</div>
                         <div class="accordion__item">
-                            <span>start date:</span> {{ project.startDate  }}</div>
+                            <span>start date:</span> {{ project.startDate | date  }}</div>
                         <div class="accordion__item">
-                            <span>end date:</span> {{ project.endDate ? project.endDate : "N/A" }}</div>
-                        <!-- <div class="accordion__item">
-                            <span>tasks:</span> {{ project.tasks.length == 0 ? "N/A" : project.tasks }}</div> -->
+                            <span>end date:</span> {{ project.endDate ? (project.endDate | date) : "N/A" }}</div>
+                        <div class="accordion__item">
+                            <span>tasks:</span> {{ project.tasks.length > 0 ? beautifyTasksSoPrettyWow( project.tasks ) : 'N/A' }}</div>
                     </ng-template>
                 </ngb-panel>
             </ngb-accordion>

@@ -33,8 +33,11 @@ export class ProjectsComponent implements OnInit {
     public projectsPages?: ProjectSchema[][];
     public currentPage = 1;
     public numberOfEntries = 0;
+    tasksName: any;
 
-    constructor( private offcanvasService: NgbOffcanvas, private projectService: ProjectService, private titleService: Title ) {
+    constructor( private offcanvasService: NgbOffcanvas,
+                 private projectService: ProjectService,
+                 private titleService: Title ) {
         this.selectPage( "1" );
     }
 
@@ -46,7 +49,9 @@ export class ProjectsComponent implements OnInit {
             .pipe( takeUntil( this._ngUnsubscribe$ ) )
             .subscribe(
                 {
-                    next: projects => { this.projectsPages = projects; },
+                    next: projects => {
+                        this.projectsPages = projects;
+                    },
                     error: ( error: SanitizedErrorInterface ) => {
                         if ( error.hasBeenHandled ) return;
 
@@ -113,4 +118,7 @@ export class ProjectsComponent implements OnInit {
         this.offcanvasService.open( content, { position: 'end' } );
     }
 
+    beautifyTasksSoPrettyWow( tasks: { _id: string; name: string }[] ) {
+        return tasks.map( t => t.name );
+    }
 }

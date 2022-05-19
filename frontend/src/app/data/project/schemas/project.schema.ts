@@ -4,5 +4,5 @@ export interface ProjectSchema {
     acronym: string;
     startDate: Date;
     endDate?: Date;
-    tasks: string[];
+    tasks: {_id: string, name: string}[];
 }

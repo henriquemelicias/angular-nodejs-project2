@@ -1,4 +1,4 @@
-const ChecklistItem = require( '../models/checklistItem.schema');
+const ChecklistItem = require( '#models/checklist-item.schema');
 const httpError = require( 'http-errors' );
 const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
 const logger = require( "#services/logger.service" );

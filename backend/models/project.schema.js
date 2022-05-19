@@ -8,7 +8,7 @@ const ProjectSchema = new Schema(
         acronym: { type: String, required: true, minlength: 3, unique: true },
         startDate: { type: Date, required: true },
         endDate: { type: Date, required: false },
-        tasks: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Task' } ]
+        tasks: [ { _id: { type: mongoose.Schema.Types.ObjectId, ref: 'Task' }, name: { type: String } } ],
     } );
 
 ProjectSchema.index( { acronym: 1 } );

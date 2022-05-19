@@ -13,8 +13,13 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import { ProjectSchema } from "@data/project/schemas/project.schema";
 import { ProjectService } from "@data/project/services/project.service";
 import { Title } from "@angular/platform-browser";
-import { ChecklistItemSchema } from '@app/data/task/schemas/checklistItem.schema';
+import { ChecklistItemSchema } from '@data/task/schemas/checklist-item.schema';
 import { ChecklistItemService } from '@app/data/task/services/checklist-item.service';
+import { LoggerService } from "@core/services/logger/logger.service";
+import { SanitizedErrorInterface } from "@core/models/sanitized-error.interface";
+import { AppErrorHandler } from "@core/utils/class-error-handler.util";
+import { HttpStatusCode } from "@angular/common/http";
+import { GenericMessageEnum } from "@core/enums/generic-message.enum";
 
 @Component( {
                 selector: 'app-task-info',
@@ -64,7 +69,7 @@ export class TaskInfoComponent implements OnInit {
         this.todayDate = new Date();
         this.todayDate.setMinutes( this.todayDate.getMinutes() - this.todayDate.getTimezoneOffset() );
 
-        this.addChecklistItemForm= fb.group(
+        this.addChecklistItemForm = fb.group(
             {
                 name: [
                     '', [
@@ -73,7 +78,7 @@ export class TaskInfoComponent implements OnInit {
                         Validators.pattern( "[a-zA-Z0-9]*" )
                     ]
                 ],
-            });
+            } );
 
 
         this._getTaskByIdFromRoute();
@@ -88,6 +93,10 @@ export class TaskInfoComponent implements OnInit {
 
     public get form(): { [key: string]: AbstractControl; } {
         return this.addChecklistItemForm.controls;
+    }
+
+    public get form2(): { [key: string]: AbstractControl; } {
+        return this.changeDateForm.controls;
     }
 
     ngOnInit(): void {
@@ -173,49 +182,92 @@ export class TaskInfoComponent implements OnInit {
 
     setUsersSubmit() {
         this.task.users = this.setUsersForm.controls['selectedUsers'].value;
-        this.taskService.updateTask( this.task ).subscribe(  );
+        this.taskService.updateTask( this.task ).subscribe();
     }
 
     changeDateSubmit() {
-        const startDateFormValue = this.form['startDate'].value;
+        const startDateFormValue = this.form2['startDate'].value;
 
         let startDate;
         if ( startDateFormValue ) {
-            const startDateTokens = startDateFormValue.split( "-" );
+            const startDateTokens = startDateFormValue.split( /[-T:]/ );
             startDate = new Date(
                 parseInt( startDateTokens[0] ),
                 parseInt( startDateTokens[1] ),
-                parseInt( startDateTokens[2] )
+                parseInt( startDateTokens[2] ),
+                parseInt( startDateTokens[3] ),
+                parseInt( startDateTokens[4] )
             );
         }
 
-        const endDateFormValue = this.form['endDate'].value;
+        const endDateFormValue = this.form2['endDate'].value;
         let endDate;
         if ( endDateFormValue ) {
-            const endDateTokens = endDateFormValue.split( "-" );
-
+            const endDateTokens = endDateFormValue.split( /[-T:]/ );
 
             endDate = new Date(
                 parseInt( endDateTokens[0] ),
                 parseInt( endDateTokens[1] ),
-                parseInt( endDateTokens[2] )
-            )
+                parseInt( endDateTokens[2] ),
+                parseInt( endDateTokens[3] ),
+                parseInt( endDateTokens[4] )
+            );
         }
 
         this.task.startDate = startDate;
         this.task.endDate = endDate;
 
-        this.taskService.updateTask(this.task).subscribe();
+        this._modifyTask( this.task );
+    }
 
+    private _modifyTask( task: TaskSchema ): void {
+        const logCallers = LoggerService.setCaller( this, this._modifyTask );
+
+        this.taskService.updateTask( task ).subscribe(
+            {
+                next: _ => {
+                    this.changeDateForm.reset();
+                    AlertService.success(
+                        `Task ${ task.name } created successfully`,
+                        { id: "alert-task-form", isAutoClosed: true },
+                        logCallers
+                    );
+                },
+                error: ( error: SanitizedErrorInterface ) => {
+                    if ( error.hasBeenHandled ) return;
+
+                    const errorHandler = new AppErrorHandler( error );
+                    errorHandler
+                        .serverErrorHandler( () => {
+
+                            if ( errorHandler.error.status === HttpStatusCode.Conflict ) {
+                                AlertService.error(
+                                    error.message,
+                                    { id: 'alert-task-form' },
+                                    logCallers
+                                );
+                                errorHandler.hasBeenHandled = true;
+                            }
+                        } )
+                        .ifErrorHandlers( null, () => {
+                            AlertService.alertToApp(
+                                AlertType.Error,
+                                GenericMessageEnum.UNEXPECTED_UNHANDLED_ERROR + error.message,
+                                null,
+                                logCallers
+                            );
+                        } ).toObservable();
+                }
+            } );
     }
 
     addChecklistItemSubmit() {
         var item = {} as ChecklistItemSchema;
         item.name = this.form['name'].value;
         item.isComplete = false;
-        this.checklistItemService.addChecklistItem(item).subscribe();
-        this.task.checklist.push(item);
-        this.taskService.updateTask(this.task).subscribe();
+        this.checklistItemService.addChecklistItem( item ).subscribe();
+        this.task.checklist.push( item );
+        this.taskService.updateTask( this.task ).subscribe();
     }
 
     selectChangeHandler( event: any ) {
@@ -247,13 +299,12 @@ export class TaskInfoComponent implements OnInit {
                     };
                 }
             }
-            if ( t.value )
-            {
+            if ( t.value ) {
                 if ( new Date( t.value ) < (new Date()) ) {
-                return {
-                    dates2: "Dates should be after now."
-                };
-            }
+                    return {
+                        dates2: "Dates should be after now."
+                    };
+                }
             }
             return {};
         }

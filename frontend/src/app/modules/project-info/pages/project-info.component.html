@@ -27,7 +27,7 @@
                     startDate:
                 </div>
                 <div class="model-info__property__value">
-                    {{  project.startDate  }}
+                    {{  project.startDate | date  }}
                 </div>
             </div>
             <div class="model-info__property">
@@ -35,7 +35,7 @@
                     endDate:
                 </div>
                 <div class="model-info__property__value">
-                    {{  project.endDate || "N/A"  }}
+                    {{  (project.endDate | date) || "N/A"  }}
                 </div>
             </div>
             <div class="model-info__property">
@@ -43,7 +43,7 @@
                     tasks:
                 </div>
                 <div class="model-info__property__value">
-                    {{taskNameList.join(", ") || "N/A"}}
+                    {{taskNameList.join( ", " ) || "N/A"}}
                 </div>
             </div>
         </div>
@@ -63,17 +63,23 @@
             <section>
                 <form [formGroup]="setTasksForm" novalidate>
                     <div class="modal-body__row" *ngFor="let task of tasks; let i=index">
-                        <input class="modal-body__row__checkbox" type="checkbox" formArrayName="selectedTasks" [value]="task._id"
-                               (change)="onCheckboxChange($event)" [checked]="this.project.tasks.includes( task._id )"
+                        <input class="modal-body__row__checkbox" type="checkbox" formArrayName="selectedTasks"
+                               [value]="task._id"
+                               (change)="onCheckboxChange($event)"
+                               [checked]="this.project.tasks.includes( {_id: task._id, name: task.name}  )"
                         />
-                        <div class="modal-body__row__text" >{{ task.name}}</div>
+                        <div class="modal-body__row__text">{{ task.name}}</div>
                     </div>
                 </form>
             </section>
         </div>
         <div class="modal-footer">
-            <button class="default-button"  type="submit" (keydown.enter)="setTasksSubmit()" (click)="setTasksSubmit();modal.close('Close click')">Submit</button>
-            <button type="button" class="default-button modal-footer__close-btn" (click)="modal.close('Close click')">Close</button>
+            <button class="default-button" type="submit" (keydown.enter)="setTasksSubmit()"
+                    (click)="setTasksSubmit();modal.close('Close click')">Submit
+            </button>
+            <button type="button" class="default-button modal-footer__close-btn" (click)="modal.close('Close click')">
+                Close
+            </button>
         </div>
     </ng-template>
 </div>

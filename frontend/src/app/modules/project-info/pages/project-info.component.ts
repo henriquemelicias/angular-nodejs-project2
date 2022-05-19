@@ -27,8 +27,6 @@ export class ProjectInfoComponent implements OnInit {
     taskNameList!: string[];
 
     tasks!: TaskSchema[];
-    taskaux!: TaskSchema;
-
     setTasksForm: FormGroup
 
     constructor( private route: ActivatedRoute,
@@ -60,18 +58,18 @@ export class ProjectInfoComponent implements OnInit {
                         this.hasProject = true;
                         this.projectTasks = this.project.tasks.map( t => t + "\n" );
                         this.taskNameList = [];
-                        for (let i = 0; i < this.project.tasks.length; i++) {
-                            this._getTaskByIdAux(this.project.tasks[i]);
+                        for ( let i = 0; i < this.project.tasks.length; i++ ) {
+                            this._getTaskByIdAux( this.project.tasks[i]._id );
                         }
                     }
-                } )             
+                } )
     }
 
-    private _getTaskByIdAux(myid: string) {
-        this.taskService.getTask(myid)
-            .subscribe(task => {
-                this.taskNameList.push(task.name);
-              });
+    private _getTaskByIdAux( myid: string ) {
+        this.taskService.getTask( myid )
+            .subscribe( task => {
+                this.taskNameList.push( task.name );
+            } );
     }
 
     private _ifNoProjectFound() {
@@ -102,16 +100,19 @@ export class ProjectInfoComponent implements OnInit {
     }
 
     setTasksSubmit() {
-        this.project.tasks = this.setTasksForm.controls['selectedTasks'].value;
-        this.projectService.updateProject( this.project ).subscribe( );
+        this.project.tasks = (this.setTasksForm.controls['selectedTasks'].value as string[]).map( i => { // @ts-ignore
+            return { _id: i, name: this.tasks.find( t => t._id === i ).name }
+        } );
+        this.projectService.updateProject( this.project ).subscribe();
         window.location.reload();
     }
 
     public openSetTasksModal( longContent: any ) {
         this.setTasks().then( _ => {
             (this.setTasksForm.controls['selectedTasks'] as FormArray).clear();
-            this.project.tasks.forEach( t =>{
-                (this.setTasksForm.controls['selectedTasks'] as FormArray).push( new FormControl( t ) );} );
+            this.project.tasks.forEach( t => {
+                (this.setTasksForm.controls['selectedTasks'] as FormArray).push( new FormControl( t ) );
+            } );
             this._openModal( longContent );
         } );
     }
@@ -121,6 +122,7 @@ export class ProjectInfoComponent implements OnInit {
     }
 
 }
-function _getTaskById(value: any) {
-    throw new Error('Function not implemented.');
+
+function _getTaskById( value: any ) {
+    throw new Error( 'Function not implemented.' );
 }

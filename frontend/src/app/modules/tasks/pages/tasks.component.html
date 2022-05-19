@@ -58,13 +58,13 @@
                         <div class="accordion__item">
                             <span>users:</span> {{ task.users.length > 0 ? task.users : "N/A" }}</div>
                         <div class="accordion__item">
-                            <span>start date/time:</span> {{ task.startDate ? task.startDate : "N/A"}}
+                            <span>start date/time:</span> {{ task.startDate ? (task.startDate | date:'long') : "N/A"}}
                         </div>
                         <div class="accordion__item">
-                            <span>end date/time:</span> {{ task.endDate ? task.endDate : "N/A"}}
+                            <span>end date/time:</span> {{ task.endDate ? (task.endDate | date:'long') : "N/A"}}
                         </div>
                         <div class="accordion__item">
-                            <span>checklist:</span> {{ task.checklist ? task.checklist : "N/A"}}
+                            <span>checklist:</span> {{ task.checklist.length > 0 ? task.checklist : "N/A"}}
                         </div>
                     </ng-template>
                 </ngb-panel>

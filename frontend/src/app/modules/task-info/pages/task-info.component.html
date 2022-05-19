@@ -50,7 +50,7 @@
                     start date/time:
                 </div>
                 <div class="model-info__property__value">
-                    {{ task.startDate ? task.startDate : "N/A" }}
+                    {{ task.startDate ? (task.startDate | date:'long') : "N/A" }}
                 </div>
             </div>
             <div class="model-info__property">
@@ -58,7 +58,7 @@
                     end date/time:
                 </div>
                 <div class="model-info__property__value">
-                    {{ task.endDate ? task.endDate : "N/A" }}
+                    {{ task.endDate ? (task.endDate | date:'long') : "N/A" }}
                 </div>
             </div>
             <div class="model-info__property">
@@ -78,7 +78,7 @@
                     (click)="openAddChecklistItemModal( addChecklistItemModal )">Add checklist item
             </button>
             <button class="default-button model-info__operations__button"
-                    (click)="openChangeDateModal( changeDateModal )"> Change dates
+                    (click)="openChangeDateModal( changeDateModal ); changeDateForm.reset()"> Change dates
             </button>
             <button class="default-button model-info__operations__button" (click)="openModalSimple(  )">Delete</button>
         </div>
@@ -94,17 +94,22 @@
         <section>
             <form [formGroup]="setUsersForm" novalidate>
                 <div class="modal-body__row" *ngFor="let user of users; let i=index">
-                    <input class="modal-body__row__checkbox"  type="checkbox" formArrayName="selectedUsers" [value]="user.username"
+                    <input class="modal-body__row__checkbox" type="checkbox" formArrayName="selectedUsers"
+                           [value]="user.username"
                            (change)="onCheckboxChange($event)" [checked]="task.users.includes( user.username )"
                     />
-                    <div class="modal-body__row__text" >{{ user.username }}</div>
+                    <div class="modal-body__row__text">{{ user.username }}</div>
                 </div>
             </form>
         </section>
     </div>
     <div class="modal-footer">
-        <button class="default-button" type="submit" (keydown.enter)="setUsersSubmit()" (click)="setUsersSubmit();modal.close('Close click')">Save</button>
-        <button type="button" class="default-button modal-footer__close-btn" (click)="modal.close('Close click')">Close</button>
+        <button class="default-button" type="submit" (keydown.enter)="setUsersSubmit()"
+                (click)="setUsersSubmit();modal.close('Close click')">Save
+        </button>
+        <button type="button" class="default-button modal-footer__close-btn" (click)="modal.close('Close click')">
+            Close
+        </button>
     </div>
 </ng-template>
 
@@ -116,26 +121,31 @@
         <section>
             <form [formGroup]="addChecklistItemForm">
                 <div class="add-checklistItem-form__group">
-                <label for="add-checklistItem-form-name">Name</label>
-                <input type="text" class="add-checklist-item-form__group__control form-control" id="add-checklist-item-form-name"
-                    formControlName="name"
-                    [ngClass]="{'is-invalid': form['name'].errors &&
+                    <label for="add-checklistItem-form-name">Name</label>
+                    <input type="text" class="add-checklist-item-form__group__control form-control"
+                           id="add-checklist-item-form-name"
+                           formControlName="name"
+                           [ngClass]="{'is-invalid': form['name'].errors &&
                                         (form['name'].touched || form['name'].dirty),
                         'is-valid': form['name'].valid }"
-                >
+                    >
                 </div>
 
-        <div class="alert alert-danger" [hidden]="form['name'].valid || form['name'].pristine">
-            <div *ngIf="form['name'].errors?.['required']">Name is required</div>
-            <div *ngIf="form['name'].errors?.['minlength']">Name must be at least 4 characters</div>
-            <div *ngIf="form['name'].errors?.['pattern']">Only alphanumeric characters are allowed</div>
-        </div>
+                <div class="alert alert-danger" [hidden]="form['name'].valid || form['name'].pristine">
+                    <div *ngIf="form['name'].errors?.['required']">Name is required</div>
+                    <div *ngIf="form['name'].errors?.['minlength']">Name must be at least 4 characters</div>
+                    <div *ngIf="form['name'].errors?.['pattern']">Only alphanumeric characters are allowed</div>
+                </div>
             </form>
         </section>
     </div>
     <div class="modal-footer">
-        <button class="default-button" type="submit" (keydown.enter)="addChecklistItemSubmit()" (click)="addChecklistItemSubmit();modal.close('Close click')">Add</button>
-        <button type="button" class="default-button modal-footer__close-btn" (click)="modal.close('Close click')">Close</button>
+        <button class="default-button" type="submit" (keydown.enter)="addChecklistItemSubmit()"
+                (click)="addChecklistItemSubmit();modal.close('Close click')">Add
+        </button>
+        <button type="button" class="default-button modal-footer__close-btn" (click)="modal.close('Close click')">
+            Close
+        </button>
     </div>
 </ng-template>
 
@@ -150,41 +160,47 @@
                 <div class="change-form__group input-group">
                     <input class="change-form__group__start-date-control form-control" id="change-form-start-date"
                            formControlName="startDate"
-                           (keydown.enter)="form['startDate'].enabled"
-                           type="date"
+                           (keydown.enter)="form2['startDate'].enabled"
+                           type="datetime-local"
                            min="{{todayDate | date:'yyyy-MM-dd'}}"
-                           [ngClass]="{'is-invalid': ( form['startDate'].errors || changeDateForm.hasError('dates3')) && (form['startDate'].touched || form['startDate'].dirty), 'is-valid': form['startDate'].valid}"
-                    >
+
+                           [ngClass]="{'is-invalid': ( form2['startDate'].errors || changeDateForm.hasError('dates3')) && (form2['startDate'].touched || form2['startDate'].dirty), 'is-valid': form2['startDate'].valid}"
+                    ></div>
+
+                <div class="alert alert-danger"
+                     [hidden]="( form2['startDate'].valid && !this.changeDateForm.hasError('dates3') ) || form2['startDate'].pristine">
+                    <div *ngIf="form2['startDate'].errors?.['required']">Date is required</div>
+                    <div *ngIf="changeDateForm.hasError('dates3')">Date/time must be after current moment</div>
                 </div>
-            
-                <div class="alert alert-danger" [hidden]="( form['startDate'].valid && !this.changeDateForm.hasError('dates3') ) || form['startDate'].pristine">
-                    <div *ngIf="form['startDate'].errors?.['required']">Date is required</div>
-                    <div *ngIf="changeDateForm.hasError('dates3')">Date/time must be after current moment </div>
-                </div>
-            
+
                 <label for="change-form-end-date">End Date/Time</label>
                 <div class="change-form__group input-group">
                     <input class="change-form__group__start-date-control form-control" id="change-form-end-date"
                            formControlName="endDate"
-                           type="date"
-                           [ngClass]="{'is-invalid': (changeDateForm.hasError('dates') || changeDateForm.hasError('dates2') || form['endDate'].errors) && (form['endDate'].touched || form['endDate'].dirty), 'is-valid': form['endDate'].valid}"
-                    >          
-                </div>
-        
-                <div class="alert alert-danger" [hidden]="(!changeDateForm.hasError('dates') && !changeDateForm.hasError( 'dates2') ) || form['endDate'].pristine">
-                    <div *ngIf="changeDateForm.hasError('dates')">End date/time must be after start date/time</div>
-                    <div *ngIf="changeDateForm.hasError('dates2')">Date/time must be after current moment </div>
-                </div>
+                           type="datetime-local"
+                           [ngClass]="{'is-invalid': (changeDateForm.hasError('dates') || changeDateForm.hasError('dates2') || form2['endDate'].errors) && (form2['endDate'].touched || form2['endDate'].dirty), 'is-valid': form2['endDate'].valid}"
+                    ></div>
+
+                    <div class="alert alert-danger" [hidden]="(!changeDateForm.hasError('dates') && !changeDateForm.hasError( 'dates2') ) || form2['endDate'].pristine">
+                        <div *ngIf="changeDateForm.hasError('dates')">End date/time must be after start date/time</div>
+                        <div *ngIf="changeDateForm.hasError('dates2')">Date/time must be after current moment </div>
+                    </div>
             </form>
+
+            <div class="app-alert-wrapper">
+                <app-alert id="alert-task-form" [isOnlyOne]="true"></app-alert>
+            </div>
         </section>
     </div>
     <div class="modal-footer">
-        <button class="default-button" type="submit" [disabled]="!changeDateForm.valid" (keydown.enter)="changeDateSubmit()" (click)="changeDateSubmit();modal.close('Close click')">Change Date</button>
-        <button type="button" class="default-button modal-footer__close-btn" (click)="modal.close('Close click')">Close</button>
+        <button class="default-button" type="submit" [disabled]="!changeDateForm.valid"
+                (keydown.enter)="changeDateSubmit()" (click)="changeDateSubmit();modal.close('Close click')">Change Date
+        </button>
+        <button type="button" class="default-button modal-footer__close-btn" (click)="modal.close('Close click')">
+            Close
+        </button>
     </div>
 </ng-template>
-
-
 
 
 <!-- <ng-template #setProjectModal let-modal>

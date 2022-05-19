@@ -99,7 +99,7 @@ export class OverviewComponent implements OnInit {
                             );
                         } )
                     } )
-                    this.clusters.push( usersCluster );
+                    if ( usersCluster.childNodeIds.length > 0 ) this.clusters.push( usersCluster );
                     resolve();
                 },
                 error: error => reject( error )
@@ -135,7 +135,7 @@ export class OverviewComponent implements OnInit {
                             );
                         } )
                     } )
-                    this.clusters.push( teamsCluster );
+                    if ( teamsCluster.childNodeIds.length > 0 ) this.clusters.push( teamsCluster );
                     resolve();
                 },
                 error: error => reject( error )
@@ -155,15 +155,15 @@ export class OverviewComponent implements OnInit {
                         project.tasks.forEach( ( task ) => {
                             this.links.push(
                                 {
-                                    id: project.acronym + 'pt' + task,
+                                    id: project.acronym + 'pt' + task._id,
                                     source: id,
-                                    target: 'task' + task,
+                                    target: 'task' + task._id,
                                     label: 'contains'
                                 } as Link
                             );
                         } )
                     } )
-                    this.clusters.push( projectsCluster );
+                    if ( projectsCluster.childNodeIds.length > 0 ) this.clusters.push( projectsCluster );
                     resolve();
                 },
                 error: error => reject( error )
@@ -180,7 +180,7 @@ export class OverviewComponent implements OnInit {
                         tasksCluster.childNodeIds.push( id );
                         this.nodes.push( { id: id, label: task.name, type: 'Task:' } as Node );
                     } )
-                    this.clusters.push( tasksCluster );
+                    if ( tasksCluster.childNodeIds.length > 0 ) this.clusters.push( tasksCluster );
                     resolve()
                 },
                 error: error => reject( error )

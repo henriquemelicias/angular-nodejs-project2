@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpSettings } from '@app/core/constants/http-settings.const';
-import { ChecklistItemSchema } from '../schemas/checklistItem.schema';
+import { ChecklistItemSchema } from '../schemas/checklist-item.schema';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 

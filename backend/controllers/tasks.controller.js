@@ -106,7 +106,16 @@ exports.getTask = ( req, res, next ) => {
 
     Task.findOne( { _id: req.params._id } )
         .lean()
-        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users","startDate","endDate", "checklist" ] )
+        .select( [ "_id",
+                   "name",
+                   "priority",
+                   "percentage",
+                   "madeByUser",
+                   "users",
+                   "startDate",
+                   "endDate",
+                   "checklist"
+        ] )
         .exec( function ( error, task ) {
             if ( error ) {
                 return next( httpError( HttpStatusCode.InternalServerError, error ) );
@@ -118,7 +127,6 @@ exports.getTask = ( req, res, next ) => {
 exports.getTasks = ( req, res, next ) => {
     Task.find( {} )
         .lean()
-        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users","startDate","endDate", "checklist" ] )
         .exec( ( error, tasks ) => {
             if ( error ) {
                 return next( httpError( HttpStatusCode.InternalServerError, error ) );
@@ -146,15 +154,38 @@ exports.getUpdateTaskRules = () => {
 
 exports.updateTask = ( req, res, next ) => {
 
-    Task.findByIdAndUpdate( { _id: req.params.id }, { $set: { users: req.body.users, checklist: req.body.checklist } } )
+    Task.findByIdAndUpdate(
+        { _id: req.body._id },
+        {
+            $unset: {
+                startDate: "", endDate: ""
+            }
+        } )
+
         .lean()
-        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users", "checklist" ] )
-        .exec( ( error, task ) => {
+        .exec( ( error, _ ) => {
             if ( error ) {
                 next( httpError( HttpStatusCode.InternalServerError, error ) );
                 return;
             }
-            res.send( task );
+
+            Task.findByIdAndUpdate(
+                { _id: req.body._id },
+                {
+                    $set: {
+                        users: req.body.users, startDate: req.body.startDate, endDate: req.body.endDate,
+                        checklist: req.body.checklist
+                    }
+                } )
+
+                .lean()
+                .exec( ( error, task ) => {
+                    if ( error ) {
+                        next( httpError( HttpStatusCode.InternalServerError, error ) );
+                        return;
+                    }
+                    res.send( task );
+                } );
         } );
 }
 
@@ -174,7 +205,6 @@ exports.getNTasksByPage = ( req, res, next ) => {
 
     Task.find( {} )
         .lean()
-        .select( [ "_id", "name", "priority", "percentage", "madeByUser", "users", "startDate", "endDate" ] )
         .sort( { $natural: 1 } ) // sort by oldest first
         .skip( numPage * numTasks )
         .limit( numTasks )

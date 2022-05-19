@@ -85,11 +85,13 @@ export class AddTaskFormComponent implements OnInit {
 
         let startDate;
         if ( startDateFormValue ) {
-            const startDateTokens = startDateFormValue.split( "-" );
+            const startDateTokens = startDateFormValue.split( /[-T:]/ );
             startDate = new Date(
                 parseInt( startDateTokens[0] ),
                 parseInt( startDateTokens[1] ),
-                parseInt( startDateTokens[2] )
+                parseInt( startDateTokens[2] ),
+                parseInt( startDateTokens[3] ),
+                parseInt( startDateTokens[4] )
             );
         }
 
@@ -97,14 +99,15 @@ export class AddTaskFormComponent implements OnInit {
         const endDateFormValue = this.form['endDate'].value;
         let endDate;
         if ( endDateFormValue ) {
-            const endDateTokens = endDateFormValue.split( "-" );
-
+            const endDateTokens = endDateFormValue.split( /[-T:]/ );
 
             endDate = new Date(
                 parseInt( endDateTokens[0] ),
                 parseInt( endDateTokens[1] ),
-                parseInt( endDateTokens[2] )
-            )
+                parseInt( endDateTokens[2] ),
+                parseInt( endDateTokens[3] ),
+                parseInt( endDateTokens[4] )
+            );
         }
 
         const task = {} as AddTaskOutput;
@@ -185,10 +188,10 @@ export class AddTaskFormComponent implements OnInit {
             if ( t.value )
             {
                 if ( new Date( t.value ) < (new Date()) ) {
-                return {
-                    dates2: "Dates should be after now."
-                };
-            }
+                    return {
+                        dates2: "Dates should be after now."
+                    };
+                }
             }
             return {};
         }

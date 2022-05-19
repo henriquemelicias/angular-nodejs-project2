@@ -33,6 +33,6 @@ tasksRouter.get( '', [ verifyToken ], tasksController.getTasks );
 
 tasksRouter.put( '/:id', [ verifyToken,
                             oneOf( tasksController.getUpdateTaskRules() ),
-                            verifyRules ], tasksController.updateTask )
+                            verifyRules, checkOverlapTimes ], tasksController.updateTask )
 
 module.exports = tasksRouter;
