@@ -16,6 +16,8 @@ tasksRouter.get( '/unfiltered', [ verifyToken ], tasksController.getTasksUnfilte
 
 tasksRouter.get( '/num-entries', [ verifyToken ], tasksController.getNumberOfTasks );
 
+tasksRouter.get( '/ignore', [ verifyToken ], tasksController.getAvailableTasks );
+
 tasksRouter.delete( '/:_id', [ verifyToken,
                                oneOf( tasksController.getDeleteGetAndUpdateTaskRules() ),
                                verifyRules
@@ -29,8 +31,6 @@ tasksRouter.get( '/:_id', [ verifyToken,
 */
 
 tasksRouter.get( '/:_id', tasksController.getTask );
-
-tasksRouter.get( '', [ verifyToken ], tasksController.getTasks );
 
 tasksRouter.put( '/:id', [ verifyToken,
                             oneOf( tasksController.getUpdateTaskRules() ),

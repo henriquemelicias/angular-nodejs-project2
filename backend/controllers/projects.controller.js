@@ -123,7 +123,7 @@ exports.getProjects = ( req, res, next ) => {
                     return next( httpError( HttpStatusCode.InternalServerError ), error );
                 }
 
-                if ( !projects ) {
+                if ( !projects  || projects.length === 0) {
                     return next();
                 }
 

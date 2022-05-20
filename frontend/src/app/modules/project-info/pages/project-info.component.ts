@@ -67,7 +67,7 @@ export class ProjectInfoComponent implements OnInit {
 
     private async setTasks() {
         return new Promise( (resolve, reject) => {
-            this.taskService.getTasks().subscribe(
+            this.taskService.getAvailableTasks( this.project.acronym ).subscribe(
                 tasks => {
                     this.tasks = tasks;
                     resolve( true );

@@ -49,8 +49,8 @@ export class TaskService {
         return this.http.get<TaskSchema>( TaskService._API_URI + "/" + id, HttpSettings.HEADER_CONTENT_TYPE_JSON );
     };
 
-    public getTasks(): Observable<TaskSchema[]> {
-        return this.http.get<TaskSchema[]>( TaskService._API_URI, HttpSettings.HEADER_CONTENT_TYPE_JSON );
+    public getAvailableTasks( projectAcronym: string ): Observable<TaskSchema[]> {
+        return this.http.get<TaskSchema[]>( TaskService._API_URI + '/ignore?projectAcronym=' + projectAcronym, HttpSettings.HEADER_CONTENT_TYPE_JSON );
     };
 
     public updateTask( task: TaskSchema ): Observable<TaskSchema> {

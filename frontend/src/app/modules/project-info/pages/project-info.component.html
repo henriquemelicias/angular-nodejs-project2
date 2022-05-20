@@ -72,6 +72,7 @@
                     </div>
                 </form>
             </section>
+            <h4 *ngIf="tasks.length === 0" style="text-align: center">There's no available task created by the members of this project's team</h4>
         </div>
         <div class="modal-footer">
             <button class="default-button" type="submit" (keydown.enter)="setTasksSubmit()"

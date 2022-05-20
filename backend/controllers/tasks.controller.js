@@ -126,15 +126,48 @@ exports.getTask = ( req, res, next ) => {
         } )
 }
 
-exports.getTasks = ( req, res, next ) => {
-    Task.find( {} )
+exports.getAvailableTasks = ( req, res, next ) => {
+
+    const baseURL = 'http://' + req.headers.host + '/';
+    const searchParams = new URL( req.url, baseURL ).searchParams;
+
+    const projectAcronym = searchParams.get( 'projectAcronym' );
+
+    Team.find( { members: req.userUsername } )
         .lean()
-        .exec( ( error, tasks ) => {
+        .select( [ 'projectAcronym', 'members' ] )
+        .exec( ( error, teams ) => {
             if ( error ) {
                 return next( httpError( HttpStatusCode.InternalServerError, error ) );
             }
-            res.send( tasks );
-        } )
+
+            if ( !teams ) return res.send( [] );
+
+            const projectAcronyms = teams.flatMap( t => t.projectAcronym ).filter( a => a !== projectAcronym );
+            const members = [ ...new Set( teams.flatMap( t => t.members ) ) ];
+
+            Project.find( { acronym: { $in: projectAcronyms } } )
+                .lean()
+                .select( 'tasks' )
+                .exec( ( error, projects ) => {
+                    if ( error ) {
+                        return next( httpError( HttpStatusCode.InternalServerError, error ) );
+                    }
+
+                    const unavailableTasks = projects.flatMap( project => project.tasks.map( t => t._id ) );
+
+                    Task.find( { _id: { $nin: unavailableTasks }, madeByUser: { $in: members } } )
+                        .lean()
+                        .exec( ( error, tasks ) => {
+                            if ( error ) {
+                                return next( httpError( HttpStatusCode.InternalServerError, error ) );
+                            }
+
+                            return res.send( tasks );
+                        } )
+                } )
+
+        } );
 }
 
 exports.getUpdateTaskRules = () => {
@@ -245,10 +278,6 @@ exports.getNTasksByPage = ( req, res, next ) => {
                     return;
                 }
 
-                if ( !teams ) {
-                    res.send( [] );
-                }
-
                 const projectAcronyms = teams.filter( team => team.projectAcronym ).flatMap( team => team.projectAcronym );
 
                 Project.find( { acronym: { $in: projectAcronyms } } )
@@ -260,13 +289,9 @@ exports.getNTasksByPage = ( req, res, next ) => {
                             return;
                         }
 
-                        if ( !projects ) {
-                            return res.send( [] );
-                        }
-
                         const tasksIds = projects.flatMap( project => project.tasks.map( t => t._id ) );
 
-                        Task.find( { $or: [{_id: { $in: tasksIds }}, {_madeByUser: req.userUsername}] } )
+                        Task.find( { $or: [ { _id: { $in: tasksIds } }, { madeByUser: req.userUsername } ] } )
                             .lean()
                             .sort( { $natural: 1 } ) // sort by oldest first
                             .skip( numPage * numTasks )
