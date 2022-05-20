@@ -69,7 +69,7 @@ export class UserService {
         return this.http.get<UserSchema[]>(
             UserService._API_URI + '/by-pages?numUsers=' + numUsers + "&numPage=" + numPage,
             HttpSettings.HEADER_CONTENT_TYPE_JSON
-        )
+        );
     }
 
     public getNumberOfUsers(): Observable<{ numberOfUsers: number }> {
@@ -112,5 +112,12 @@ export class UserService {
                         } ).toObservable();
                 }
             } );
+    }
+
+    getUsersSameProject( taskId: string ) {
+        return this.http.get<UserSchema[]>(
+            UserService._API_URI + '/by-task?id=' + taskId,
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
     }
 }

@@ -47,3 +47,7 @@ body::-webkit-scrollbar-thumb:hover {
     stroke-width: 3px;
     stroke-dasharray: 4;
 }
+
+.mat-radio-checked .mat-radio-inner-circle {
+    background: var( --font-color-highlight ) !important;
+}

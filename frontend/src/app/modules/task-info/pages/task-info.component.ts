@@ -180,7 +180,7 @@ export class TaskInfoComponent implements OnInit {
     };
 
     private async setUsers() {
-        return this.userService.getUsers().subscribe( users => {
+        return this.userService.getUsersSameProject( this.task._id ).subscribe( users => {
             this.users = users
         } );
     }

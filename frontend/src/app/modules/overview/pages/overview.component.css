@@ -18,3 +18,41 @@ h1 {
   text-align: center;
   border-bottom: 2px solid var( --font-color-on-background );
 }
+
+.overview__buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.overview__buttons--group {
+  display: flex;
+  align-items: baseline;
+}
+
+.overview__buttons span {
+  margin-right: 0.5rem;
+  color: var( --secondary-color );
+}
+
+.overview__buttons__btn {
+  margin-right: 0.5rem;
+  color: var(--font-color-highlight);
+}
+
+@media (max-width: 991.98px) {
+  .overview__buttons {
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-bottom: 1rem;
+  }
+  .overview__buttons--group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .overview__buttons__radio {
+    display: flex;
+    flex-direction: column;
+  }
+}
