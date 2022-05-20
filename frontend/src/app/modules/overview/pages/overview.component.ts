@@ -165,12 +165,48 @@ export class OverviewComponent implements OnInit {
                 if ( clusterTeam ) {
                     clusterTeam.childNodeIds.push( 'nproject' + project.acronym );
                     clusterTeam.childNodeIds.push( 'nptnproject' + project.acronym );
+
+                    const projectNode = {
+                        id: "nproject" + project.acronym,
+                        label: project.acronym + ' - ' + project.name,
+                        type: 'Project:'
+                    } as Node;
+                    this.nodesTeams.push( projectNode );
+
+                    clusterTeam.childNodeIds.push( 'nproject' + project );
+
+                    let alreadyHas = false;
                     project.tasks.forEach( t => {
                         clusterTeam.childNodeIds.push( 'ntask' + t._id );
+
+                        if ( !alreadyHas )
+                        {
+                            const projectTaskLabelNode = { id: 'npt' + 'nproject' + project.acronym, label: 'contains', type: '' };
+                            this.nodesTeams.push( projectTaskLabelNode );
+
+                            const projectTaskToLabel = {
+                                id: project.acronym + 'lpt',
+                                source: 'nproject' + project.acronym,
+                                target: 'npt' + 'nproject' + project.acronym,
+                                label: ''
+                            };
+                            this.linksTeams.push( projectTaskToLabel );
+                            alreadyHas = true;
+                        }
+
                         const task = this.tasks?.find( t2 => t2._id === t._id );
                         if ( task ) {
                             clusterTeam.childNodeIds.push( 'ntuntask' + t._id );
                             clusterTeam.childNodeIds.push( 'ntcntask' + t._id );
+
+                            const projectTaskFromLabel = {
+                                id: project.acronym + 'lpt' + task._id,
+                                source: 'npt' + 'nproject' + project.acronym,
+                                target: 'ntask'+ task._id,
+                                label: 'contains'
+                            } as Link;
+                            this.linksTeams.push( projectTaskFromLabel );
+
 
                             const id = 'ntask'+ task._id;
                             const taskNode = { id: 'ntask'+ task._id, label: task.name + " - " + task.priority + " " + task.percentage + "%", type: 'Task:' } as Node;
@@ -420,12 +456,10 @@ export class OverviewComponent implements OnInit {
                             type: 'Project:'
                         } as Node;
                         this.nodesTypes.push( projectNode );
-                        this.nodesTeams.push( projectNode );
 
                         if ( project.tasks.length > 0 ) {
                             const projectTaskLabelNode = { id: 'npt' + id, label: 'contains', type: '' };
                             this.nodesTypes.push( projectTaskLabelNode );
-                            this.nodesTeams.push( projectTaskLabelNode );
 
                             const teamMemberToLabel = {
                                 id: project.acronym + 'lpt',
@@ -434,7 +468,6 @@ export class OverviewComponent implements OnInit {
                                 label: ''
                             }
                             this.linksTypes.push( teamMemberToLabel );
-                            this.linksTeams.push( teamMemberToLabel );
                         }
                         project.tasks.forEach( ( task ) => {
                             const teamMemberFromLabel = {
@@ -444,7 +477,6 @@ export class OverviewComponent implements OnInit {
                                 label: 'contains'
                             } as Link;
                             this.linksTypes.push( teamMemberFromLabel );
-                            this.linksTeams.push( teamMemberFromLabel );
                         } )
                     } )
                     if ( projectsCluster.childNodeIds.length > 0 ) this.clustersTypes.push( projectsCluster );
