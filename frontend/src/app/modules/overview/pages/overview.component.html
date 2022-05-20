@@ -8,6 +8,7 @@
                 <mat-radio-button class="overview__buttons__btn" *ngFor="let cluster of clusterRadio" [value]="cluster">{{cluster.name}}</mat-radio-button>
             </div>
         </mat-radio-group>
+        <button class="default-button" (click)="openFullscreen()">Activate Fullscreen</button>
 
         <mat-radio-group class="overview__buttons--group" [(ngModel)]="selectedLayoutRadio" (change)="updateGraph()">
             <span>Layout:</span>
@@ -18,7 +19,7 @@
         </mat-radio-group>
     </div>
 
-    <div class="graph-container">
+    <div class="graph-container" #fullScreen>
         <ngx-graph *ngIf="isGraphEnabled && nodes && nodes.length > 0"
                 class="chart-container"
                 [layout]="layout"

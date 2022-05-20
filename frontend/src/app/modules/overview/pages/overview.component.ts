@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from "@angular/platform-browser";
 import { TeamService } from "@data/team/services/team.service";
 import { UserService } from "@data/user/services/user.service";
@@ -104,7 +104,9 @@ export class OverviewComponent implements OnInit {
                  private taskService: TaskService ) {
     }
 
+    @ViewChild('fullScreen') divRef: any;
     ngOnInit(): void {
+        this.divRef = document.documentElement;
         this.titleService.setTitle( "Gira - Overview" );
         this.reloadAll();
     }
@@ -484,6 +486,21 @@ export class OverviewComponent implements OnInit {
                 },
                 error: error => reject( error )
             } ) );
+    }
+
+    openFullscreen() {
+        // Use this.divRef.nativeElement here to request fullscreen
+        const elem = this.divRef.nativeElement;
+
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+        } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen();
+        }
     }
 
     reloadTasks(): Promise<void> {
