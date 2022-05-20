@@ -10,6 +10,7 @@ import { AlertType } from "@core/models/alert.model";
 import { GenericMessageEnum } from "@core/enums/generic-message.enum";
 import { LoggerService } from "@core/services/logger/logger.service";
 import { TaskPriorityEnum } from "@data/task/enums/task-priority.enum";
+import { UserSchema } from "@data/user/schemas/user.schema";
 
 export interface AddTaskOutput {
     name: string,
@@ -64,9 +65,9 @@ export class TaskService {
         return this._tasksByPage$;
     };
 
-    public getTasksByPage( numTasks: Number, numPage: Number ): Observable<TaskSchema[]> {
+    public getTasksByPage( numTasks: Number, numPage: Number, isOnlyFromUser: boolean | undefined ): Observable<TaskSchema[]> {
         return this.http.get <TaskSchema[]>(
-            TaskService._API_URI + '/by-pages?numTasks=' + numTasks + '&numPage=' + numPage,
+            TaskService._API_URI + '/by-pages?numTasks=' + numTasks + '&numPage=' + numPage + '&isOnlyFromUser=' + (isOnlyFromUser ? 'true' : 'false'),
             HttpSettings.HEADER_CONTENT_TYPE_JSON
         )
     };
@@ -78,7 +79,7 @@ export class TaskService {
         );
     };
 
-    public loadTasksByPage( numPage: Number ) {
+    public loadTasksByPage( numPage: Number, isOnlyFromUser: boolean | undefined ) {
         TaskService._currentTasksByPage = TaskService._tasksByPage$.getValue();
         TaskService._currentTasksByPage = TaskService._currentTasksByPage ? TaskService._currentTasksByPage : [];
 
@@ -88,7 +89,7 @@ export class TaskService {
 
         const index = Number( numPage ) - 1;
 
-        this.getTasksByPage( TaskService.TASKS_PER_PAGE, numPage ).subscribe(
+        this.getTasksByPage( TaskService.TASKS_PER_PAGE, numPage, isOnlyFromUser ).subscribe(
             {
                 next: tasks => {
                     if ( !TaskService._currentTasksByPage ) return;

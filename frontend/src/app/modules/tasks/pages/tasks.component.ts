@@ -11,7 +11,7 @@ import { AlertType } from "@core/models/alert.model";
 import { GenericMessageEnum } from "@core/enums/generic-message.enum";
 import { LoggerService } from "@core/services/logger/logger.service";
 import { Title } from "@angular/platform-browser";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 
 @Component( {
                 selector: 'app-tasks',
@@ -32,7 +32,7 @@ export class TasksComponent implements OnInit {
     public isSessionUserAdmin = UserService.isSessionUserAdmin();
     public isProfileRoute;
 
-    constructor( private offcanvasService: NgbOffcanvas, private taskService: TaskService, private titleService: Title, router: Router ) {
+    constructor( private offcanvasService: NgbOffcanvas, private taskService: TaskService, private titleService: Title, private router: Router ) {
         this.selectPage( "1" );
         this.isProfileRoute = router.url === "/profile";
     }
@@ -90,7 +90,7 @@ export class TasksComponent implements OnInit {
 
     public reload() {
         this.getNumberOfTasks();
-        this.taskService.loadTasksByPage( this.currentPage );
+        this.taskService.loadTasksByPage( this.currentPage, this.router.url === "/profile" );
     }
 
     selectPage( page: string ) {

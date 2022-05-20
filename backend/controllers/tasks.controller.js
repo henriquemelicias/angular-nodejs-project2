@@ -6,6 +6,8 @@ const { query, body, param } = require( "express-validator" );
 const { URL } = require( "url" );
 const logger = require( "#services/logger.service" );
 const DateTime = require( "date-and-time" );
+const Team = require( '../models/team.schema' );
+const Project = require( '../models/project.schema' );
 
 exports.getAddTaskRules = () => {
     return [
@@ -203,21 +205,84 @@ exports.getNTasksByPage = ( req, res, next ) => {
 
     const numPage = parseInt( searchParams.get( 'numPage' ) ) - 1;
     const numTasks = parseInt( searchParams.get( 'numTasks' ) );
+    const isOnlyFromUser = searchParams.get( 'isOnlyFromUser' ) === 'true';
 
-    Task.find( {} )
-        .lean()
-        .sort( { $natural: 1 } ) // sort by oldest first
-        .skip( numPage * numTasks )
-        .limit( numTasks )
-        .exec( ( error, tasks ) => {
+    if ( isOnlyFromUser ) {
+        Task.find( { $or: [ { users: req.userUsername }, { madeByUser: req.userUsername } ] } )
+            .lean()
+            .exec( ( error, tasks ) => {
+                if ( error ) {
+                    next( httpError( HttpStatusCode.InternalServerError ), error );
+                    return;
+                }
 
-            if ( error ) {
-                next( httpError( HttpStatusCode.InternalServerError ), error );
-                return;
-            }
+                return res.send( tasks );
+            } )
+    }
+    else if ( req.isAdmin ) {
+        Task.find( {} )
+            .lean()
+            .sort( { $natural: 1 } ) // sort by oldest first
+            .skip( numPage * numTasks )
+            .limit( numTasks )
+            .exec( ( error, tasks ) => {
 
-            res.send( tasks );
-        } );
+                if ( error ) {
+                    next( httpError( HttpStatusCode.InternalServerError ), error );
+                    return;
+                }
+
+                res.send( tasks );
+            } );
+    }
+    else {
+        Team.find( { members: req.userUsername } )
+            .lean()
+            .select( 'projectAcronym' )
+            .exec( ( error, teams ) => {
+                if ( error ) {
+                    next( httpError( HttpStatusCode.InternalServerError ), error );
+                    return;
+                }
+
+                if ( !teams ) {
+                    res.send( [] );
+                }
+
+                const projectAcronyms = teams.filter( team => team.projectAcronym ).flatMap( team => team.projectAcronym );
+
+                Project.find( { acronym: { $in: projectAcronyms } } )
+                    .lean()
+                    .select( 'tasks' )
+                    .exec( ( error, projects ) => {
+                        if ( error ) {
+                            next( httpError( HttpStatusCode.InternalServerError ), error );
+                            return;
+                        }
+
+                        if ( !projects ) {
+                            return res.send( [] );
+                        }
+
+                        const tasksIds = projects.flatMap( project => project.tasks.map( t => t._id ) );
+
+                        Task.find( { $or: [{_id: { $in: tasksIds }}, {_madeByUser: req.userUsername}] } )
+                            .lean()
+                            .sort( { $natural: 1 } ) // sort by oldest first
+                            .skip( numPage * numTasks )
+                            .limit( numTasks )
+                            .exec( ( error, tasks ) => {
+                                if ( error ) {
+                                    next( httpError( HttpStatusCode.InternalServerError ), error );
+                                    return;
+                                }
+
+                                return res.send( tasks );
+                            } )
+                    } )
+
+            } )
+    }
 }
 
 exports.getNumberOfTasks = ( req, res, next ) => {
