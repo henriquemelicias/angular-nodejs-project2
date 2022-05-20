@@ -13,6 +13,8 @@ usersRouter.get( '/by-pages',
 
 usersRouter.get( '/num-entries', [ verifyToken ], usersController.getNumberOfUsers );
 
+usersRouter.get( '/by-task', [ verifyToken ], usersController.getUsersBySameTeam );
+
 usersRouter.get( '/:id', [ verifyToken ], usersController.getUserById );
 
 module.exports = usersRouter;

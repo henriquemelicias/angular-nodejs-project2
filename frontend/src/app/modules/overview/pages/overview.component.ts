@@ -172,6 +172,57 @@ export class OverviewComponent implements OnInit {
                             clusterTeam.childNodeIds.push( 'ntuntask' + t._id );
                             clusterTeam.childNodeIds.push( 'ntcntask' + t._id );
 
+                            const id = 'ntask'+ task._id;
+                            const taskNode = { id: 'ntask'+ task._id, label: task.name + " - " + task.priority + " " + task.percentage + "%", type: 'Task:' } as Node;
+                            this.nodesTeams.push( taskNode );
+
+                            if ( task.users.length > 0 )
+                            {
+                                const taskUserLabelNode = { id: 'ntu' + 'ntask'+ task._id, label: 'assigned to', type: '' } as Node;
+                                this.nodesTeams.push( taskUserLabelNode );
+
+                                const taskUserToLabel = {
+                                    id: task._id + 'ltu',
+                                    source: 'ntask'+ task._id,
+                                    target: 'ntu' + 'ntask'+ task._id,
+                                    label: ''
+                                };
+
+                                this.linksTeams.push( taskUserToLabel );
+                            }
+
+                            if ( task.checklist.length > 0 )
+                            {
+                                const taskCheckItemLabelNode = {
+                                    id: 'ntc' + id,
+                                    label: 'has checklist with',
+                                    type: ''
+                                };
+
+                                this.nodesTeams.push( taskCheckItemLabelNode );
+
+                                const taskCheckItemToLabel = {
+                                    id: task._id + 'ltc1',
+                                    source: id,
+                                    target: 'ntc' + id,
+                                    label: ''
+                                };
+
+                                this.linksTeams.push( taskCheckItemToLabel );
+                            }
+
+                            task.checklist.forEach( item => {
+
+                                const taskCheckItemFromLabel = {
+                                    id: task._id + 'ltc2',
+                                    source: 'ntc' + id,
+                                    target: 'ni' + item._id,
+                                    label: ''
+                                };
+
+                                this.linksTeams.push( taskCheckItemFromLabel );
+                            });
+
                             task.users.forEach( user => {
                                 const userNode = {
                                     id: task._id + 'ltu' + user,
@@ -414,12 +465,10 @@ export class OverviewComponent implements OnInit {
                         tasksCluster.childNodeIds.push( id );
                         const taskNode = { id: id, label: task.name + " - " + task.priority + " " + task.percentage + "%", type: 'Task:' } as Node;
                         this.nodesTypes.push( taskNode );
-                        this.nodesTeams.push( taskNode );
 
                         if ( task.users.length > 0 ) {
                             const taskUserLabelNode = { id: 'ntu' + id, label: 'assigned to', type: '' } as Node;
                             this.nodesTypes.push( taskUserLabelNode );
-                            this.nodesTeams.push( taskUserLabelNode );
 
                             const taskUserToLabel = {
                                 id: task._id + 'ltu',
@@ -429,7 +478,6 @@ export class OverviewComponent implements OnInit {
                             };
 
                             this.linksTypes.push( taskUserToLabel );
-                            this.linksTeams.push( taskUserToLabel );
                         }
                         task.users.forEach( user => {
                             this.linksTypes.push(
@@ -441,38 +489,6 @@ export class OverviewComponent implements OnInit {
                                 }
                             )
                         } );
-
-                        if ( task.checklist.length > 0 )
-                        {
-                            const taskCheckItemLabelNode = {
-                                id: 'ntc' + id,
-                                label: 'has checklist with',
-                                type: ''
-                            };
-
-                            this.nodesTeams.push( taskCheckItemLabelNode );
-
-                            const taskCheckItemToLabel = {
-                                id: task._id + 'ltc1',
-                                source: id,
-                                target: 'ntc' + id,
-                                label: ''
-                            };
-
-                            this.linksTeams.push( taskCheckItemToLabel );
-                        }
-
-                        task.checklist.forEach( item => {
-
-                            const taskCheckItemFromLabel = {
-                                id: task._id + 'ltc2',
-                                source: 'ntc' + id,
-                                target: 'ni' + item._id,
-                                label: ''
-                            };
-
-                            this.linksTeams.push( taskCheckItemFromLabel );
-                        });
                     } );
                     if ( tasksCluster.childNodeIds.length > 0 ) this.clustersTypes.push( tasksCluster );
                     resolve()

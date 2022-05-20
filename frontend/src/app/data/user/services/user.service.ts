@@ -114,9 +114,9 @@ export class UserService {
             } );
     }
 
-    getUsersSameProject( taskId: string ) {
+    getUsersSameProject( taskId: string, taskName: string ) {
         return this.http.get<UserSchema[]>(
-            UserService._API_URI + '/by-task?id=' + taskId,
+            UserService._API_URI + '/by-task?id=' + taskId + '&name=' + taskName,
             HttpSettings.HEADER_CONTENT_TYPE_JSON
         );
     }

@@ -40,7 +40,29 @@
 
 .model-info__operations__button {
     width: 17.5%;
-    height: 3rem;
+    height: 4rem;
+}
+
+.checklist__label {
+    display: flex;
+    align-content: baseline;
+    align-items: baseline;
+    user-select: none;
+    user-focus: none;
+    color: var(--font-color-highlight);
+
+}
+
+.checklist__label input {
+    margin-right: 1rem;
+    user-select: none;
+    user-focus: none;
+    pointer-events: none;
+    cursor: default;
+}
+
+.checklist__label span {
+    margin-right: 1rem;
 }
 
 @media (max-width: 991.98px) {
@@ -153,5 +175,11 @@ input[type=checkbox]
 
 .model-info__property__checklist__check span {
     margin-left: 0.7rem;
+}
+
+.checklist__label {
+    margin: auto;
+    margin-top: 0.3rem;
+    margin-right: 0;
 }
 

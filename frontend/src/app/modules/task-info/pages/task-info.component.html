@@ -68,12 +68,20 @@
                 <div class="model-info__property__value">
                     <div class="model-info__property__checklist" *ngIf="task.checklist.length > 0; else noChecklist">
                         <div class="model-info__property__checklist__check" *ngFor="let check of this.task.checklist">
-                        <span>{{ check.name }}: {{check.isComplete ? "Complete" : "To Complete"}}</span> <span> </span><input type="checkbox" value="{{ check.isComplete }}" name="{{ check.name }}" [checked]="check.isComplete" (change)="check.isComplete = onChecklistChange( $event, check )">
+                            <input type="checkbox" value="{{ check.isComplete }}" name="{{ check.name }}"
+                                   [checked]="check.isComplete"
+                                   (change)="check.isComplete = onChecklistChange( $event, check )"><span>{{ check.name }}</span>
                         </div>
                     </div>
                     <ng-template #noChecklist>
                         N/A
                     </ng-template>
+                </div>
+                <div class="checklist__label" *ngIf="this.task.checklist.length > 0">
+                    <input type="checkbox" name="Complete" checked tabindex="-1">
+                    <span>Complete</span>
+                    <input type="checkbox" name="To-complete" tabindex="-1">
+                    <span>To-Complete</span>
                 </div>
             </div>
         </div>
@@ -110,6 +118,7 @@
                     />
                     <div class="modal-body__row__text">{{ user.username }}</div>
                 </div>
+                <h3 *ngIf="!users || users.length === 0" style="text-align: center">No users in the same team available</h3>
             </form>
         </section>
     </div>
@@ -141,7 +150,8 @@
                     >
                 </div>
 
-                <div class="alert alert-danger" [hidden]="form3['percentage'].valid && !this.updatePercentageForm.hasError('between') || form3['percentage'].pristine">
+                <div class="alert alert-danger"
+                     [hidden]="form3['percentage'].valid && !this.updatePercentageForm.hasError('between') || form3['percentage'].pristine">
                     <div *ngIf="form3['percentage'].errors?.['required']">Percentage is required</div>
                     <div *ngIf="form3['percentage'].errors?.['pattern']">Only numbers allowed</div>
                     <div *ngIf="form3['percentage'].errors?.['maxlength']">Max 3 digits allowed</div>
@@ -152,7 +162,8 @@
         </section>
     </div>
     <div class="modal-footer">
-        <button class="default-button" type="submit" (keydown.enter)="updatePercentageSubmit()" [disabled]="!updatePercentageForm.valid"
+        <button class="default-button" type="submit" (keydown.enter)="updatePercentageSubmit()"
+                [disabled]="!updatePercentageForm.valid"
                 (click)="updatePercentageSubmit();modal.close('Close click')">Save
         </button>
         <button type="button" class="default-button modal-footer__close-btn" (click)="modal.close('Close click')">
@@ -189,7 +200,8 @@
     </div>
     <div class="modal-footer">
         <button class="default-button" type="submit" (keydown.enter)="addChecklistItemSubmit()"
-                (click)="addChecklistItemSubmit();modal.close('Close click')" [disabled]="!addChecklistItemForm.valid">Add
+                (click)="addChecklistItemSubmit();modal.close('Close click')" [disabled]="!addChecklistItemForm.valid">
+            Add
         </button>
         <button type="button" class="default-button modal-footer__close-btn" (click)="modal.close('Close click')">
             Close
@@ -229,10 +241,11 @@
                            [ngClass]="{'is-invalid': (changeDateForm.hasError('dates') || changeDateForm.hasError('dates2') || form2['endDate'].errors) && (form2['endDate'].touched || form2['endDate'].dirty), 'is-valid': form2['endDate'].valid}"
                     ></div>
 
-                    <div class="alert alert-danger" [hidden]="(!changeDateForm.hasError('dates') && !changeDateForm.hasError( 'dates2') ) || form2['endDate'].pristine">
-                        <div *ngIf="changeDateForm.hasError('dates')">End date/time must be after start date/time</div>
-                        <div *ngIf="changeDateForm.hasError('dates2')">Date/time must be after current moment </div>
-                    </div>
+                <div class="alert alert-danger"
+                     [hidden]="(!changeDateForm.hasError('dates') && !changeDateForm.hasError( 'dates2') ) || form2['endDate'].pristine">
+                    <div *ngIf="changeDateForm.hasError('dates')">End date/time must be after start date/time</div>
+                    <div *ngIf="changeDateForm.hasError('dates2')">Date/time must be after current moment</div>
+                </div>
             </form>
         </section>
     </div>
