@@ -68,11 +68,11 @@
                 <div class="model-info__property__value">
                     <div class="model-info__property__checklist" *ngIf="task.checklist.length > 0; else noChecklist">
                         <div class="model-info__property__checklist__check" *ngFor="let check of this.task.checklist">
-                            <input type="checkbox" value="{{ check.isComplete }}" name="{{ check.name }}" [checked]="check.isComplete" (change)="check.isComplete = onChecklistChange( $event, check )"> <span> {{ check.name }} </span>
+                        <span>{{ check.name }}: {{check.isComplete ? "Complete" : "To Complete"}}</span> <span> </span><input type="checkbox" value="{{ check.isComplete }}" name="{{ check.name }}" [checked]="check.isComplete" (change)="check.isComplete = onChecklistChange( $event, check )">
                         </div>
                     </div>
                     <ng-template #noChecklist>
-                        "N/A"
+                        N/A
                     </ng-template>
                 </div>
             </div>

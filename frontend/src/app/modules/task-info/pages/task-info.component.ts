@@ -376,7 +376,7 @@ export class TaskInfoComponent implements OnInit {
     }
 
     beautifyTaskChecklistWowSoPretty( checklist: ChecklistItemSchema[] ) {
-        return checklist.flatMap( c => " " + c.name + ((c.isComplete) ? ' ✓' : "") )
+        return checklist.flatMap( c => " " + c.name + ((c.isComplete) ? '✓' : "") )
     }
 
     onChecklistChange( event: any, check: ChecklistItemSchema ): boolean {
