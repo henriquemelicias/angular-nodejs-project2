@@ -84,15 +84,18 @@ export class TeamInfoComponent implements OnInit {
     }
 
     private async setProjects() {
-        return this.projectService.getAvailableProjects().subscribe( projects => {
-            this.projects = projects;
-            if ( this.team.projectAcronym ) {
-                this.projects.push( {
-                                        acronym: this.REMOVE_PROJECT,
-                                        name: this.team.projectAcronym
-                                    } as ProjectSchema );
-            }
-            this.projects.reverse();
+        return new Promise( (resolve, reject) => {
+            this.projectService.getAvailableProjects().subscribe( projects => {
+                this.projects = projects;
+                if ( this.team.projectAcronym ) {
+                    this.projects.push( {
+                                            acronym: this.REMOVE_PROJECT,
+                                            name: this.team.projectAcronym
+                                        } as ProjectSchema );
+                }
+                this.projects.reverse();
+                resolve( true );
+            }, error => reject( error ) );
         } );
     }
 
@@ -132,8 +135,14 @@ export class TeamInfoComponent implements OnInit {
     }
 
     private async setUsers() {
-        return this.userService.getUsers().subscribe( users => {
-            this.users = users
+        return new Promise( (resolve, reject) => {
+            this.userService.getUsers().subscribe(
+                users => {
+                    this.users = users;
+                    resolve( true );
+                },
+                error => reject( error )
+            );
         } );
     }
 

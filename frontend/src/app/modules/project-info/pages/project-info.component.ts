@@ -66,8 +66,14 @@ export class ProjectInfoComponent implements OnInit {
     }
 
     private async setTasks() {
-        return this.taskService.getTasks().subscribe( tasks => {
-            this.tasks = tasks
+        return new Promise( (resolve, reject) => {
+            this.taskService.getTasks().subscribe(
+                tasks => {
+                    this.tasks = tasks;
+                    resolve( true );
+                },
+                error => reject( error )
+            );
         } );
     }
 

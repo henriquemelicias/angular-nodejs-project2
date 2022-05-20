@@ -180,8 +180,14 @@ export class TaskInfoComponent implements OnInit {
     };
 
     private async setUsers() {
-        return this.userService.getUsersSameProject( this.task._id, this.task.name ).subscribe( users => {
-            this.users = users
+        return new Promise( ( resolve, reject ) => {
+            this.userService.getUsersSameProject( this.task._id, this.task.name ).subscribe(
+                users => {
+                    this.users = users;
+                    resolve( true );
+                },
+                error => reject( error )
+            );
         } );
     }
 
@@ -298,8 +304,7 @@ export class TaskInfoComponent implements OnInit {
     }
 
     addChecklistItemSubmit() {
-        if ( this.task.checklist.filter( c => !c.isComplete ).length < 7 )
-        {
+        if ( this.task.checklist.filter( c => !c.isComplete ).length < 7 ) {
             const item = {} as ChecklistItemSchema;
             item.name = this.form['name'].value;
             item.isComplete = false;
@@ -307,8 +312,7 @@ export class TaskInfoComponent implements OnInit {
             this.task.checklist.push( item );
             this.taskService.updateTask( this.task ).subscribe();
         }
-        else
-        {
+        else {
             AlertService.alertToApp(
                 AlertType.Warning,
                 "Each checklist can only contain at most seven to-complete subtasks"
