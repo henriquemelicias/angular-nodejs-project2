@@ -30,7 +30,12 @@
                            id="teams-accordion-static-{{ i }}"
                            title="{{ (i + 1) + (currentPage - 1) * PAGE_SIZE }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{team.name }}">
                     <ng-template class="accordion__panel__template" ngbPanelContent>
-                        <div class="accordion__item ">
+                        <div class="accordion__item__links ">
+                            <a routerLink="/teams/{{ team.name }}/calendar" tabindex="-1">
+                                <button class="accordion__item__route-link default-button">
+                                    Go to team agenda
+                                </button>
+                            </a>
                             <a routerLink="/teams/{{ team.name }}" tabindex="-1">
                                 <button class="accordion__item__route-link default-button">
                                     Go to info
@@ -38,7 +43,7 @@
                             </a>
                         </div>
                         <div class="accordion__item">
-                            <span>members:</span> {{ team.members.length == 0 ? "N/A" : team.members }}</div>
+                            <span>members:</span> {{ team.members.length == 0 ? "N/A" : team.members.join( ',&nbsp;&nbsp;') }}</div>
                         <div class="accordion__item">
                             <span>project:</span> {{ team.projectAcronym || "N/A" }}</div>
                     </ng-template>

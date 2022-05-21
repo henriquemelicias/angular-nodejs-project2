@@ -32,19 +32,14 @@
                            title="{{ (i + 1) + (currentPage - 1) * PAGE_SIZE }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{user.username }}">
                     <ng-template class="accordion__panel__template" ngbPanelContent>
                         <div class="accordion__item ">
-                            <a *ngIf="user.username === sessionUser?.username" routerLink="/profile" tabindex="-1">
+                            <a routerLink="/users/{{ user.username }}/calendar" tabindex="-1">
                                 <button class="accordion__item__route-link default-button">
-                                    Go to user page
-                                </button>
-                            </a>
-                            <a *ngIf="user.username !== sessionUser?.username" routerLink="/users/{{ user }}" tabindex="-1">
-                                <button class="accordion__item__route-link default-button">
-                                    Go to user page
+                                    Go to user agenda
                                 </button>
                             </a>
                         </div>
                         <div class="accordion__item">
-                            <span>roles:</span> {{ user.roles }}</div>
+                            <span>roles:</span> {{ user.roles.join( ',&nbsp;&nbsp;') }}</div>
                     </ng-template>
                 </ngb-panel>
             </ngb-accordion>

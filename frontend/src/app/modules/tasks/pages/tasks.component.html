@@ -56,7 +56,7 @@
                         <div class="accordion__item">
                             <span>created by:</span> {{ task.madeByUser }}</div>
                         <div class="accordion__item">
-                            <span>users:</span> {{ task.users.length > 0 ? task.users : "N/A" }}</div>
+                            <span>users:</span> {{ task.users.length > 0 ? task.users.join( ',&nbsp;&nbsp;') : "N/A" }}</div>
                         <div class="accordion__item">
                             <span>start date/time:</span> {{ task.startDate ? (task.startDate | date:'long') : "N/A"}}
                         </div>

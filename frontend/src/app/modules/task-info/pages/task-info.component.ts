@@ -314,7 +314,8 @@ export class TaskInfoComponent implements OnInit {
         else {
             AlertService.alertToApp(
                 AlertType.Warning,
-                "Each checklist can only contain at most seven to-complete subtasks"
+                "Each checklist can only contain at most seven to-complete subtasks",
+                { isCloseable: true }
             );
         }
     }
@@ -395,7 +396,8 @@ export class TaskInfoComponent implements OnInit {
                     () => {
                         AlertService.alertToApp(
                             AlertType.Warning,
-                            "Each checklist can only contain at most seven to-complete subtasks"
+                            "Each checklist can only contain at most seven to-complete subtasks",
+                            { isCloseable: true }
                         );
                     } )
             } );

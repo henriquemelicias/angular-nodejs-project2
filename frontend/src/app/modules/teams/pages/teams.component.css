@@ -8,6 +8,15 @@
     min-height: 100vh;
 }
 
+.accordion__item__links {
+    display: flex;
+    justify-content: space-between;
+}
+
+.accordion__item__links a {
+    width: 49%;
+}
+
 .page__head--container {
     display: flex;
     justify-content: space-between;

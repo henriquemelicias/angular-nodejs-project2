@@ -20,16 +20,15 @@ exports.getUsers = function ( req, res, next ) {
         } )
 }
 
-exports.getUserById = function ( req, res, next ) {
-    User.findOne( { _id: req.params.id } )
+exports.getUserByUsername = function ( req, res, next ) {
+    User.findOne( { username: req.params.username } )
         .lean()
-        .select( [ "_id", "username", "roles", "tasks","unavailableStartTimes", "unavailableEndTimes" ] )
         .exec( function ( error, user ) {
             if ( error ) {
                 return next( httpError( HttpStatusCode.InternalServerError, error ) );
             }
-            res.status( HttpStatusCode.Created ).send( user );
-        } )
+            res.send( user );
+        } );
 }
 
 
@@ -54,8 +53,7 @@ exports.updateUser = ( req, res, next ) => {
                 { _id: req.body._id },
                 {
                     $set: {
-                        unavailableStartTime: req.body.unavailableStartTime, 
-                        unavailableEndTime: req.body.unavailableEndTime
+                        unavailableTimes: req.body.unavailableTimes,
                     }
                 } )
 

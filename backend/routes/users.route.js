@@ -15,8 +15,8 @@ usersRouter.get( '/num-entries', [ verifyToken ], usersController.getNumberOfUse
 
 usersRouter.get( '/by-task', [ verifyToken ], usersController.getUsersBySameTeam );
 
-usersRouter.get( '/:id', [ verifyToken ], usersController.getUserById );
+usersRouter.get( '/:username', [ verifyToken ], usersController.getUserByUsername );
 
-usersRouter.put( '/:id', usersController.updateUser )
+usersRouter.put( '/:username', usersController.updateUser )
 
 module.exports = usersRouter;

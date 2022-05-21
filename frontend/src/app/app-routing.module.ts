@@ -82,11 +82,18 @@ const routes: Routes = [
                 loadChildren: () =>
                     import('@modules/task-info/task-info.module').then(m => m.TaskInfoModule)
             },
-            { // todo remover e pensar numa cena pa substituir po home
-                path: 'blog/:_id',
+            {
+                path: 'users/:username/calendar',
+                canLoad: [ AuthGuard ],
                 loadChildren: () =>
-                    import('@modules/blog-entry/blog-entry.module').then( m => m.BlogEntryModule )
+                    import( '@modules/calendar-user/calendar-user.module').then( m => m.CalendarUserModule ),
             },
+            {
+                path: 'teams/:name/calendar',
+                canLoad: [ AuthGuard ],
+                loadChildren: () =>
+                    import( '@modules/calendar-team/calendar-team.module').then( m => m.CalendarTeamModule ),
+            }
         ]
     },
     { path: '**', redirectTo: '404', pathMatch: 'full' }

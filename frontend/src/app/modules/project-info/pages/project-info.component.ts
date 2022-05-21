@@ -117,6 +117,6 @@ export class ProjectInfoComponent implements OnInit {
     }
 
     beautifyTasksSoPrettyWow( tasks: { _id: string; name: string }[] ) {
-        return tasks.map( t => t.name );
+        return tasks.map( t => t.name ).join( ',&nbsp;&nbsp;');
     }
 }

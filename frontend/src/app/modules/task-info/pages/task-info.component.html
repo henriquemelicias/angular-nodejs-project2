@@ -42,7 +42,7 @@
                     users:
                 </div>
                 <div class="model-info__property__value">
-                    {{ task.users.length > 0 ? task.users : "N/A" }}
+                    {{ task.users.length > 0 ? task.users.join( ',&nbsp;&nbsp;') : "N/A" }}
                 </div>
             </div>
             <div class="model-info__property">

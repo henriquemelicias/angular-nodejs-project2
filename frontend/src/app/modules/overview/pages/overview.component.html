@@ -5,7 +5,7 @@
         <mat-radio-group class="overview__buttons--group" [(ngModel)]="selectedClusterRadio" (change)="updateGraph()">
             <span>Group by:</span>
             <div class="overview__buttons__radio">
-                <mat-radio-button class="overview__buttons__btn" *ngFor="let cluster of clusterRadio" [value]="cluster">{{cluster.name}}</mat-radio-button>
+                <mat-radio-button tabindex="0" class="overview__buttons__btn" *ngFor="let cluster of clusterRadio" [value]="cluster">{{cluster.name}}</mat-radio-button>
             </div>
         </mat-radio-group>
         <button class="default-button" (click)="openFullscreen()">Activate Fullscreen</button>
@@ -13,7 +13,7 @@
         <mat-radio-group class="overview__buttons--group" [(ngModel)]="selectedLayoutRadio" (change)="updateGraph()">
             <span>Layout:</span>
             <div class="overview__buttons__radio">
-                <mat-radio-button class="overview__buttons__btn" *ngFor="let layout of layoutRadio" [value]="layout">
+                <mat-radio-button tabindex="0" class="overview__buttons__btn" *ngFor="let layout of layoutRadio" [value]="layout">
                     {{ layout.name }}</mat-radio-button>
             </div>
         </mat-radio-group>

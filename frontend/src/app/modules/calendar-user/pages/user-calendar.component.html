@@ -1,0 +1,122 @@
+<div class="calendar--container">
+    <h1 *ngIf="thisCalendarUser !== sessionUser?.username; else isSessionUser" class="calendar__title">
+        User&nbsp;<span>{{thisCalendarUser}}</span>&nbsp;Agenda</h1>
+    <ng-template #isSessionUser>
+        <h1 class="calendar__title">My&nbsp;Agenda</h1>
+    </ng-template>
+    <div class="page__head--container">
+        <h2 class="calendar__view-date">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h2>
+        <div *ngIf="thisCalendarUser === sessionUser?.username">
+            <ng-template #content let-offcanvas>
+                <div class="offcanvas-header">
+                    <h3 class="offcanvas-title" id="offcanvas-basic-title">Agenda Dashboard</h3>
+                    <button type="button" class="btn-close btn-close-white" aria-label="Close"
+                            (click)="offcanvas.dismiss()"></button>
+                </div>
+                <div class="offcanvas-body" (focusout)="reload()">
+                    <app-user-agenda-dashboard></app-user-agenda-dashboard>
+                    <div class="app-alert-wrapper">
+                        <app-alert id="alert-project-form" [isOnlyOne]="true"></app-alert>
+                    </div>
+                </div>
+            </ng-template>
+            <button class="btn-lg default-button offcanvas-button" (click)="openOffCanvas(content)">Agenda Dashboard
+            </button>
+        </div>
+    </div>
+
+    <div class="row text-center">
+        <div class="calendar__date-radio">
+            <div class="calendar__button-group">
+                <div
+                        class="default-button"
+                        tabindex="0"
+                        mwlCalendarPreviousView
+                        [view]="view"
+                        [(viewDate)]="viewDate"
+                        (viewDateChange)="closeOpenMonthViewDay()"
+                >
+                    Previous
+                </div>
+                <div
+                        class="default-button"
+                        mwlCalendarToday
+                        tabindex="0"
+                        [(viewDate)]="viewDate"
+                >
+                    Today
+                </div>
+                <div
+                        class="default-button"
+                        mwlCalendarNextView
+                        tabindex="0"
+                        [view]="view"
+                        [(viewDate)]="viewDate"
+                        (viewDateChange)="closeOpenMonthViewDay()"
+                >
+                    Next
+                </div>
+            </div>
+            <mat-radio-group class="overview__buttons--group" [(ngModel)]="view">
+                <div class="overview__buttons__radio">
+                    <mat-radio-button class="overview__buttons__btn"
+                                      tabindex="0"
+                                      (click)="setView(CalendarView.Month)"
+                                      [value]="CalendarView.Month"
+                                      [class.active]="view === CalendarView.Month"
+                    >
+                        Month
+                    </mat-radio-button>
+                    <mat-radio-button class="overview__buttons__btn"
+                                      tabindex="0"
+                                      (click)="setView(CalendarView.Week)"
+                                      [value]="CalendarView.Week"
+                                      [class.active]="view === CalendarView.Week"
+                    >
+                        Week
+                    </mat-radio-button>
+                    <mat-radio-button class="overview__buttons__btn"
+                                      tabindex="0"
+                                      (click)="setView(CalendarView.Day)"
+                                      [value]="CalendarView.Day"
+                                      [class.active]="view === CalendarView.Day"
+                    >
+                        Day
+                    </mat-radio-button>
+                </div>
+            </mat-radio-group>
+        </div>
+    </div>
+    <br/>
+    <div [ngSwitch]="view">
+        <mwl-calendar-month-view
+                *ngSwitchCase="CalendarView.Month"
+                [viewDate]="viewDate"
+                [events]="events"
+                [refresh]="refresh"
+                [activeDayIsOpen]="activeDayIsOpen"
+                (dayClicked)="dayClicked($event.day)"
+                (eventClicked)="handleEvent('Clicked', $event.event)"
+                (eventTimesChanged)="eventTimesChanged($event)"
+        >
+        </mwl-calendar-month-view>
+        <mwl-calendar-week-view
+                *ngSwitchCase="CalendarView.Week"
+                [viewDate]="viewDate"
+                [events]="events"
+                [refresh]="refresh"
+                (eventClicked)="handleEvent('Clicked', $event.event)"
+                (eventTimesChanged)="eventTimesChanged($event)"
+        >
+        </mwl-calendar-week-view>
+        <mwl-calendar-day-view
+                *ngSwitchCase="CalendarView.Day"
+                [viewDate]="viewDate"
+                [events]="events"
+                [refresh]="refresh"
+                (eventClicked)="handleEvent('Clicked', $event.event)"
+                (eventTimesChanged)="eventTimesChanged($event)"
+        >
+        </mwl-calendar-day-view>
+    </div>
+</div>

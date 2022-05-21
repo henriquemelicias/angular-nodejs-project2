@@ -10,62 +10,7 @@
         <a routerLink="/agenda">
             <button class="default-button">Agenda</button>
         </a>
-
-        <button class="default-button"
-                (click)="openSetUnavailableDateModal( setUnavailableDateTime ); changeDateForm.reset()"> Set Unavailable Date-Times
-        </button>
     </div>
 
     <app-tasks></app-tasks>
 </div>
-
-<ng-template #setUnavailableDateTime let-modal>
-    <div class="modal-header">
-        <h2 class="modal-title">Set unavailable Times</h2>
-    </div>
-    <div class="modal-body">
-        <section>
-            <form [formGroup]="changeDateForm">
-                <label for="change-form-start-date">Start Date/Time</label>
-                <div class="change-form__group input-group">
-                    <input class="change-form__group__start-date-control form-control" id="change-form-start-date"
-                           formControlName="unavailableStartTime"
-                           (keydown.enter)="form2['unavailableStartTime'].enabled"
-                           type="datetime-local"
-                           min="{{todayDate | date:'yyyy-MM-dd'}}"
-
-                           [ngClass]="{'is-invalid': ( form2['unavailableStartTime'].errors || changeDateForm.hasError('dates3')) && (form2['unavailableStartTime'].touched || form2['unavailableStartTime'].dirty), 'is-valid': form2['unavailableStartTime'].valid}"
-                    ></div>
-
-                <div class="alert alert-danger"
-                     [hidden]="( form2['unavailableStartTime'].valid && !this.changeDateForm.hasError('dates3') ) || form2['unavailableStartTime'].pristine">
-                    <div *ngIf="form2['unavailableStartTime'].errors?.['required']">Date is required</div>
-                    <div *ngIf="changeDateForm.hasError('dates3')">Date/time must be after current moment</div>
-                </div>
-
-                <label for="change-form-end-date">End Time</label>
-                <div class="change-form__group input-group">
-                    <input class="change-form__group__start-date-control form-control" id="change-form-end-date"
-                           formControlName="unavailableEndTime"
-                           type="datetime-local"
-                           [ngClass]="{'is-invalid': (changeDateForm.hasError('dates') || changeDateForm.hasError('dates2') || changeDateForm.hasError('time') || form2['unavailableEndTime'].errors) && (form2['unavailableEndTime'].touched || form2['unavailableEndTime'].dirty), 'is-valid': form2['unavailableEndTime'].valid}"
-                    ></div>
-
-                <div class="alert alert-danger"
-                     [hidden]="(!changeDateForm.hasError('dates') && !changeDateForm.hasError( 'dates2') && !changeDateForm.hasError('time')) || form2['unavailableEndTime'].pristine">
-                    <div *ngIf="changeDateForm.hasError('dates')">Dates must be the same</div>
-                    <div *ngIf="changeDateForm.hasError('dates2')">Date/time must be after current moment</div>
-                    <div *ngIf="changeDateForm.hasError('time')">End time should be after start time</div>
-                </div>
-            </form>
-        </section>
-    </div>
-    <div class="modal-footer">
-        <button class="default-button" type="submit" [disabled]="!changeDateForm.valid"
-                (keydown.enter)="SetUnavailableTimeSubmit()" (click)="SetUnavailableTimeSubmit();modal.close('Close click')">Set unavailable time
-        </button>
-        <button type="button" class="default-button modal-footer__close-btn" (click)="modal.close('Close click')">
-            Close
-        </button>
-    </div>
-</ng-template>

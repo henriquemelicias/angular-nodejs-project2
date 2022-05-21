@@ -11,6 +11,8 @@ import { SharedModule } from '@shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 import { HeaderComponent } from "@app/layout/header/header.component";
 import { ContentLayoutComponent } from "@app/layout/content-layout/content-layout.component";
@@ -18,37 +20,42 @@ import { FooterComponent } from "@app/layout/footer/footer.component";
 import { FooterScrollUpButtonComponent } from '@layout/footer-scroll-up-button/footer-scroll-up-button.component';
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
+@NgModule(
+    {
+        declarations: [
+            AppComponent,
 
-    // Layout
-    HeaderComponent,
-    ContentLayoutComponent,
-    FooterComponent,
-    FooterScrollUpButtonComponent,
-  ],
-  imports: [
-    // Angular
-    BrowserModule,
-    BrowserAnimationsModule,
+            // Layout
+            HeaderComponent,
+            ContentLayoutComponent,
+            FooterComponent,
+            FooterScrollUpButtonComponent,
+        ],
+        imports: [
+            // Angular
+            BrowserModule,
+            BrowserAnimationsModule,
 
-    // Core and shared
-    CoreModule,
-    SharedModule,
+            // Core and shared
+            CoreModule,
+            SharedModule,
 
-    // 3rd party
-    NgbModule,
-    MdbModalModule,
-    FontAwesomeModule,
+            // 3rd party
+            NgbModule,
+            MdbModalModule,
+            FontAwesomeModule,
+            CalendarModule.forRoot(
+                {
+                    provide: DateAdapter,
+                    useFactory: adapterFactory,
+                } ),
 
-    // Routing and forms
-    AppRoutingModule,
-    FormsModule,
-  ],
-  providers: [
-  ],
-  bootstrap: [AppComponent]
-})
+            // Routing and forms
+            AppRoutingModule,
+            FormsModule,
+        ],
+        providers: [],
+        bootstrap: [ AppComponent ]
+    } )
 export class AppModule {
 }

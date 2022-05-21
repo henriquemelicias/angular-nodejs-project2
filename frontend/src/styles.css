@@ -2,6 +2,7 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 @import "styles/bootstrap-overwrites.css";
 @import "~font-awesome/css/font-awesome.css";
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
 
 /* Fonts */
 @import "styles/fonts.css";
@@ -17,4 +18,7 @@
 
 /* Buttons */
 @import "styles/buttons.css";
+
+/* Angular calendar theme */
+@import "styles/calendar-theme.css";
 

@@ -3,6 +3,5 @@ export interface UserSchema {
   username: string;
   roles: string[];
   tasks: string[];
-  unavailableStartTimes: Date[];
-  unavailableEndTimes: Date[];
+  unavailableTimes: {startDate: Date, endDate: Date}[];
 }
