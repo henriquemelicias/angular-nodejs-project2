@@ -43,18 +43,19 @@
                     <div *ngIf="changeDateForm.hasError('dates3')">Date/time must be after current moment</div>
                 </div>
 
-                <label for="change-form-end-date">End Date/Time</label>
+                <label for="change-form-end-date">End Time</label>
                 <div class="change-form__group input-group">
                     <input class="change-form__group__start-date-control form-control" id="change-form-end-date"
                            formControlName="unavailableEndTime"
                            type="datetime-local"
-                           [ngClass]="{'is-invalid': (changeDateForm.hasError('dates') || changeDateForm.hasError('dates2') || form2['unavailableEndTime'].errors) && (form2['unavailableEndTime'].touched || form2['unavailableEndTime'].dirty), 'is-valid': form2['unavailableEndTime'].valid}"
+                           [ngClass]="{'is-invalid': (changeDateForm.hasError('dates') || changeDateForm.hasError('dates2') || changeDateForm.hasError('time') || form2['unavailableEndTime'].errors) && (form2['unavailableEndTime'].touched || form2['unavailableEndTime'].dirty), 'is-valid': form2['unavailableEndTime'].valid}"
                     ></div>
 
                 <div class="alert alert-danger"
-                     [hidden]="(!changeDateForm.hasError('dates') && !changeDateForm.hasError( 'dates2') ) || form2['unavailableEndTime'].pristine">
-                    <div *ngIf="changeDateForm.hasError('dates')">End date/time must be after start date/time</div>
+                     [hidden]="(!changeDateForm.hasError('dates') && !changeDateForm.hasError( 'dates2') && !changeDateForm.hasError('time')) || form2['unavailableEndTime'].pristine">
+                    <div *ngIf="changeDateForm.hasError('dates')">Dates must be the same</div>
                     <div *ngIf="changeDateForm.hasError('dates2')">Date/time must be after current moment</div>
+                    <div *ngIf="changeDateForm.hasError('time')">End time should be after start time</div>
                 </div>
             </form>
         </section>

@@ -42,7 +42,10 @@ export class ProfileComponent implements OnInit {
                     '', []
                 ]
             },
-            { validators: [ this.dateDifferent( 'unavailableStartTime', 'unavailableEndTime' ), this.dateAfterNow( 'unavailableStartTime', 'unavailableEndTime' ) ] }
+            { validators: [ 
+                this.dateDifferent( 'unavailableStartTime', 'unavailableEndTime' ),
+                this.dateAfterNow( 'unavailableStartTime', 'unavailableEndTime' ),  
+            ] }
         );
 
         this.todayDate = new Date();
@@ -53,6 +56,7 @@ export class ProfileComponent implements OnInit {
 
         userPromise.then( user => {
             if ( user && this.token ) {
+                this.user = user;
                 this.currentUser = { username: user.username, token: this.token, roles: user.roles } as LoginOutput;
             }
         } );
@@ -79,10 +83,15 @@ export class ProfileComponent implements OnInit {
         return ( group: FormGroup ): { [key: string]: any } => {
             let f = group.controls[from];
             let t = group.controls[to];
-            if ( !f.value || !t.value ) return {};
-            if ( f.value != t.value ) {
+            if ( new Date (f.value).getDate() != new Date(t.value).getDate() ) {
                 return {
                     dates: "Dates should be the same"
+                };
+            }
+
+            if ( new Date (f.value).getTime() >= new Date(t.value).getTime() ) {
+                return {
+                    time: "End hour should be after start hour"
                 };
             }
             return {};
@@ -118,7 +127,7 @@ export class ProfileComponent implements OnInit {
     SetUnavailableTimeSubmit() {
         const startDateFormValue = this.form2['unavailableStartTime'].value;
 
-        let unavailableStartTime;
+        let unavailableStartTime = new Date();
         if ( startDateFormValue ) {
             const startDateTokens = startDateFormValue.split( /[-T:]/ );
             unavailableStartTime = new Date(
@@ -128,11 +137,10 @@ export class ProfileComponent implements OnInit {
                 parseInt( startDateTokens[3] ),
                 parseInt( startDateTokens[4] )
             );
-
         }
 
         const endDateFormValue = this.form2['unavailableEndTime'].value;
-        let unavailableEndTime;
+        let unavailableEndTime = new Date();
         if ( endDateFormValue ) {
             const endDateTokens = endDateFormValue.split( /[-T:]/ );
 
@@ -145,16 +153,11 @@ export class ProfileComponent implements OnInit {
             );
         }
 
-        // let user = {
-        //     _id: this.user._id,
-        //     username: this.user.username,
-        //     roles: this.user.roles,
-        //     tasks: this.user.tasks,
-        //     unavailableStartTime: this.user.unavailableStartTime?.push(unavailableStartTime),
-        //     unavailableEndTime: this.user.unavailableEndTime?.push(unavailableEndTime)
-        // };
-        //
-        // this.modifyUser( user );
+        //this.user.unavailableStartTimes = [];
+        this.user.unavailableStartTimes.push(unavailableStartTime),
+        this.user.unavailableEndTimes.push(unavailableEndTime)
+        
+         this.modifyUser( this.user );
     }
 
     public modifyUser( user: UserSchema ): void {

@@ -18,8 +18,8 @@ exports.register = ( req, res, next ) => {
         password: bcrypt.hashSync( req.body.password, 8 ),
         roles: [ AuthRoles.USER ],
         tasks: [],
-        unavailableStartTime: [],
-        unavailableEndTime: []
+        unavailableStartTimes: [],
+        unavailableEndTimes: []
     } );
 
     logger.info( "User to try register: " + JSON.stringify( user ), caller );
@@ -56,7 +56,7 @@ exports.login = ( req, res, next ) => {
 
     User.findOne( { username: req.body.username } )
         .lean()
-        .select( [ 'username', 'password', 'roles' ] )
+        .select( [ 'username', 'password', 'roles', "unavailableStartTimes", "unavailableEndTimes" ] )
         .exec( ( error, user ) => {
 
             if ( error ) {

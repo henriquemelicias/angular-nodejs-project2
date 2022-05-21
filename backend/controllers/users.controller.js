@@ -9,7 +9,7 @@ const { URL } = require( "url" );
 exports.getUsers = function ( req, res, next ) {
     User.find( {} )
         .lean()
-        .select( [ "username", "roles", "tasks" ] )
+        .select( [ "username", "roles", "tasks", "unavailableStartTimes", "unavailableEndTimes" ] )
         .exec( function ( error, users ) {
 
             if ( error ) {
@@ -23,7 +23,7 @@ exports.getUsers = function ( req, res, next ) {
 exports.getUserById = function ( req, res, next ) {
     User.findOne( { _id: req.params.id } )
         .lean()
-        .select( [ "_id", "username", "roles", "tasks" ] )
+        .select( [ "_id", "username", "roles", "tasks","unavailableStartTimes", "unavailableEndTimes" ] )
         .exec( function ( error, user ) {
             if ( error ) {
                 return next( httpError( HttpStatusCode.InternalServerError, error ) );
