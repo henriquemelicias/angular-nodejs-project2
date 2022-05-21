@@ -19,7 +19,8 @@ exports.register = ( req, res, next ) => {
         roles: [ AuthRoles.USER ],
         tasks: [],
         unavailableStartTimes: [],
-        unavailableEndTimes: []
+        unavailableEndTimes: [],
+        meetings: []
     } );
 
     logger.info( "User to try register: " + JSON.stringify( user ), caller );

@@ -3,6 +3,7 @@ const mongoose = require( 'mongoose' );
 const Schema = mongoose.Schema;
 
 const periodSchema = new Schema( {startDate: Date, endDate: Date}, {noId: true} )
+const meetingSchema = new Schema( {startDate: Date, endDate: Date, memberNames: [String]}, {noId: true} )
 
 const UserSchema = new Schema(
     {
@@ -11,6 +12,7 @@ const UserSchema = new Schema(
         roles: [ { type: String, required: true } ],
         tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }],
         unavailableTimes: [periodSchema],
+        meetings: [meetingSchema]
     } );
 
 UserSchema.index( { username: 1 } );

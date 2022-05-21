@@ -54,6 +54,7 @@ exports.updateUser = ( req, res, next ) => {
                 {
                     $set: {
                         unavailableTimes: req.body.unavailableTimes,
+                        meetings: req.body.meetings
                     }
                 } )
 
