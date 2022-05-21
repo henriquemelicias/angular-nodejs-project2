@@ -15,7 +15,6 @@
 }
 
 .page__head {
-    width: 35%;
     display: table;
     table-layout: fixed;
     user-select: none;
@@ -27,6 +26,7 @@
 }
 
 .page__subtitle {
+    padding-left: 0.5rem;
     direction: rtl;
     color: var(--secondary-color);
 }

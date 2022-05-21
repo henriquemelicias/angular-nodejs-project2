@@ -142,6 +142,10 @@
     flex-direction: column;
   }
 
+  .nav__items {
+    font-size: 13px;
+  }
+
   .nav--container img {
     margin-bottom: 1rem;
   }

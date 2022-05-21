@@ -6,7 +6,6 @@
 }
 
 .register__header {
-  width: 40%;
   display: table;
   table-layout: fixed;
   user-select: none;
@@ -24,7 +23,6 @@
 
 .register-form--container {
   display: block;
-  width: 400px;
   margin: 2rem 1rem 6rem;
 }
 

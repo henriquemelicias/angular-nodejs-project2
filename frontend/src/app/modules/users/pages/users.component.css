@@ -8,6 +8,10 @@
     min-height: 100vh;
 }
 
+.offcanvas-title {
+    margin: auto;
+}
+
 .page__head--container {
     display: flex;
     justify-content: space-between;
@@ -26,7 +30,7 @@
 }
 
 .page__subtitle {
-    padding-right: 0.4rem;
+    padding-left: 4rem;
     direction: rtl;
     z-index: 10;
     color: var(--secondary-color);
@@ -80,10 +84,6 @@ ngb-pagination ::ng-deep .page-item.disabled .page-link {
     font-weight: bold;
 }
 
-.offcanvas-title {
-    margin: auto;
-}
-
 .accordion__item__route-link {
     width: 100%;
     margin-bottom: 1rem;
@@ -122,6 +122,8 @@ ngb-pagination ::ng-deep .page-item.disabled .page-link {
     .page__title {
         margin-block-end: -1.5rem;
     }
+
+
 }
 
 @media (max-width: 500px ) {

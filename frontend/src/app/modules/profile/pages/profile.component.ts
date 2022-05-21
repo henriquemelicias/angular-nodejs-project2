@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { AuthStorageService } from "@core/services/auth-storage/auth-storage.service";
-import { AuthService, LoginOutput } from "@core/services/auth/auth.service";
+import { LoginOutput } from "@core/services/auth/auth.service";
 import { UserService } from "@data/user/services/user.service";
 import { firstValueFrom } from "rxjs";
 import { Title } from "@angular/platform-browser";
@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit {
         this.todayDate = new Date();
         this.todayDate.setMinutes( this.todayDate.getMinutes() - this.todayDate.getTimezoneOffset() );
 
-        this.tokenNumberOfChars = window.innerWidth / 25;
+        this.tokenNumberOfChars = window.innerWidth / 23;
         const userPromise = firstValueFrom( UserService.getSessionUser$() );
 
         userPromise.then( user => {
@@ -64,7 +64,7 @@ export class ProfileComponent implements OnInit {
 
     @HostListener( 'window:resize', [ '$event' ] )
     onResize( _: Event ) {
-        this.tokenNumberOfChars = window.innerWidth / 25;
+        this.tokenNumberOfChars = window.innerWidth / 23;
     }
 
     public openSetUnavailableDateModal( longContent: any ) {
@@ -145,16 +145,16 @@ export class ProfileComponent implements OnInit {
             );
         }
 
-        let user = {
-            _id: this.user._id,
-            username: this.user.username,
-            roles: this.user.roles,
-            tasks: this.user.tasks,
-            unavailableStartTime: this.user.unavailableStartTime?.push(unavailableStartTime?),
-            unavailableEndTime: this.user.unavailableEndTime?.push(unavailableEndTime?)
-        };
-
-        this.modifyUser( user );
+        // let user = {
+        //     _id: this.user._id,
+        //     username: this.user.username,
+        //     roles: this.user.roles,
+        //     tasks: this.user.tasks,
+        //     unavailableStartTime: this.user.unavailableStartTime?.push(unavailableStartTime),
+        //     unavailableEndTime: this.user.unavailableEndTime?.push(unavailableEndTime)
+        // };
+        //
+        // this.modifyUser( user );
     }
 
     public modifyUser( user: UserSchema ): void {
@@ -164,8 +164,6 @@ export class ProfileComponent implements OnInit {
             {
                 next: _ => {
                     this.changeDateForm.reset();
-                    this.user.unavailableStartTime = user.unavailableStartTime;
-                    this.user.unavailableEndTime = user.unavailableEndTime;
                     AlertService.success(
                         `User ${ user.username } created successfully`,
                         { id: "alert-task-form", isAutoClosed: true },

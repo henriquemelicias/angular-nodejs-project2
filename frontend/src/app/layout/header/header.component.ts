@@ -73,16 +73,14 @@ export class HeaderComponent implements OnInit {
 
     updateNavItems() {
         const navItems = [
-            { link: '/home', routerLink: 'home', title: 'Home', isVisible: true },
-            { link: '/overview', routerLink: 'overview', title: 'Overview', isVisible: this.isLoggedIn },
             { link: '/about', routerLink: 'about', title: 'About', isVisible: true },
+            { link: '/overview', routerLink: 'overview', title: 'Overview', isVisible: this.isLoggedIn },
+            { link: '/users', routerLink: 'users', title: 'Users', isVisible: this.isLoggedIn },
             { link: '/teams', routerLink: 'teams', title: 'Teams', isVisible: this.isLoggedIn },
             { link: '/projects', routerLink: 'projects', title: 'Projects', isVisible: this.isLoggedIn },
             { link: '/tasks', routerLink: 'tasks', title: 'Tasks', isVisible: this.isLoggedIn },
-            { link: '/register', routerLink: 'register', title: 'register', isVisible: this.isAdmin },
             { link: '/login', routerLink: 'login', title: 'Login', isVisible: !this.isLoggedIn },
             { link: '/profile', routerLink: 'profile', title: 'Profile', isVisible: this.isLoggedIn },
-            { link: '/dashboard', routerLink: 'dashboard', title: 'Dashboard', isVisible: this.isLoggedIn },
         ];
 
         this.navItems = navItems.filter( n => n.isVisible );

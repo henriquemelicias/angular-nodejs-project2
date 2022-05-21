@@ -8,7 +8,7 @@ const { checkOverlapTimes } = require( "#middlewares/tasks/tasks.middleware" );
 
 tasksRouter.post( '/', [ verifyToken,
                          oneOf( tasksController.getAddTaskRules() ),
-                         verifyRules, checkOverlapTimes ], tasksController.addTask );
+                         verifyRules ], tasksController.addTask );
 
 tasksRouter.get( '/by-pages',
     [ verifyToken, oneOf( tasksController.getNTasksByPageRules() ), verifyRules ], tasksController.getNTasksByPage );

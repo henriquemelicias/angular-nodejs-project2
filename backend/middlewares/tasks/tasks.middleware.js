@@ -18,6 +18,7 @@ checkOverlapTimes = ( req, res, next ) => {
     // Acronym.
     Task.find( {
         priority: TaskPriority.URGENTE.valueOf(), percentage: { $lt: 100 },
+        users: { $in: req.body.users },
         $or: [ { startDate: { $ne: null } }, { endDate: { $ne: null } } ]
     } )
         .lean()

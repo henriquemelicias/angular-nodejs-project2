@@ -16,7 +16,7 @@ import { GenericMessageEnum } from "@core/enums/generic-message.enum";
 import { Title } from "@angular/platform-browser";
 
 @Component( {
-                selector: 'app-pages',
+                selector: 'app-register',
                 templateUrl: './register.component.html',
                 styleUrls: [ './register.component.css' ]
             } )

@@ -1,46 +1,50 @@
 <div class="page--container">
     <div class="page__content">
         <div class="page__head--container">
-        <span class="page__head"><h1 class="page__title">Teams</h1><h2
-                class="page__subtitle">Decide&nbsp;your&nbsp;scrum&nbsp;master</h2></span>
-            <div *ngIf="isSessionUserAdmin">
+            <span class="page__head">
+                <ng-container>
+                    <h1 class="page__title">Users</h1>
+                    <h2 class="page__subtitle">Everyone is here</h2>
+                </ng-container>
+            </span>
+            <div *ngIf="isLoggedIn">
                 <ng-template #content let-offcanvas>
                     <div class="offcanvas-header">
-                        <h3 class="offcanvas-title" id="offcanvas-basic-title">Team Dashboard</h3>
+                        <h3 class="offcanvas-title" id="offcanvas-basic-title">Users Dashboard</h3>
                         <button type="button" class="btn-close btn-close-white" aria-label="Close"
                                 (click)="offcanvas.dismiss()"></button>
                     </div>
                     <div class="offcanvas-body" (focusout)="reload()">
-                        <app-add-team-form></app-add-team-form>
-                        <div class="app-alert-wrapper">
-                            <app-alert id="alert-team-form" [isOnlyOne]="true"></app-alert>
-                        </div>
+                        <app-register></app-register>
                     </div>
                 </ng-template>
 
-                <button class="btn-lg default-button" (click)="openOffCanvas(content)">Add new team</button>
+                <button *ngIf="isSessionUserAdmin" class="btn-lg default-button" (click)="openOffCanvas(content)">Create user</button>
             </div>
         </div>
 
-        <div *ngIf="(teamsObserver$ | async) as teamPages">
-            <ngb-accordion *ngIf="teamsPages && teamsPages.length >= currentPage"
+        <div *ngIf="(usersObserver$ | async) as userPages">
+            <ngb-accordion *ngIf="usersPages && usersPages.length >= currentPage"
                            class="accordion--wrapper"
-                           [closeOthers]="true" activeIds="teams-accordion-static-0">
-                <ngb-panel *ngFor="let team of teamPages[currentPage - 1]; let i = index" class="accordion__panel"
-                           id="teams-accordion-static-{{ i }}"
-                           title="{{ (i + 1) + (currentPage - 1) * PAGE_SIZE }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{team.name }}">
+                           [closeOthers]="true" activeIds="tasks-accordion-static-0">
+                <ngb-panel *ngFor="let user of userPages[currentPage - 1]; let i = index" class="accordion__panel"
+                           id="tasks-accordion-static-{{ i }}"
+                           title="{{ (i + 1) + (currentPage - 1) * PAGE_SIZE }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{user.username }}">
                     <ng-template class="accordion__panel__template" ngbPanelContent>
                         <div class="accordion__item ">
-                            <a routerLink="/teams/{{ team.name }}" tabindex="-1">
+                            <a *ngIf="user.username === sessionUser?.username" routerLink="/profile" tabindex="-1">
                                 <button class="accordion__item__route-link default-button">
-                                    Go to info
+                                    Go to user page
+                                </button>
+                            </a>
+                            <a *ngIf="user.username !== sessionUser?.username" routerLink="/users/{{ user }}" tabindex="-1">
+                                <button class="accordion__item__route-link default-button">
+                                    Go to user page
                                 </button>
                             </a>
                         </div>
                         <div class="accordion__item">
-                            <span>members:</span> {{ team.members.length == 0 ? "N/A" : team.members }}</div>
-                        <div class="accordion__item">
-                            <span>project:</span> {{ team.projectAcronym || "N/A" }}</div>
+                            <span>roles:</span> {{ user.roles }}</div>
                     </ng-template>
                 </ngb-panel>
             </ngb-accordion>

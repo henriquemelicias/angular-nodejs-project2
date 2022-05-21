@@ -6,6 +6,7 @@ import { ProfileRoutingModule } from "./profile-routing.module";
 
 import { ProfileComponent } from './pages/profile.component';
 import { TasksModule } from "@modules/tasks/tasks.module";
+import { ReactiveFormsModule } from "@angular/forms";
 
 
 @NgModule( {
@@ -16,7 +17,8 @@ import { TasksModule } from "@modules/tasks/tasks.module";
                    CommonModule,
                    SharedModule,
                    ProfileRoutingModule,
-                   TasksModule
+                   TasksModule,
+                   ReactiveFormsModule
                ]
            } )
 export class ProfileModule {}

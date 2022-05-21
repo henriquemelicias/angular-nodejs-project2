@@ -8,7 +8,7 @@ import { AuthAdminGuard } from "@core/guards/auth-admin.guard";
 
 const routes: Routes = [
     // Initial page.
-    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: '', redirectTo: '/about', pathMatch: 'full' },
     // Main modules.
     {
         path: '',
@@ -17,11 +17,6 @@ const routes: Routes = [
             // Fallback when no prior routes is matched.
             { path: '404', pathMatch: 'full', component: NotFoundComponent },
             // Lazy loading:
-            {
-                path: 'home',
-                loadChildren: () =>
-                    import('@modules/home/home.module').then( m => m.HomeModule )
-            },
             {
                 path: 'about',
                 loadChildren: () =>
@@ -40,10 +35,10 @@ const routes: Routes = [
                     import('@modules/login/login.module').then( m => m.LoginModule )
             },
             {
-                path: 'register',
-                canLoad: [ AuthAdminGuard ],
+                path: 'users',
+                canLoad: [ AuthGuard ],
                 loadChildren: () =>
-                    import('@modules/register/register.module').then( m => m.RegisterModule )
+                    import('@modules/users/users.module').then( m => m.UsersModule )
             },
             {
                 path: 'profile',

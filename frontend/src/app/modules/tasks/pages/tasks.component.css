@@ -19,7 +19,6 @@
 }
 
 .page__head {
-    width: 35%;
     display: table;
     table-layout: fixed;
     user-select: none;
@@ -31,6 +30,7 @@
 }
 
 .page__subtitle {
+    padding-left: 6rem;
     direction: rtl;
     z-index: 10;
     color: var(--secondary-color);
@@ -123,6 +123,10 @@ ngb-pagination ::ng-deep .page-item.disabled .page-link {
         margin-block-end: -1.5rem;
     }
 
+    .page__subtitle {
+        padding-left: 0;
+    }
+
 
 }
 
@@ -133,5 +137,13 @@ ngb-pagination ::ng-deep .page-item.disabled .page-link {
     }
     .page__subtitle {
         display: none;
+    }
+
+    .page--container {
+        width: 90vw;
+    }
+
+    .page__head {
+        width: 100%;
     }
 }

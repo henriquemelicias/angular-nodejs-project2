@@ -211,8 +211,12 @@ export class TaskInfoComponent implements OnInit {
     }
 
     setUsersSubmit() {
-        this.task.users = this.setUsersForm.controls['selectedUsers'].value;
-        this.taskService.updateTask( this.task ).subscribe();
+        let task = {
+            ...this.task,
+            users: this.setUsersForm.controls['selectedUsers'].value
+        };
+
+        this.modifyTask( task );
     }
 
     changeDateSubmit() {
@@ -245,15 +249,9 @@ export class TaskInfoComponent implements OnInit {
         }
 
         let task = {
-            _id: this.task._id,
-            name: this.task.name,
-            priority: this.task.priority,
-            percentage: this.task.percentage,
-            madeByUser: this.task.madeByUser,
+            ...this.task,
             startDate: startDate,
             endDate: endDate,
-            users: this.task.users,
-            checklist: this.task.checklist
         };
 
         this.modifyTask( task );
@@ -268,6 +266,7 @@ export class TaskInfoComponent implements OnInit {
                     this.changeDateForm.reset();
                     this.task.startDate = task.startDate;
                     this.task.endDate = task.endDate;
+                    this.task.users = task.users;
                     AlertService.success(
                         `Task ${ task.name } created successfully`,
                         { id: "alert-task-form", isAutoClosed: true },
@@ -285,7 +284,7 @@ export class TaskInfoComponent implements OnInit {
                                 AlertService.alertToApp(
                                     AlertType.Warning,
                                     error.message,
-                                    {},
+                                    { isCloseable: true },
                                     logCallers
                                 );
                                 errorHandler.hasBeenHandled = true;
@@ -295,7 +294,7 @@ export class TaskInfoComponent implements OnInit {
                             AlertService.alertToApp(
                                 AlertType.Error,
                                 GenericMessageEnum.UNEXPECTED_UNHANDLED_ERROR + error.message,
-                                null,
+                                { isCloseable: true },
                                 logCallers
                             );
                         } ).toObservable();
