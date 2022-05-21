@@ -61,6 +61,14 @@ export class UserService {
         return this.http.get<UserSchema>( UserService._API_URI + "/" + id, HttpSettings.HEADER_CONTENT_TYPE_JSON );
     }
 
+    public updateUser( user: UserSchema ): Observable<UserSchema> {
+        return this.http.put<UserSchema>(
+            UserService._API_URI + "/" + user._id,
+            user,
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    };
+
     public static getUsersByPage$(): Observable<UserSchema[][] | undefined> {
         return this._usersByPage$;
     }

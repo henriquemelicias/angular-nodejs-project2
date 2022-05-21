@@ -17,4 +17,6 @@ usersRouter.get( '/by-task', [ verifyToken ], usersController.getUsersBySameTeam
 
 usersRouter.get( '/:id', [ verifyToken ], usersController.getUserById );
 
+usersRouter.put( '/:id', usersController.updateUser )
+
 module.exports = usersRouter;

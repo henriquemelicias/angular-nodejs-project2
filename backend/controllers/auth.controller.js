@@ -17,7 +17,9 @@ exports.register = ( req, res, next ) => {
         username: req.body.username,
         password: bcrypt.hashSync( req.body.password, 8 ),
         roles: [ AuthRoles.USER ],
-        tasks: []
+        tasks: [],
+        unavailableStartTime: [],
+        unavailableEndTime: []
     } );
 
     logger.info( "User to try register: " + JSON.stringify( user ), caller );

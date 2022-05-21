@@ -3,4 +3,6 @@ export interface UserSchema {
   username: string;
   roles: string[];
   tasks: string[]; // nao implementado
+  unavailableStartTime?: Date[];
+  unavailableEndTime?: Date[];
 }

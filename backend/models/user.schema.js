@@ -7,7 +7,9 @@ const UserSchema = new Schema(
         username: { type: String, required: true, minlength: 3, unique: true },
         password: { type: String, required: true, minLength: 8 }, // is a token
         roles: [ { type: String, required: true } ],
-        tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }]
+        tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }],
+        unavailableStartTime: [{ type: Date, required: false }],
+        unavailableEndTime: [{ type: Date, required: false }],
     } );
 
 UserSchema.index( { username: 1 } );

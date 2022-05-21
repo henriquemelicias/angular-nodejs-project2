@@ -32,6 +32,44 @@ exports.getUserById = function ( req, res, next ) {
         } )
 }
 
+
+exports.updateUser = ( req, res, next ) => {
+
+    User.findByIdAndUpdate(
+        { _id: req.body._id },
+        {
+            $unset: {
+                unavailableStartTime: [], unavailableEndTime: []
+            }
+        } )
+
+        .lean()
+        .exec( ( error, _ ) => {
+            if ( error ) {
+                next( httpError( HttpStatusCode.InternalServerError, error ) );
+                return;
+            }
+
+            User.findByIdAndUpdate(
+                { _id: req.body._id },
+                {
+                    $set: {
+                        unavailableStartTime: req.body.unavailableStartTime, 
+                        unavailableEndTime: req.body.unavailableEndTime
+                    }
+                } )
+
+                .lean()
+                .exec( ( error, user ) => {
+                    if ( error ) {
+                        next( httpError( HttpStatusCode.InternalServerError, error ) );
+                        return;
+                    }
+                    res.send( user );
+                } );
+        } );
+}
+
 exports.getNUsersByPageRules = () => {
     return [
         query( "numUsers", 'numUsers must be of Int type with a value of at least 1.' ).exists().toInt().custom( i => i > 0 ),
