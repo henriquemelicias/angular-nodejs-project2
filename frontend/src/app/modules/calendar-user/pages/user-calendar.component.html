@@ -15,13 +15,14 @@
                             (click)="offcanvas.dismiss()"></button>
                 </div>
                 <div class="offcanvas-body">
-                    <app-user-agenda-dashboard></app-user-agenda-dashboard>
+                    <app-user-agenda-dashboard (hasSubmitted)="reload()"></app-user-agenda-dashboard>
                     <div class="app-alert-wrapper">
                         <app-alert id="alert-project-form" [isOnlyOne]="true"></app-alert>
                     </div>
                 </div>
             </ng-template>
-            <button class="btn-lg default-button offcanvas-button" (click)="openOffCanvas(content)">Agenda Dashboard
+            <button class="btn-lg default-button offcanvas-button" (click)="openOffCanvas(content)">
+                Create unavailable period
             </button>
         </div>
     </div>

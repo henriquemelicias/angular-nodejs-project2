@@ -128,6 +128,8 @@ export class UserCalendarComponent implements OnInit {
     }
 
     private _changeCalendarEntries() {
+        this.events = [];
+        
         this.user$.value?.unavailableTimes.forEach(
             time => {
                 this.addEvent( 'Indisponivel', time.startDate, time.endDate, false, [], colors.red );

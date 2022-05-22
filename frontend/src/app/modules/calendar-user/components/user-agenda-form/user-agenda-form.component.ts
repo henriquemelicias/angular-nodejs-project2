@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { AlertService } from "@core/services/alert/alert.service";
 import { LoggerService } from "@core/services/logger/logger.service";
@@ -17,6 +17,9 @@ import { ActivatedRoute } from "@angular/router";
                 styleUrls: [ './user-agenda-form.component.css' ]
             } )
 export class UserAgendaFormComponent implements OnInit {
+
+    @Output()
+    hasSubmitted: EventEmitter<void> = new EventEmitter<void>();
 
     public unavailableTimeForm: FormGroup;
 
@@ -87,6 +90,7 @@ export class UserAgendaFormComponent implements OnInit {
                         { id: "alert-task-form", isAutoClosed: true },
                         logCallers
                     );
+                    this.hasSubmitted.next();
                 },
                 error: ( error: SanitizedErrorInterface ) => {
                     if ( error.hasBeenHandled ) return;
