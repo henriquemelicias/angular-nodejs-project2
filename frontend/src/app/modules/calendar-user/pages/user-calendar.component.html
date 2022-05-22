@@ -148,6 +148,7 @@
                     <td class="edit-table__body__column">
                         <input
                                 class="form-control"
+                                value="{{ event.start | date: 'yyyy-MM-dd' }}"
                                 type="date"
                                 placeholder="Not set"
                         />
@@ -156,6 +157,7 @@
                         <input
                                 class="form-control"
                                 type="time"
+                                value="{{ event.start | date: 'HH:MM' }}"
                                 placeholder="Not set"
                         />
                     </td>
@@ -163,6 +165,7 @@
                         <input
                                 class="form-control"
                                 type="time"
+                                value="{{ event.end | date: 'HH:MM' }}"
                                 placeholder="Not set"
                         />
                     </td>
@@ -170,14 +173,14 @@
                         <input
                                 type="color"
                                 [(ngModel)]="event.color!.primary"
-                                (change)="refresh.next(  )"
+                                (change)="saveColor( event, event.color!.primary, true );"
                         />
                     </td>
                     <td class="edit-table__body__column">
                         <input
                                 type="color"
                                 [(ngModel)]="event.color!.secondary"
-                                (change)="refresh.next(  )"
+                                (change)="saveColor( event, event.color!.secondary, false );"
                         />
                     </td>
                     <td class="edit-table__body__column">

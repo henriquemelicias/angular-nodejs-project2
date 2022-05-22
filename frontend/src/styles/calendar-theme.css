@@ -173,11 +173,13 @@
 
 .cal-week-view .cal-current-time-marker:before {
     content: "Current time";
-    padding-left: 0.5rem;
+    padding-right: 0.5rem;
     color: white;
     filter: invert(1);
     mix-blend-mode: difference;
     font-weight: bolder;
+    position: relative;
+    float: right;
 }
 
 .cal-tooltip.cal-tooltip-top .cal-tooltip-arrow {
@@ -200,11 +202,6 @@
     color: #fff;
     font-size: 14px;
     background-color: var( --background-color );
-}
-
-.cal-week-view .cal-ends-within-day .cal-event {
-    font-size: 18px;
-    text-align: center;
 }
 
 @media (max-width: 991.98px) {

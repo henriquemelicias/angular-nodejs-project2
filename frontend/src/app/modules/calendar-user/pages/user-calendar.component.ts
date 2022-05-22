@@ -10,6 +10,7 @@ import { AlertService } from "@core/services/alert/alert.service";
 import { AlertType } from "@core/models/alert.model";
 import { TaskSchema } from "@data/task/schemas/task.schema";
 import { TaskService } from "@data/task/services/task.service";
+import { LocalStorageKeyEnum } from "@core/enums/local-storage-key.enum";
 
 const colors: any = {
     red: {
@@ -111,28 +112,39 @@ export class UserCalendarComponent implements OnInit {
                         },
                     } )
                 ),
-                new Promise( ( resolve, reject ) => this.taskService.getTasksWithPeriodAssignedToUser( this.username ).subscribe(
-                    {
-                        next: tasks => {
-                            this.tasksAssignedToUser = tasks;
-                            resolve( resolve );
-                        },
-                        error: error => {
-                            AlertService.alertToApp( AlertType.Error, error, { isCloseable: true } );
-                            reject( error );
-                        },
-                    }
-                ) )
+                new Promise( ( resolve, reject ) => this.taskService.getTasksWithPeriodAssignedToUser( this.username )
+                                                        .subscribe(
+                                                            {
+                                                                next: tasks => {
+                                                                    this.tasksAssignedToUser = tasks;
+                                                                    resolve( resolve );
+                                                                },
+                                                                error: error => {
+                                                                    AlertService.alertToApp(
+                                                                        AlertType.Error,
+                                                                        error,
+                                                                        { isCloseable: true }
+                                                                    );
+                                                                    reject( error );
+                                                                },
+                                                            }
+                                                        ) )
             ]
         ).then( () => this._changeCalendarEntries() );
     }
 
     private _changeCalendarEntries() {
         this.events = [];
-        
+
         this.user$.value?.unavailableTimes.forEach(
             time => {
-                this.addEvent( 'Indisponivel', time.startDate, time.endDate, false, [], colors.red );
+                const eventColors = {
+                    primary: localStorage.getItem( LocalStorageKeyEnum.CALENDAR_UNAVAILABILITY_EVENT_PRIMARY_COLOR ) ||
+                             colors.red.primary,
+                    secondary: localStorage.getItem( LocalStorageKeyEnum.CALENDAR_UNAVAILABILITY_EVENT_SECONDARY_COLOR ) ||
+                               colors.red.secondary,
+                }
+                this.addEvent( 'Indisponivel', time.startDate, time.endDate, false, [], eventColors );
             }
         );
 
@@ -224,7 +236,24 @@ export class UserCalendarComponent implements OnInit {
     }
 
     deleteEvent( eventToDelete: CalendarEvent ) {
-        this.events = this.events.filter( ( event ) => event !== eventToDelete );
+        if ( this.user$.value ) {
+            const user = {
+                ...this.user$.value
+            }
+            user.unavailableTimes = user.unavailableTimes.filter( event => {
+                return new Date( event.startDate ).getDate() !== new Date( eventToDelete.start ).getDate() ||
+                new Date( event.endDate ).getDate() !== ( eventToDelete.end ? new Date( eventToDelete.end ).getDate() : undefined ) ||
+                eventToDelete.title !== "Indisponivel";
+            } );
+            this.events = this.events.filter( ( event ) => event !== eventToDelete );
+            this.userService.updateUser( user ).subscribe(
+                {
+                    next: user => {
+                        this.user$.next( user );
+                        this.refresh.next();
+                    }
+                } )
+        }
     }
 
     setView( view: CalendarView ) {
@@ -237,5 +266,17 @@ export class UserCalendarComponent implements OnInit {
 
     unavailablePeriodEvent() {
         return this.events.filter( e => e.title === 'Indisponivel' );
+    }
+
+    saveColor( event: any, color: any, isPrimaryColor: boolean ) {
+
+        if ( isPrimaryColor ) {
+            localStorage.setItem( LocalStorageKeyEnum.CALENDAR_UNAVAILABILITY_EVENT_PRIMARY_COLOR, color );
+        }
+        else {
+            localStorage.setItem( LocalStorageKeyEnum.CALENDAR_UNAVAILABILITY_EVENT_SECONDARY_COLOR, color );
+        }
+
+        this.reload();
     }
 }
