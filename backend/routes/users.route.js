@@ -13,7 +13,9 @@ usersRouter.get( '/by-pages',
 
 usersRouter.get( '/num-entries', [ verifyToken ], usersController.getNumberOfUsers );
 
-usersRouter.get( '/by-task', [ verifyToken ], usersController.getUsersBySameTeam );
+usersRouter.get( '/by-task', [ verifyToken ], usersController.getUsersByTask );
+
+usersRouter.get( '/by-team', [ verifyToken ], usersController.getUsersByTeam );
 
 usersRouter.get( '/:username', [ verifyToken ], usersController.getUserByUsername );
 

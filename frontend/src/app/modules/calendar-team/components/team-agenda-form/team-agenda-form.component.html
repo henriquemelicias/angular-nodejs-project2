@@ -1,57 +1,69 @@
-<h2>Create unavailable period</h2>
+<h2>Create new team meeting</h2>
 
-<form [formGroup]="unavailableTimeForm">
+<form [formGroup]="searchPossibleSessionForm">
     <div class="project-form__group">
-        <label for="project-form-name">Date</label>
+        <label for="project-form-name">Start Date</label>
         <input type="date" class="project-form__group__control form-control" id="project-form-name"
-               formControlName="date"
+               formControlName="startDate"
                min="{{ todayDate | date:'yyyy-MM-dd' }}"
-               [ngClass]="{'is-invalid': form['date'].errors &&
-                                      (form['date'].touched || form['date'].dirty),
-                         'is-valid': form['date'].valid }"
+               [ngClass]="{'is-invalid': form['startDate'].errors &&
+                                      (form['startDate'].touched || form['startDate'].dirty),
+                         'is-valid': form['startDate'].valid }"
         >
     </div>
 
-    <div class="alert alert-danger" [hidden]="form['date'].valid || form['date'].pristine">
-        <div *ngIf="form['date'].errors?.['required']">Name is required</div>
+    <div class="alert alert-danger" [hidden]="form['startDate'].valid || form['startDate'].pristine">
+        <div *ngIf="form['startDate'].errors?.['required']">Start date is required</div>
     </div>
 
-    <label for="project-form-start-date">Start Time</label>
+    <label for="project-form-start-date">End Date</label>
     <div class="project-form__group input-group">
         <input class="project-form__group__start-date-control form-control" id="project-form-start-date"
-               formControlName="startTime"
-               (keydown.enter)="form['startTime'].enabled"
-               type="time"
-               [ngClass]="{'is-invalid': (unavailableTimeForm.getError('startTimeError') || form['startTime'].errors) && (form['startTime'].touched || form['startTime'].dirty), 'is-valid': form['startTime'].valid}"
+               formControlName="endDate"
+               (keydown.enter)="form['endDate'].enabled"
+               min="{{ todayDate | date:'yyyy-MM-dd' }}"
+               type="date"
+               [ngClass]="{'is-invalid': (searchPossibleSessionForm.getError('dates') || form['endDate'].errors) && (form['endDate'].touched || form['endDate'].dirty), 'is-valid': form['endDate'].valid}"
         >
 
     </div>
 
-    <div class="alert alert-danger" [hidden]="(!unavailableTimeForm.hasError('startTimeError') && form['startTime'].valid) || form['startTime'].pristine">
-        <div *ngIf="form['startTime'].errors?.['required']">Start time is required</div>
-        <div *ngIf="unavailableTimeForm.hasError('startTimeError')">Start time must be after the current time</div>
+    <div class="alert alert-danger" [hidden]="(!searchPossibleSessionForm.hasError('dates') && form['endDate'].valid) || form['endDate'].pristine">
+        <div *ngIf="form['endDate'].errors?.['required']">End date is required</div>
+        <div *ngIf="searchPossibleSessionForm.hasError('dates')">End date must be after the start date</div>
     </div>
 
-    <label for="project-form-end-date">End Time</label>
+    <label for="project-form-end-date">Meeting Duration</label>
     <div class="project-form__group input-group">
         <input class="project-form__group__start-date-control form-control" id="project-form-end-date"
-               formControlName="endTime"
+               formControlName="meetingDuration"
                type="time"
-               [ngClass]="{'is-invalid': (unavailableTimeForm.getError('times') || form['endTime'].errors) && (form['endTime'].touched || form['endTime'].dirty), 'is-valid': form['endTime'].valid}"
+               pattern="(..:[03]0)"
+               [ngClass]="{'is-invalid': (searchPossibleSessionForm.getError( 'durationZeroed' ) || form['meetingDuration'].errors) && (form['meetingDuration'].touched || form['meetingDuration'].dirty), 'is-valid': form['meetingDuration'].valid}"
         >
     </div>
 
-    <div class="alert alert-danger" [hidden]="!unavailableTimeForm.hasError('times') || form['endTime'].pristine">
-        <div *ngIf="form['endTime'].errors?.['required']">End time is required</div>
-        <div *ngIf="unavailableTimeForm.hasError('times')">End time must be after start time</div>
+    <div class="alert alert-danger" [hidden]="(!searchPossibleSessionForm.hasError( 'durationZeroed' ) && form['meetingDuration'].pristine) || !form['meetingDuration'].errors">
+        <div *ngIf="form['meetingDuration'].errors?.['required']">Meeting duration is required</div>
+        <div *ngIf="form['meetingDuration'].errors?.['pattern']">Only multiples of 30 minutes allowed</div>
+        <div *ngIf="searchPossibleSessionForm.hasError( 'durationZeroed' )">Duration needs to be at least 30 minutes</div>
     </div>
 
     <div class="project-form__submit-button--container">
         <button type="submit" class="project-form__submit-button default-button"
-                [disabled]="!unavailableTimeForm.valid"
-                (click)="onUnavailableTimeSubmit()"
+                [disabled]="!searchPossibleSessionForm.valid"
+                (click)="searchMeetingsPossibleSessions()"
         >
-            Create
+            Search possible sessions
         </button>
+    </div>
+
+    <div class="meetings-options--container">
+        <div  *ngIf="availableSessions$ | async as sessions">
+            <div tabindex="0" class="meetings-options__item" *ngFor="let session of sessions" (keydown.enter)="addMeeting( session )" (click)="addMeeting( session )">
+                <span>{{ session.startDate | date: 'EEEE, MMMM d, y \'at\' HH:mm\'h\'' }}</span>
+                <span>{{ session.endDate | date: 'EEEE, MMMM d, y \'at\' HH:mm\'h\'' }}</span>
+            </div>
+        </div>
     </div>
 </form>

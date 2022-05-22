@@ -8,6 +8,7 @@ const tasksRoute = require( "#routes/tasks.route" );
 const projectsRoute = require( "#routes/projects.route" );
 const teamsRoute = require( "#routes/teams.route");
 const usersRoute = require( "#routes/users.route" );
+const meetingsRoute = require( "#routes/meetings.route" );
 
 // Controllers.
 const nonApiController = require( "#controllers/non-api.controller" );
@@ -19,13 +20,16 @@ apiRouter.use( '/auth', authRoute );
 apiRouter.use( '/tasks', tasksRoute );
 
 // Project
-apiRouter.use( '/projects', projectsRoute )
+apiRouter.use( '/projects', projectsRoute );
 
 // Teams
-apiRouter.use( '/teams', teamsRoute )
+apiRouter.use( '/teams', teamsRoute );
 
 // Users
-apiRouter.use( '/users', usersRoute )
+apiRouter.use( '/users', usersRoute );
+
+// Meetings
+apiRouter.use( '/meetings', meetingsRoute );
 
 // Index routes (NON API FUNCTIONS).
 indexRouter.get( '/db-purge', nonApiController.purgeDatabase );

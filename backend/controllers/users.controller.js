@@ -114,7 +114,42 @@ exports.getNumberOfUsers = ( req, res, next ) => {
         } );
 };
 
-exports.getUsersBySameTeam = ( req, res, next ) => {
+exports.getUsersByTeam = ( req, res, next ) => {
+    const baseURL = 'http://' + req.headers.host + '/';
+    const searchParams = new URL( req.url, baseURL ).searchParams;
+
+    const teamName = searchParams.get( 'name' );
+
+    Team.findOne( {name: teamName} )
+        .lean()
+        .select( 'members' )
+        .exec( (error, team) => {
+            if ( error ) {
+                next( httpError( HttpStatusCode.InternalServerError ), error );
+                return;
+            }
+
+            if ( !team ) return res.send( [] );
+
+            User.find( {username: {$in: team.members}})
+                .lean()
+                .exec( (error, users) => {
+                    if ( error ) {
+                        next( httpError( HttpStatusCode.InternalServerError ), error );
+                        return;
+                    }
+
+                    if ( !users )
+                    {
+                        return res.send( [] );
+                    }
+
+                    return res.send( users );
+                })
+        })
+}
+
+exports.getUsersByTask = ( req, res, next ) => {
     const baseURL = 'http://' + req.headers.host + '/';
     const searchParams = new URL( req.url, baseURL ).searchParams;
 

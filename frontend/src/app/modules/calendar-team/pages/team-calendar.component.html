@@ -1,27 +1,24 @@
-<div class="calendar--container">
-    <h1 *ngIf="username !== sessionUser?.username; else isSessionUser" class="calendar__title">
-        User&nbsp;<span>{{username}}</span>&nbsp;Agenda</h1>
-    <ng-template #isSessionUser>
-        <h1 class="calendar__title">My&nbsp;Agenda</h1>
-    </ng-template>
+<div *ngIf="team$.value" class="calendar--container">
+    <h1 class="calendar__title">
+        Team&nbsp;<span>{{teamName}}</span></h1>
     <div class="page__head--container">
         <h2 class="calendar__view-date">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h2>
-        <div *ngIf="username === sessionUser?.username">
+        <div>
             <ng-template #content let-offcanvas>
                 <div class="offcanvas-header">
-                    <h3 class="offcanvas-title" id="offcanvas-basic-title">Agenda Dashboard</h3>
+                    <h3 class="offcanvas-title" id="offcanvas-basic-title">Team Dashboard</h3>
                     <button type="button" class="btn-close btn-close-white" aria-label="Close"
                             (click)="offcanvas.dismiss()"></button>
                 </div>
                 <div class="offcanvas-body">
-                    <app-team-agenda-dashboard (hasSubmitted)="reload()"></app-team-agenda-dashboard>
+                    <app-team-agenda-dashboard (hasSubmitted)="reload();closeOffCanvas();"></app-team-agenda-dashboard>
                     <div class="app-alert-wrapper">
                         <app-alert id="alert-project-form" [isOnlyOne]="true"></app-alert>
                     </div>
                 </div>
             </ng-template>
             <button class="btn-lg default-button offcanvas-button" (click)="openOffCanvas(content)">
-                Create unavailable period
+                Create team meeting
             </button>
         </div>
     </div>
@@ -121,7 +118,7 @@
         </mwl-calendar-day-view>
     </div>
 
-    <div *ngIf="username === sessionUser?.username">
+    <div *ngIf="teamName === sessionUser?.username">
         <br/><br/><br/>
 
         <h2>
@@ -183,7 +180,8 @@
                         />
                     </td>
                     <td class="edit-table__body__column">
-                        <button class="btn btn-danger edit-table__body__column__delete-btn" (click)="deleteEvent(event)">
+                        <button class="btn btn-danger edit-table__body__column__delete-btn"
+                                (click)="deleteEvent(event)">
                             Delete
                         </button>
                     </td>

@@ -130,4 +130,11 @@ export class UserService {
             HttpSettings.HEADER_CONTENT_TYPE_JSON
         );
     }
+
+    getUsersByTeam( team: string ) {
+        return this.http.get<UserSchema[]>(
+            UserService._API_URI + '/by-team?name=' + team,
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    }
 }

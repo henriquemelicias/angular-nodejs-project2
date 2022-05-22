@@ -132,6 +132,37 @@ exports.getTasksWithPeriodByUser = ( req, res, next ) => {
         } )
 }
 
+exports.getTasksWithPeriodByTeam = ( req, res, next ) => {
+    const baseURL = 'http://' + req.headers.host + '/';
+    const searchParams = new URL( req.url, baseURL ).searchParams;
+
+    const teamName = searchParams.get( 'name' );
+
+    Team.findOne( {name: teamName} )
+        .lean()
+        .select( 'members' )
+        .exec( (error, team) => {
+            if ( error ) {
+                return next( httpError( HttpStatusCode.InternalServerError, error ) );
+            }
+
+            if ( !team )
+            {
+                return res.send( [] );
+            }
+            const members = team.members;
+
+            Task.find( { users: { $in: members }, startDate: { $ne: null | undefined }, endDate: { $ne: null | undefined } } )
+                .lean()
+                .exec( ( error, tasks ) => {
+                    if ( error ) {
+                        return next( httpError( HttpStatusCode.InternalServerError, error ) );
+                    }
+                    res.send( tasks );
+                } )
+        })
+}
+
 exports.getAvailableTasks = ( req, res, next ) => {
 
     const baseURL = 'http://' + req.headers.host + '/';

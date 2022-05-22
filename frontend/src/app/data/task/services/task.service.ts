@@ -124,4 +124,11 @@ export class TaskService {
             HttpSettings.HEADER_CONTENT_TYPE_JSON
         );
     }
+
+    getTasksWithPeriodByTeam( teamName: string ) {
+        return this.http.get<TaskSchema[]>(
+            TaskService._API_URI + '/by-team?name=' + teamName,
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    }
 }
