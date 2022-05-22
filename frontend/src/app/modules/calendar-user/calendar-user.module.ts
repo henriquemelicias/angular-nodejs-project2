@@ -7,7 +7,7 @@ import { CalendarUserRoutingModule } from "./calendar-user-routing.module";
 import { UserCalendarComponent } from "@modules/calendar-user/pages/user-calendar.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { CalendarModule, DateAdapter } from "angular-calendar";
+import { CalendarModule } from "angular-calendar";
 import { MatRadioModule } from '@angular/material/radio';
 import { UserAgendaFormComponent } from "@modules/calendar-user/components/user-agenda-form/user-agenda-form.component";
 

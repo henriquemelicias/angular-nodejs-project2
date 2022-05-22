@@ -1,0 +1,24 @@
+.project-form__group {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.project-form__submit-button--container {
+    display: flex;
+    justify-content: center;
+}
+
+.project-form__submit-button {
+    width: 100%;
+    text-align: center;
+}
+
+.input-group-text {
+    height: 100%;
+    cursor: pointer;
+}
+
+.app-alert-wrapper {
+    margin-top: 1rem;
+}
+

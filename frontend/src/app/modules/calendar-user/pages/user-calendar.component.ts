@@ -136,6 +136,7 @@ export class UserCalendarComponent implements OnInit {
     private _changeCalendarEntries() {
         this.events = [];
 
+        this.user$.value?.unavailableTimes.sort( (t1, t2) => t1.startDate <= t2.startDate ? -1 : 1 );
         this.user$.value?.unavailableTimes.forEach(
             time => {
                 const eventColors = {

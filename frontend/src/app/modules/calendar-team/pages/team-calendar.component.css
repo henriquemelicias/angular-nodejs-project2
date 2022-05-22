@@ -1,0 +1,115 @@
+.calendar--container {
+    width: 90vw;
+    margin-bottom: 6rem;
+}
+
+.page__head--container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.offcanvas-button {
+
+}
+
+.page__head {
+    display: table;
+    table-layout: fixed;
+    user-select: none;
+    margin-bottom: 0;
+}
+
+
+.calendar__title {
+    margin-top: -1rem;
+    margin-bottom: 0;
+    border-bottom: 1px var( --font-color-on-background ) solid;
+    text-align: center;
+}
+
+.calendar__view-date {
+    font-size: 30px;
+    text-align: center;
+}
+
+.calendar__title span {
+    color: var(--secondary-color);
+}
+
+.calendar__date-radio {
+    display: flex;
+    justify-content: space-between;
+}
+
+.calendar__button-group {
+    display: flex;
+}
+
+.calendar__button-group div {
+    height: 2rem;
+    width: 8rem;
+    margin-right: 1rem;
+}
+
+.overview__buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.overview__buttons--group {
+    display: flex;
+    font-size: 25px;
+}
+
+.overview__buttons__radio {
+
+}
+
+.overview__buttons__btn {
+    margin-left: 0.6rem;
+}
+
+.overview__buttons__btn:focus-within {
+    border-top: var( --font-color-highlight ) 1px solid;
+}
+
+.edit-table {
+    background-color: var( --footer-background-color );
+}
+
+.edit-table__head {
+    color: var(--font-color-on-background);
+    font-weight: bolder;
+    border: 1px solid var(--font-color-on-background);
+}
+
+.edit-table__body {
+    border: 1px solid var(--font-color-on-background);
+}
+
+.edit-table__body__column {
+    width: 16.66%;
+}
+
+@media (max-width: 991.98px) {
+    .calendar__date-radio {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .overview__buttons__radio {
+        margin-top: 3rem;
+    }
+}
+
+.edit-table__body__column__delete-btn {
+    width: 100%;
+}
+
+input[type="color" i] {
+    width: calc( 100vw / 6 );
+    height: 2.4rem;
+}
