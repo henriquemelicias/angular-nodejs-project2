@@ -117,4 +117,11 @@ export class TaskService {
     getTasksUnfiltered() {
         return this.http.get<TaskSchema[]>( TaskService._API_URI + '/unfiltered', HttpSettings.HEADER_CONTENT_TYPE_JSON );
     }
+
+    getTasksWithPeriodAssignedToUser( username: string ) {
+        return this.http.get<TaskSchema[]>(
+            TaskService._API_URI + '/by-user?user=' + username,
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    }
 }

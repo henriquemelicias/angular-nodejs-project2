@@ -44,7 +44,7 @@ export class AuthAdminGuard implements CanActivate, CanActivateChild, CanDeactiv
         }
         else {
             const logCallers = LoggerService.setCaller( this, this._changeRouteIfNotAdmin );
-            this.router.navigate( [ '/home' ] ).then(
+            this.router.navigate( [ '/about' ] ).then(
                 _ => {
                     setTimeout( () => {
                         LoggerService.warn(
@@ -57,7 +57,7 @@ export class AuthAdminGuard implements CanActivate, CanActivateChild, CanDeactiv
                 },
                 error => {
                     LoggerService.error(
-                        'Redirect to /home unsuccessful: ' + JSON.stringify( error ),
+                        'Redirect to /about unsuccessful: ' + JSON.stringify( error ),
                         logCallers
                     );
 

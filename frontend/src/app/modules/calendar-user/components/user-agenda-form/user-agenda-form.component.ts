@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
-import { LocalStorageKeyEnum } from "@core/enums/local-storage-key.enum";
 import { AlertService } from "@core/services/alert/alert.service";
 import { LoggerService } from "@core/services/logger/logger.service";
 import { SanitizedErrorInterface } from "@core/models/sanitized-error.interface";
@@ -61,27 +60,14 @@ export class UserAgendaFormComponent implements OnInit {
         const startTimeFormValue = this.form['startTime'].value;
         const endTimeFormValue = this.form['endTime'].value;
 
-        const dateTokens = dateFormValue.split( '-' ); // yyyy-mm-dd
-        const date = [
-            parseInt( dateTokens[0] ),
-            parseInt( dateTokens[1] ),
-            parseInt( dateTokens[2] ),
-        ]
-
-        const startTimeTokens = startTimeFormValue.split( ':' );
-        const startTime = [ parseInt( startTimeTokens[0] ), parseInt( startTimeTokens[1] ) ];
-
-        const endTimeTokens = endTimeFormValue.split( ':' );
-        const endTime = [ parseInt( endTimeTokens[0] ), parseInt( endTimeTokens[1] ) ];
-
         const user = {
             ...this.user
         }
 
         user.unavailableTimes.push(
             {
-                startDate: new Date( date[0], date[1], date[2], startTime[0], startTime[1] ),
-                endDate: new Date( date[0], date[1], date[2], endTime[0], endTime[1] )
+                startDate: new Date( dateFormValue + ' ' + startTimeFormValue ),
+                endDate: new Date( dateFormValue + ' ' + endTimeFormValue )
             }
         )
 

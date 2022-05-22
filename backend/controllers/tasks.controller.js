@@ -108,21 +108,27 @@ exports.getTask = ( req, res, next ) => {
 
     Task.findOne( { _id: req.params._id } )
         .lean()
-        .select( [ "_id",
-                   "name",
-                   "priority",
-                   "percentage",
-                   "madeByUser",
-                   "users",
-                   "startDate",
-                   "endDate",
-                   "checklist"
-        ] )
         .exec( function ( error, task ) {
             if ( error ) {
                 return next( httpError( HttpStatusCode.InternalServerError, error ) );
             }
             res.send( task );
+        } )
+}
+
+exports.getTasksWithPeriodByUser = ( req, res, next ) => {
+    const baseURL = 'http://' + req.headers.host + '/';
+    const searchParams = new URL( req.url, baseURL ).searchParams;
+
+    const username = searchParams.get( 'user' );
+
+    Task.find( { users: username, startDate: { $ne: null | undefined }, endDate: { $ne: null | undefined } } )
+        .lean()
+        .exec( ( error, tasks ) => {
+            if ( error ) {
+                return next( httpError( HttpStatusCode.InternalServerError, error ) );
+            }
+            res.send( tasks );
         } )
 }
 

@@ -13,9 +13,9 @@ export class FooterComponent {
   currentYear = new Date().getUTCFullYear();
 
   navItems = [
-    { link: '/login', routerLink: 'login', title: 'Login' },
-    { link: '/search', routerLink: 'search', title: 'Search' },
-    { link: '/sitemap', routerLink: 'sitemap', title: 'Sitemap' },
+    { link: '/about', routerLink: 'about', title: 'About' },
+    { link: '/profile', routerLink: 'profile', title: 'Profile' },
+    { link: '/overview', routerLink: 'overview', title: 'Overview' },
   ];
 
   constructor( ) {}

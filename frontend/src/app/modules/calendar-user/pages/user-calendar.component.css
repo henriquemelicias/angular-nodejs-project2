@@ -76,6 +76,24 @@
     border-top: var( --font-color-highlight ) 1px solid;
 }
 
+.edit-table {
+    background-color: var( --footer-background-color );
+}
+
+.edit-table__head {
+    color: var(--font-color-on-background);
+    font-weight: bolder;
+    border: 1px solid var(--font-color-on-background);
+}
+
+.edit-table__body {
+    border: 1px solid var(--font-color-on-background);
+}
+
+.edit-table__body__column {
+    width: 16.66%;
+}
+
 @media (max-width: 991.98px) {
     .calendar__date-radio {
         flex-direction: column;
@@ -85,4 +103,13 @@
     .overview__buttons__radio {
         margin-top: 3rem;
     }
+}
+
+.edit-table__body__column__delete-btn {
+    width: 100%;
+}
+
+input[type="color" i] {
+    width: calc( 100vw / 6 );
+    height: 2.4rem;
 }

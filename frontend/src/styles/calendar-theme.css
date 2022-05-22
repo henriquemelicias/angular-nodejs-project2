@@ -202,6 +202,11 @@
     background-color: var( --background-color );
 }
 
+.cal-week-view .cal-ends-within-day .cal-event {
+    font-size: 18px;
+    text-align: center;
+}
+
 @media (max-width: 991.98px) {
     .cal-month-view .cal-day-badge {
         transform: none;
@@ -213,3 +218,5 @@
         margin-bottom: 0;
     }
 }
+
+

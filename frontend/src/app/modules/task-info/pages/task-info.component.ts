@@ -221,37 +221,12 @@ export class TaskInfoComponent implements OnInit {
 
     changeDateSubmit() {
         const startDateFormValue = this.form2['startDate'].value;
-
-        let startDate;
-        if ( startDateFormValue ) {
-            const startDateTokens = startDateFormValue.split( /[-T:]/ );
-            startDate = new Date(
-                parseInt( startDateTokens[0] ),
-                parseInt( startDateTokens[1] ),
-                parseInt( startDateTokens[2] ),
-                parseInt( startDateTokens[3] ),
-                parseInt( startDateTokens[4] )
-            );
-        }
-
         const endDateFormValue = this.form2['endDate'].value;
-        let endDate;
-        if ( endDateFormValue ) {
-            const endDateTokens = endDateFormValue.split( /[-T:]/ );
-
-            endDate = new Date(
-                parseInt( endDateTokens[0] ),
-                parseInt( endDateTokens[1] ),
-                parseInt( endDateTokens[2] ),
-                parseInt( endDateTokens[3] ),
-                parseInt( endDateTokens[4] )
-            );
-        }
 
         let task = {
             ...this.task,
-            startDate: startDate,
-            endDate: endDate,
+            startDate: startDateFormValue ? new Date( startDateFormValue ) : undefined,
+            endDate: endDateFormValue ? new Date( endDateFormValue ) : undefined,
         };
 
         this.modifyTask( task );

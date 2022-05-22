@@ -33,12 +33,11 @@
   .footer--container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 3.0fr 1fr 0.25fr;
+    grid-template-rows: 1fr 0.25fr;
     gap: 0 4rem;
     grid-auto-flow: row;
     justify-items: stretch;
     grid-template-areas:
-    "footer__first-column footer__second-column footer__third-column footer__fourth-column"
     "footer__copyright-row footer__copyright-row footer__copyright-row footer__copyright-row"
     "footer__navbar-row footer__navbar-row footer__navbar-row footer__navbar-row";
   }
@@ -46,15 +45,14 @@
 
 @media (min-width: 1200px) {
   .footer--container {
-    height: 60vh;
+    margin-top: 0;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 3.0fr 1fr 0.25fr;
+    grid-template-rows: 0.25fr 0.25fr;
     gap: 0 4rem;
     grid-auto-flow: row;
     justify-items: stretch;
     grid-template-areas:
-    "footer__first-column footer__second-column footer__third-column footer__fourth-column"
     "footer__first-column footer__copyright-row footer__copyright-row footer__fourth-column"
     "footer__navbar-row footer__navbar-row footer__navbar-row footer__navbar-row";
   }

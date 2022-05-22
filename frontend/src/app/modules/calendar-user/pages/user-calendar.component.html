@@ -1,19 +1,20 @@
+<link rel="stylesheet" href="user-calendar.component.css">
 <div class="calendar--container">
-    <h1 *ngIf="thisCalendarUser !== sessionUser?.username; else isSessionUser" class="calendar__title">
-        User&nbsp;<span>{{thisCalendarUser}}</span>&nbsp;Agenda</h1>
+    <h1 *ngIf="username !== sessionUser?.username; else isSessionUser" class="calendar__title">
+        User&nbsp;<span>{{username}}</span>&nbsp;Agenda</h1>
     <ng-template #isSessionUser>
         <h1 class="calendar__title">My&nbsp;Agenda</h1>
     </ng-template>
     <div class="page__head--container">
         <h2 class="calendar__view-date">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h2>
-        <div *ngIf="thisCalendarUser === sessionUser?.username">
+        <div *ngIf="username === sessionUser?.username">
             <ng-template #content let-offcanvas>
                 <div class="offcanvas-header">
                     <h3 class="offcanvas-title" id="offcanvas-basic-title">Agenda Dashboard</h3>
                     <button type="button" class="btn-close btn-close-white" aria-label="Close"
                             (click)="offcanvas.dismiss()"></button>
                 </div>
-                <div class="offcanvas-body" (focusout)="reload()">
+                <div class="offcanvas-body">
                     <app-user-agenda-dashboard></app-user-agenda-dashboard>
                     <div class="app-alert-wrapper">
                         <app-alert id="alert-project-form" [isOnlyOne]="true"></app-alert>
@@ -118,5 +119,98 @@
                 (eventTimesChanged)="eventTimesChanged($event)"
         >
         </mwl-calendar-day-view>
+    </div>
+
+    <div *ngIf="username === sessionUser?.username">
+        <br/><br/><br/>
+
+        <h2>
+            Edit unavailability periods
+            <div class="clearfix"></div>
+        </h2>
+
+        <div class="table-responsive">
+            <table class="table table-bordered edit-table">
+                <thead class="edit-table__head">
+                <tr>
+                    <th>Date</th>
+                    <th>Starts at</th>
+                    <th>Ends at</th>
+                    <th>Primary color</th>
+                    <th>Secondary color</th>
+                    <th>Remove</th>
+                </tr>
+                </thead>
+
+                <tbody class="edit-table__body">
+                <tr *ngFor="let event of unavailablePeriodEvent()">
+                    <td class="edit-table__body__column">
+                        <input
+                                class="form-control"
+                                type="date"
+                                placeholder="Not set"
+                        />
+                    </td>
+                    <td class="edit-table__body__column">
+                        <input
+                                class="form-control"
+                                type="time"
+                                placeholder="Not set"
+                        />
+                    </td>
+                    <td class="edit-table__body__column">
+                        <input
+                                class="form-control"
+                                type="time"
+                                placeholder="Not set"
+                        />
+                    </td>
+                    <td class="edit-table__body__column">
+                        <input
+                                type="color"
+                                [(ngModel)]="event.color!.primary"
+                                (change)="refresh.next(  )"
+                        />
+                    </td>
+                    <td class="edit-table__body__column">
+                        <input
+                                type="color"
+                                [(ngModel)]="event.color!.secondary"
+                                (change)="refresh.next(  )"
+                        />
+                    </td>
+                    <td class="edit-table__body__column">
+                        <button class="btn btn-danger edit-table__body__column__delete-btn" (click)="deleteEvent(event)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <ng-template #modalContent let-close="close">
+            <div class="modal-header">
+                <h5 class="modal-title">Event action occurred</h5>
+                <button type="button" class="close" (click)="close()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    Action:
+                    <pre>{{ modalData?.action }}</pre>
+                </div>
+                <div>
+                    Event:
+                    <pre>{{ modalData?.event | json }}</pre>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" (click)="close()">
+                    OK
+                </button>
+            </div>
+        </ng-template>
     </div>
 </div>

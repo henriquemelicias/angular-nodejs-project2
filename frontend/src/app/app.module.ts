@@ -13,6 +13,7 @@ import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { FlatpickrModule } from "angularx-flatpickr";
 
 import { HeaderComponent } from "@app/layout/header/header.component";
 import { ContentLayoutComponent } from "@app/layout/content-layout/content-layout.component";
@@ -44,6 +45,7 @@ import { FooterScrollUpButtonComponent } from '@layout/footer-scroll-up-button/f
             NgbModule,
             MdbModalModule,
             FontAwesomeModule,
+            FlatpickrModule.forRoot(),
             CalendarModule.forRoot(
                 {
                     provide: DateAdapter,

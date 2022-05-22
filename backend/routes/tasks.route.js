@@ -10,6 +10,7 @@ tasksRouter.post( '/', [ verifyToken,
                          oneOf( tasksController.getAddTaskRules() ),
                          verifyRules ], tasksController.addTask );
 
+tasksRouter.get( '/by-user', [ verifyToken ], tasksController.getTasksWithPeriodByUser )
 tasksRouter.get( '/by-pages',
     [ verifyToken, oneOf( tasksController.getNTasksByPageRules() ), verifyRules ], tasksController.getNTasksByPage );
 tasksRouter.get( '/unfiltered', [ verifyToken ], tasksController.getTasksUnfiltered );
