@@ -10,12 +10,14 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarModule } from "angular-calendar";
 import { MatRadioModule } from '@angular/material/radio';
 import { UserAgendaFormComponent } from "@modules/calendar-user/components/user-agenda-form/user-agenda-form.component";
+import { UserMeetingFormComponent } from "@modules/calendar-user/components/user-meeting-form/user-meeting-form.component";
 
 
 @NgModule({
   declarations: [
       UserCalendarComponent,
-      UserAgendaFormComponent
+      UserAgendaFormComponent,
+      UserMeetingFormComponent
   ],
               imports: [
                   CommonModule,

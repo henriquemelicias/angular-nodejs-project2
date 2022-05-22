@@ -7,21 +7,21 @@
     <div class="page__head--container">
         <h2 class="calendar__view-date">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h2>
         <div *ngIf="username === sessionUser?.username">
-            <ng-template #content let-offcanvas>
+            <ng-template #content2 let-offcanvas2>
                 <div class="offcanvas-header">
                     <h3 class="offcanvas-title" id="offcanvas-basic-title">Agenda Dashboard</h3>
                     <button type="button" class="btn-close btn-close-white" aria-label="Close"
-                            (click)="offcanvas.dismiss()"></button>
+                            (click)="offcanvas2.dismiss()"></button>
                 </div>
                 <div class="offcanvas-body">
-                    <app-user-agenda-dashboard (hasSubmitted)="reload()"></app-user-agenda-dashboard>
+                    <app-user-meeting-dashboard (hasSubmitted)="reload()"></app-user-meeting-dashboard>
                     <div class="app-alert-wrapper">
                         <app-alert id="alert-project-form" [isOnlyOne]="true"></app-alert>
                     </div>
                 </div>
             </ng-template>
-            <button class="btn-lg default-button offcanvas-button" (click)="openOffCanvas(content)">
-                Create unavailable period
+            <button class="btn-lg default-button offcanvas-button" (click)="openOffCanvas(content2)">
+                Create user meeting
             </button>
         </div>
     </div>
@@ -30,7 +30,7 @@
         <div class="calendar__date-radio">
             <div class="calendar__button-group">
                 <div
-                        class="default-button"
+                        class="default-button calendar__button_date"
                         tabindex="0"
                         mwlCalendarPreviousView
                         [view]="view"
@@ -40,7 +40,7 @@
                     Previous
                 </div>
                 <div
-                        class="default-button"
+                        class="default-button calendar__button_date"
                         mwlCalendarToday
                         tabindex="0"
                         [(viewDate)]="viewDate"
@@ -48,7 +48,7 @@
                     Today
                 </div>
                 <div
-                        class="default-button"
+                        class="default-button calendar__button_date"
                         mwlCalendarNextView
                         tabindex="0"
                         [view]="view"
@@ -124,10 +124,31 @@
     <div *ngIf="username === sessionUser?.username">
         <br/><br/><br/>
 
+        <div class="page__head--container">
         <h2>
             Edit unavailability periods
             <div class="clearfix"></div>
         </h2>
+
+            <div *ngIf="username === sessionUser?.username">
+                <ng-template #content let-offcanvas>
+                    <div class="offcanvas-header">
+                        <h3 class="offcanvas-title" id="offcanvas-basic-title2">Agenda Dashboard</h3>
+                        <button type="button" class="btn-close btn-close-white" aria-label="Close"
+                                (click)="offcanvas.dismiss()"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <app-user-agenda-dashboard (hasSubmitted)="reload()"></app-user-agenda-dashboard>
+                        <div class="app-alert-wrapper">
+                            <app-alert id="alert-project-form2" [isOnlyOne]="true"></app-alert>
+                        </div>
+                    </div>
+                </ng-template>
+                <button class="btn-lg default-button offcanvas-button" (click)="openOffCanvas(content)">
+                    Create unavailable period
+                </button>
+            </div>
+        </div>
 
         <div class="table-responsive">
             <table class="table table-bordered edit-table">

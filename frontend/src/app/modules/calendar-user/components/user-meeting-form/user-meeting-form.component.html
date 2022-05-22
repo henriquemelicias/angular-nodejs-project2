@@ -1,0 +1,97 @@
+<h2>Create new user meeting</h2>
+
+<form [formGroup]="searchPossibleSessionForm">
+
+    <div class="project-form__group">
+        <span>Select users</span>
+        <button class="default-button model-info__operations__button" (click)="openSetMembersModal( setMembersModal )">
+            Select users
+        </button>
+
+        <div class="alert alert-danger" [hidden]="!hasClickedButton || this.selectedUsers.length > 0">
+            <div> Please select at least one user</div>
+        </div>
+    </div>
+    <div class="project-form__group">
+        <label for="project-form-name">Start Date</label>
+        <input type="date" class="project-form__group__control form-control" id="project-form-name"
+               formControlName="startDate"
+               min="{{ todayDate | date:'yyyy-MM-dd' }}"
+               [ngClass]="{'is-invalid': form['startDate'].errors &&
+                                      (form['startDate'].touched || form['startDate'].dirty),
+                         'is-valid': form['startDate'].valid }"
+        >
+    </div>
+
+    <div class="alert alert-danger" [hidden]="form['startDate'].valid || form['startDate'].pristine">
+        <div *ngIf="form['startDate'].errors?.['required']">Start date is required</div>
+    </div>
+
+    <label for="project-form-start-date">End Date</label>
+    <div class="project-form__group input-group">
+        <input class="project-form__group__start-date-control form-control" id="project-form-start-date"
+               formControlName="endDate"
+               (keydown.enter)="form['endDate'].enabled"
+               min="{{ todayDate | date:'yyyy-MM-dd' }}"
+               type="date"
+               [ngClass]="{'is-invalid': (searchPossibleSessionForm.getError('dates') || form['endDate'].errors) && (form['endDate'].touched || form['endDate'].dirty), 'is-valid': form['endDate'].valid}"
+        >
+
+    </div>
+
+    <div class="alert alert-danger" [hidden]="(!searchPossibleSessionForm.hasError('dates') && form['endDate'].valid) || form['endDate'].pristine">
+        <div *ngIf="form['endDate'].errors?.['required']">End date is required</div>
+        <div *ngIf="searchPossibleSessionForm.hasError('dates')">End date must be after the start date</div>
+    </div>
+
+    <label for="project-form-end-date">Meeting Duration</label>
+    <div class="project-form__group input-group">
+        <input class="project-form__group__start-date-control form-control" id="project-form-end-date"
+               formControlName="meetingDuration"
+               type="time"
+               pattern="(..:[03]0)"
+               [ngClass]="{'is-invalid': (searchPossibleSessionForm.getError( 'durationZeroed' ) || form['meetingDuration'].errors) && (form['meetingDuration'].touched || form['meetingDuration'].dirty), 'is-valid': form['meetingDuration'].valid}"
+        >
+    </div>
+
+    <div class="project-form__submit-button--container">
+        <button type="submit" class="project-form__submit-button default-button"
+                [disabled]="!searchPossibleSessionForm.valid || this.selectedUsers.length === 0"
+                (click)="searchMeetingsPossibleSessions()"
+        >
+            Search possible sessions
+        </button>
+    </div>
+
+    <div class="meetings-options--container">
+        <div  *ngIf="availableSessions$ | async as sessions;">
+            <div tabindex="0" class="meetings-options__item" *ngFor="let session of sessions" (keydown.enter)="addMeeting( session )" (click)="addMeeting( session )">
+                <span>{{ session.startDate | date: 'EEEE, MMMM d, y \'at\' HH:mm\'h\'' }}</span>
+                <span>{{ session.endDate | date: 'EEEE, MMMM d, y \'at\' HH:mm\'h\'' }}</span>
+            </div>
+        </div>
+    </div>
+</form>
+
+<ng-template #setMembersModal let-modal>
+    <div class="modal-header">
+        <h2 class="modal-title">Select Users</h2>
+    </div>
+    <div class="modal-body">
+        <section>
+            <form [formGroup]="setMembersForm" novalidate>
+                <div class="modal-body__row" *ngFor="let user of users; let i=index">
+                    <input class="modal-body__row__checkbox" type="checkbox" formArrayName="selectedUsers"
+                           [value]="user.username"
+                           (change)="onCheckboxChange($event)" [checked]="selectedUsers.includes( user.username )"
+                    />
+                    <div class="modal-body__row__text">{{ user.username }}</div>
+                </div>
+            </form>
+        </section>
+    </div>
+    <div class="modal-footer">
+        <button class="default-button" type="submit" (keydown.enter)="setMembersSubmit()" (click)="setMembersSubmit();modal.close('Close click')">Save</button>
+        <button type="button" class="modal-footer__close-btn default-button" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>

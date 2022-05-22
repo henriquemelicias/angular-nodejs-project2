@@ -61,6 +61,24 @@ export class TeamCalendarComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        const input = document.getElementsByClassName("calendar__button_date");
+
+        for ( let i = 0; i < input.length; i++ )
+        {
+            const inputElement = input[i] as HTMLElement;
+
+            inputElement.addEventListener("keypress", function(event) {
+                // If the user presses the "Enter" key on the keyboard
+                if (event.key === "Enter") {
+                    // Cancel the default action, if needed
+                    event.preventDefault();
+                    // Trigger the button element with a click
+                    inputElement.click();
+                }
+            });
+        }
+
+
         const radioButtons = document.getElementsByClassName( 'overview__buttons__btn' );
         const calHeaders = document.getElementsByClassName( 'cal-header' );
 
