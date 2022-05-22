@@ -97,8 +97,6 @@
                 [refresh]="refresh"
                 [activeDayIsOpen]="activeDayIsOpen"
                 (dayClicked)="dayClicked($event.day)"
-                (eventClicked)="handleEvent('Clicked', $event.event)"
-                (eventTimesChanged)="eventTimesChanged($event)"
         >
         </mwl-calendar-month-view>
         <mwl-calendar-week-view
@@ -106,8 +104,6 @@
                 [viewDate]="viewDate"
                 [events]="events"
                 [refresh]="refresh"
-                (eventClicked)="handleEvent('Clicked', $event.event)"
-                (eventTimesChanged)="eventTimesChanged($event)"
         >
         </mwl-calendar-week-view>
         <mwl-calendar-day-view
@@ -115,8 +111,6 @@
                 [viewDate]="viewDate"
                 [events]="events"
                 [refresh]="refresh"
-                (eventClicked)="handleEvent('Clicked', $event.event)"
-                (eventTimesChanged)="eventTimesChanged($event)"
         >
         </mwl-calendar-day-view>
     </div>
@@ -166,7 +160,7 @@
                 <tbody class="edit-table__body">
                 <tr *ngFor="let event of unavailablePeriodEvent()">
                     <td class="edit-table__body__column">
-                        <input
+                        <input disabled
                                 class="form-control"
                                 value="{{ event.start | date: 'yyyy-MM-dd' }}"
                                 type="date"
@@ -174,7 +168,7 @@
                         />
                     </td>
                     <td class="edit-table__body__column">
-                        <input
+                        <input disabled
                                 class="form-control"
                                 type="time"
                                 value="{{ event.start | date: 'HH:MM' }}"
@@ -182,7 +176,7 @@
                         />
                     </td>
                     <td class="edit-table__body__column">
-                        <input
+                        <input disabled
                                 class="form-control"
                                 type="time"
                                 value="{{ event.end | date: 'HH:MM' }}"
@@ -191,6 +185,7 @@
                     </td>
                     <td class="edit-table__body__column">
                         <input
+                                style="cursor: pointer"
                                 type="color"
                                 [(ngModel)]="event.color!.primary"
                                 (change)="saveColor( event, event.color!.primary, true );"
@@ -198,6 +193,7 @@
                     </td>
                     <td class="edit-table__body__column">
                         <input
+                                style="cursor: pointer"
                                 type="color"
                                 [(ngModel)]="event.color!.secondary"
                                 (change)="saveColor( event, event.color!.secondary, false );"
@@ -212,29 +208,5 @@
                 </tbody>
             </table>
         </div>
-
-        <ng-template #modalContent let-close="close">
-            <div class="modal-header">
-                <h5 class="modal-title">Event action occurred</h5>
-                <button type="button" class="close" (click)="close()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div>
-                    Action:
-                    <pre>{{ modalData?.action }}</pre>
-                </div>
-                <div>
-                    Event:
-                    <pre>{{ modalData?.event | json }}</pre>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" (click)="close()">
-                    OK
-                </button>
-            </div>
-        </ng-template>
     </div>
 </div>

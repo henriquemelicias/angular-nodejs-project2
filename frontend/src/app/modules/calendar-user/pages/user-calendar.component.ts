@@ -11,6 +11,9 @@ import { AlertType } from "@core/models/alert.model";
 import { TaskSchema } from "@data/task/schemas/task.schema";
 import { TaskService } from "@data/task/services/task.service";
 import { LocalStorageKeyEnum } from "@core/enums/local-storage-key.enum";
+import { MeetingSchema } from "@data/meetings/schemas/meeting.schema";
+import { MeetingService } from "@data/meetings/services/meeting.service";
+import { MeetingTypeEnum } from "@data/meetings/enums/meeting-type.enum";
 
 const colors: any = {
     red: {
@@ -40,6 +43,7 @@ export class UserCalendarComponent implements OnInit {
 
     user$: BehaviorSubject<UserSchema | undefined> = new BehaviorSubject<UserSchema | undefined>( undefined )
     tasksAssignedToUser!: TaskSchema[];
+    meetings?: MeetingSchema[];
     username: string;
     sessionUser;
 
@@ -47,6 +51,7 @@ export class UserCalendarComponent implements OnInit {
                  private route: ActivatedRoute,
                  private offcanvasService: NgbOffcanvas,
                  private userService: UserService,
+                 private meetingService: MeetingService,
                  private taskService: TaskService ) {
         // @ts-ignore
         this.username = route.snapshot.paramMap.get( 'username' );
@@ -145,7 +150,18 @@ export class UserCalendarComponent implements OnInit {
                                                                     reject( error );
                                                                 },
                                                             }
-                                                        ) )
+                                                        ) ),
+                new Promise( ( resolve, reject ) => this.meetingService.getMeetingsByUser( this.username ).subscribe(
+                    {
+                        next: meetings => {
+                            this.meetings = meetings
+                            resolve( resolve );
+                        },
+                        error: error => {
+                            reject( error );
+                        },
+                    } )
+                ),
             ]
         ).then( () => this._changeCalendarEntries() );
     }
@@ -181,6 +197,19 @@ export class UserCalendarComponent implements OnInit {
                 );
             }
         );
+
+        this.meetings?.forEach(
+            meeting => {
+                this.addEvent(
+                    meeting.type === MeetingTypeEnum.TEAM ? "Reuni&atilde;o de equipa" : "Reuni&atilde;o",
+                    meeting.startDate,
+                    meeting.endDate,
+                    false,
+                    [],
+                    colors.yellow
+                );
+            }
+        )
 
         this.refresh.next();
     }

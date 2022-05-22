@@ -70,9 +70,8 @@ export class UserMeetingFormComponent implements OnInit {
 
         this.searchPossibleSessionForm.reset();
 
-        this.meetingService.getTeamMeetingPossibleSessions(
-            // @ts-ignore
-            this.teamName,
+        this.meetingService.getUserMeetingPossibleSessions(
+            this.selectedUsers,
             startDateFormValue,
             endDateFormValue,
             meetingDurationFormValue
@@ -111,13 +110,13 @@ export class UserMeetingFormComponent implements OnInit {
 
     addMeeting( session: { startDate: Date; endDate: Date } ) {
         this.hasClickedButton = false;
-        const teamMeeting = {} as MeetingSchema;
-        teamMeeting.type = MeetingTypeEnum.TEAM;
-        teamMeeting.startDate = session.startDate;
-        teamMeeting.endDate = session.endDate;
-        teamMeeting.users = [];
-        teamMeeting.associatedEntity = this.teamName!;
-        this.meetingService.addTeamMeeting( teamMeeting ).subscribe( { next: _ => () => this.hasSubmitted.next() });
+        const userMeeting = {} as MeetingSchema;
+        userMeeting.type = MeetingTypeEnum.USER;
+        userMeeting.startDate = session.startDate;
+        userMeeting.endDate = session.endDate;
+        userMeeting.users = this.selectedUsers;
+        userMeeting.associatedEntity = UserService.sessionUser!.username;
+        this.meetingService.addUserMeeting( userMeeting ).subscribe( { next: _ => () => this.hasSubmitted.next() });
         this.hasSubmitted.next();
     }
 

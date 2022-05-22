@@ -30,7 +30,7 @@ exports.addMeeting = ( req, res, next ) => {
     const meetingObject = {
         type: req.body.type,
         associatedEntity: req.body.associatedEntity,
-        users: [],
+        users: req.body.users,
         startDate: req.body.startDate,
         endDate: req.body.endDate
     };
@@ -38,7 +38,7 @@ exports.addMeeting = ( req, res, next ) => {
         {
             type: req.body.type,
             associatedEntity: req.body.associatedEntity,
-            users: [],
+            users: req.body.users,
             startDate: req.body.startDate,
             endDate: req.body.endDate
         }
@@ -108,6 +108,46 @@ exports.getTeamMeetingPossibleSessions = ( req, res, next ) => {
         } )
 }
 
+exports.getUserMeetingPossibleSessions = ( req, res, next ) => {
+
+    const baseURL = 'http://' + req.headers.host + '/';
+    const searchParams = new URL( req.url, baseURL ).searchParams;
+
+    const startDate = new Date( searchParams.get( 'startDate' ) );
+    const endDate = new Date( searchParams.get( 'endDate' ) );
+    const duration = searchParams.get( 'duration' );
+    const members = JSON.parse( searchParams.get( 'users' ) );
+
+    Meeting.find( { $not: { $or: [ { endDate: { $lt: startDate } }, { startDate: { $gt: endDate } } ] } } )
+        .lean()
+        .exec( ( error, meetings ) => {
+            if ( error ) {
+                return next( httpError( HttpStatusCode.InternalServerError, error ) );
+            }
+
+            if ( !meetings || meetings.length === 0 ) {
+                return sendPossibleSessionTimes( res, [], startDate, endDate, duration );
+            }
+
+            meetings = meetings.filter( m => (m.type === MeetingType.USER && members.some( teamMember => m.users.includes( teamMember ) )) );
+
+            User.find( { username: { $in: members } } )
+                .lean()
+                .select( 'unavailableTimes' )
+                .exec( ( error, users ) => {
+                    if ( error ) {
+                        return next( httpError( HttpStatusCode.InternalServerError, error ) );
+                    }
+
+                    if ( users ) {
+                        users.forEach( u => u.unavailableTimes.forEach( ut => meetings.push( ut ) ) );
+                    }
+
+                    return sendPossibleSessionTimes( res, meetings, startDate, endDate, duration );
+                } );
+        } );
+}
+
 exports.getMeetingsByTeam = ( req, res, next ) => {
     Team.findOne( { name: req.params['name'] } )
         .lean()
@@ -124,6 +164,38 @@ exports.getMeetingsByTeam = ( req, res, next ) => {
             Meeting.find( {
                 $or: [ { associatedEntity: req.params['name'], type: MeetingType.TEAM.valueOf() },
                     { type: MeetingType.USER.valueOf(), users: { $in: members } }
+                ]
+            } )
+                .lean()
+                .exec( ( error, meetings ) => {
+
+                    if ( error ) {
+                        next( httpError( HttpStatusCode.InternalServerError, error ) );
+                        return;
+                    }
+
+                    res.send( meetings );
+                } )
+
+        } )
+}
+
+exports.getMeetingsByUser = ( req, res, next ) => {
+    Team.find( { members: {$in: req.params['username']} } )
+        .lean()
+        .select( 'name' )
+        .exec( ( error, teams ) => {
+            if ( error ) {
+                next( httpError( HttpStatusCode.InternalServerError, error ) );
+                return;
+            }
+
+            let teamNames = [];
+            if ( teams ) teamNames = teams.flatMap( t => t.name );
+
+            Meeting.find( {
+                $or: [ { associatedEntity: {$in: teamNames}, type: MeetingType.TEAM.valueOf() },
+                    { type: MeetingType.USER.valueOf(), users: req.params['username'] }
                 ]
             } )
                 .lean()

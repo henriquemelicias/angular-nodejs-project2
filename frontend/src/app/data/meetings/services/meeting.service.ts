@@ -36,4 +36,28 @@ export class MeetingService {
             HttpSettings.HEADER_CONTENT_TYPE_JSON
         );
     }
+
+    getUserMeetingPossibleSessions( selectedUsers: string[],
+                                    startDateFormValue: any,
+                                    endDateFormValue: any,
+                                    meetingDurationFormValue: any ) {
+        return this.http.get<{ startDate: Date, endDate: Date }[]>(
+            MeetingService._API_URI + "/users?startDate=" + startDateFormValue + "&endDate=" + endDateFormValue +
+            "&duration=" + meetingDurationFormValue + "&users=" + JSON.stringify( selectedUsers ),
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    }
+
+    addUserMeeting( userMeeting: MeetingSchema ) {
+        return this.http.post<void>(
+            MeetingService._API_URI + "/users", userMeeting, HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    }
+
+    getMeetingsByUser( username: string ) {
+        return this.http.get<MeetingSchema[]>(
+            MeetingService._API_URI + "/user/" + username,
+            HttpSettings.HEADER_CONTENT_TYPE_JSON
+        );
+    }
 }

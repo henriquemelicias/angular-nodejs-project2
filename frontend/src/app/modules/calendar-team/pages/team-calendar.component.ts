@@ -150,7 +150,6 @@ export class TeamCalendarComponent implements OnInit {
                             resolve( true );
                         },
                         error: error => {
-                            AlertService.alertToApp( AlertType.Error, 'Team not found', { isCloseable: true } );
                             reject( error );
                         },
                     } )
@@ -179,7 +178,6 @@ export class TeamCalendarComponent implements OnInit {
                             resolve( resolve );
                         },
                         error: error => {
-                            AlertService.alertToApp( AlertType.Error, 'Team not found', { isCloseable: true } );
                             reject( error );
                         },
                     } )
