@@ -1,7 +1,7 @@
 const Team = require( '../models/team.schema' );
 const httpError = require( 'http-errors' );
 const { HttpStatusCode } = require( "#enums/http-status-code.enum" );
-const logger = require( "#services/logger.service" );
+.
 const { body, query } = require( "express-validator" );
 const { URL } = require( 'url' );
 
